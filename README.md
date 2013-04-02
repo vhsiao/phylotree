@@ -8,7 +8,9 @@ node app.js
 > URLs available to play with:
 
 http://localhost:8080/tree/static
+
 http://localhost:8080/siphonophorae_static (the url to a static d3.js formatted tree)
+
 http://localhost:8080/clausiphyidae_static (the url to a static d3.js formatted tree with just a handful of nodes)
 
 > Files to edit:
