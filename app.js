@@ -4,8 +4,8 @@ var app = express();
 var engines = require('consolidate');
 var http = require('http');
 
-var server = http.createServer(app); // ?
-var io = require('socket.io').listen(server); // ?
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 //var conn = anyDB.createConnection('...');
@@ -20,13 +20,15 @@ app.configure(function() {
         secret: 'my_secret_key',
         store: new express.session.MemoryStore({reapInterval: 60000*10}) // Reap every 10 minutes
     }));
-    app.use(app.router); //?
-    app.use(express.methodOverride()); //?
+    app.use(app.router);
+    app.use(express.methodOverride());
 });
 
-app.get('/tree/:speciesId', function(req, res) {
-    var url = getD3Json(req.params.speciesId);
-    res.render('force.html', {'jsonFile':url});
+app.get('/siphonophorae_static', function(req, res) {
+   res.redirect('/public/siphonophorae.json');
+});
+app.get('/tree/siphonophorae_static', function(req, res) {
+    res.render('force.html');
 });
 app.get('/', function(req, res) {
    res.json(); 
