@@ -27,7 +27,6 @@ http://bl.ocks.org/mbostock/3808234
 as well as stuff from here:
 https://github.com/mbostock/d3/wiki/Tutorials
 
-Once that's done, add in the slider and change the dates that way, so that nodes come in and out.
 2.(Tyler) Add in search. Experiment with some node search libraries, perhaps- come up with a simple search bar that searches the
   current tree by species name, id or date. Should be able to suggest alternate spellings; eg, a search for 'clousiphyidae'
   should return a link to the 'clausiphyidae' node.
