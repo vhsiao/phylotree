@@ -16,6 +16,7 @@ http://localhost:8080/clausiphyidae_static (the url to a static d3.js formatted 
 > Files to edit:
 
 phylotree/templates/force.html (Expand the contents of the last script tag)
+
 phylotree/public/phyloforce.js (Controls the behavior of the graphics. Make a copy to use as a reference)
 
 > To do:
