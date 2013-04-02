@@ -24,10 +24,16 @@ app.configure(function() {
     app.use(express.methodOverride());
 });
 
+// static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
    res.redirect('/public/siphonophorae.json');
 });
-app.get('/tree/siphonophorae_static', function(req, res) {
+
+// static clausiphyidae tree with just a handful of nodes
+app.get('/clausiphyidae_static', function(req, res) {
+    res.redirect('/public/clausiphyidae.json');
+});
+app.get('/tree/static', function(req, res) {
     res.render('force.html');
 });
 app.get('/', function(req, res) {

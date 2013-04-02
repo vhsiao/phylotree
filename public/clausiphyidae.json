@@ -1,0 +1,133 @@
+{
+   "nodes": [
+      {
+         "group": 1, 
+         "name": "Clausophyidae", 
+         "itis_id": 718958, 
+         "year": 1860
+      }, 
+      {
+         "group": 1, 
+         "name": "Heteropyramis", 
+         "itis_id": 51322, 
+         "year": 1925
+      }, 
+      {
+         "group": 1, 
+         "name": "Heteropyramis maculata", 
+         "itis_id": 51323, 
+         "year": 1925
+      }, 
+      {
+         "group": 1, 
+         "name": "Crystallophyes", 
+         "itis_id": 51320, 
+         "year": 1925
+      }, 
+      {
+         "group": 1, 
+         "name": "Crystallophyes amygdalina", 
+         "itis_id": 51321, 
+         "year": 1925
+      }, 
+      {
+         "group": 1, 
+         "name": "Chuniphyes", 
+         "itis_id": 51303, 
+         "year": 1908
+      }, 
+      {
+         "group": 1, 
+         "name": "Chuniphyes moserae", 
+         "itis_id": 51305, 
+         "year": 1954
+      }, 
+      {
+         "group": 1, 
+         "name": "Chuniphyes multidentata", 
+         "itis_id": 51304, 
+         "year": 1908
+      }, 
+      {
+         "group": 1, 
+         "name": "Clausophyes", 
+         "itis_id": 51274, 
+         "year": 1860
+      }, 
+      {
+         "group": 1, 
+         "name": "Clausophyes moserae", 
+         "itis_id": 719201, 
+         "year": 1988
+      }, 
+      {
+         "group": 1, 
+         "name": "Clausophyes ovata", 
+         "itis_id": 51276, 
+         "year": 1860
+      }, 
+      {
+         "group": 1, 
+         "name": "Clausophyes galeata", 
+         "itis_id": 51275, 
+         "year": 1908
+      }
+   ], 
+   "links": [
+      {
+         "source": 0, 
+         "target": 1, 
+         "value": 1
+      }, 
+      {
+         "source": 1, 
+         "target": 2, 
+         "value": 1
+      }, 
+      {
+         "source": 0, 
+         "target": 3, 
+         "value": 1
+      }, 
+      {
+         "source": 3, 
+         "target": 4, 
+         "value": 1
+      }, 
+      {
+         "source": 0, 
+         "target": 5, 
+         "value": 1
+      }, 
+      {
+         "source": 5, 
+         "target": 6, 
+         "value": 1
+      }, 
+      {
+         "source": 5, 
+         "target": 7, 
+         "value": 1
+      }, 
+      {
+         "source": 0, 
+         "target": 8, 
+         "value": 1
+      }, 
+      {
+         "source": 8, 
+         "target": 9, 
+         "value": 1
+      }, 
+      {
+         "source": 8, 
+         "target": 10, 
+         "value": 1
+      }, 
+      {
+         "source": 8, 
+         "target": 11, 
+         "value": 1
+      }
+   ]
+}
