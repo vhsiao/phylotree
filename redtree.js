@@ -10,7 +10,7 @@ var tree;	// Phylogeny in d3 json format with nodes and links
 
 function visualize() {
 	// Visualize the phylogeny stored in tree
-	
+	// TYler was here
 	
 	// Setup
 	var width = 4000,
@@ -76,6 +76,7 @@ function visualize() {
         //.attr("dy", "0.35em")
 	//	.text(function(d) { return d.name; })
       //  .call(force.drag);
+      //added text
 
 	force.on("tick", function() {
 		link.attr("x1", function(d) { return d.source.x; })
