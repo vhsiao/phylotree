@@ -74,7 +74,9 @@ min_year = 1735
 
 class Taxon():
 	"""A Taxon """
+        # 77||Aeromonas||hydrophila||||||valid||No review; untreated NODC data|||0|1996-06-13 14:51:08|76|0|0|1|220|1996-07-29||valid|Aeromonas hydrophila
 	def __init__(self, taxonomic_unit_sting = ''):
+            # parse the line in the database
 		taxonomic_unit_sting = taxonomic_unit_sting.rstrip()
 		fields = taxonomic_unit_sting.split('|')
 		expected_fields = 18
@@ -208,7 +210,7 @@ else:
 	n = 0
 	taxa = dict()
 	
-	for line in taxon_handle:
+	for line in taxon_handle: # Goes through entire taxon file
 		n = n + 1
 		line = line.strip()
 		
@@ -218,7 +220,7 @@ else:
 		new_taxon = Taxon( line )
 		#new_taxon.pretty_print()
 		if new_taxon.is_valid():
-			if new_taxon.author_id in authors:
+			if new_taxon.author_id in authors: # Links taxon author_id to authors table; inefficient
 				author_tuple = authors[ new_taxon.author_id ]
 				new_taxon.author = author_tuple[0]
 				new_taxon.year = author_tuple[1]
@@ -227,10 +229,10 @@ else:
 			
 	# Update the children for each taxon
 	for id in taxa.iterkeys():
-		parent = taxa[ id ].parent
+		parent = taxa[ id ].parent # find the parent of the taxon
 		if parent:
 			try:
-				taxa [ parent ].add_child( id )
+				taxa [ parent ].add_child( id ) # Add this taxon to the children of its parent
 			except:
 				sys.stderr.write( 'WARNING: Node {0}, listed as the parent of {1}, does not exist\n'.format( parent, id ) )
 	
