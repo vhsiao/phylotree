@@ -1,6 +1,8 @@
 import sys
 
-if len(sys.argv) != 2:
-    print "Nope; usage: test <name>"
+if len(sys.argv) != 1:
+    print "Nope, try again"
 else:
-    print "Hello,", sys.argv[1]
+    f = open('./public/siphonophorae.json')
+    for line in f:
+        print line,
