@@ -3,9 +3,20 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <title>d3.js ~ Force-Directed Graph</title>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.9.5"></script>
     <script type="text/javascript" src="/public/phyloforce.js"></script>
-    
+    <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+     <script>
+       $(document).ready( function() {
+          $("#slider").slider({
+           range: "min",
+            min: 0,
+            max: 100,
+             step: 5;
+          });
+        });
+  </script>
     <style type="text/css">
 
 
@@ -18,10 +29,19 @@
 
 <link href='/public/force.css' rel='stylesheet' type='text/css' />
 <script>
-	var url = '/siphonophorae_static'; //This will be replaced with a more meaningful url
+	var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
 	tree_from_json_file(url);
 </script>
 
+<form>
+<form name="yearSelect">
+<input type="text" id="yearField" name="fname" value="">
+<input type="button" id="upClick" value="Update End Year" >
+</form>
+
+<input id="test" type="range" min="1700" max="2013" step="5"/>
+
 
 </body>
+
 </html>
