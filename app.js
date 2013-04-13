@@ -12,6 +12,7 @@ var fs = require('fs');
 
 app.engine('html', engines.hogan);
 app.configure(function() {
+    //spawnPythonScripts();
     app.set('views', __dirname + '/templates');
     app.use(express.bodyParser());
     app.use ('/public', express.static(__dirname + '/public'));
@@ -23,6 +24,27 @@ app.configure(function() {
     app.use(app.router);
     app.use(express.methodOverride());
 });
+
+// post url for search form
+app.post('/search', function(req, res) {
+    var commonName = req.body.commonName;
+    var scientificName = req.body.scientificName;
+    var tsn = req.body.TSN;
+    console.log(commonName +", "+scientificName+", "+tsn);
+    
+    res.send('ok');
+});
+
+// results of running test python script
+app.get('/pythonChildViewer', function(req, res) {
+//    var scriptOutput = spawnPythonScripts();
+	spawnPythonScripts(function(output) {
+  console.log("sending this output:" + scriptOutput)
+    res.send(scriptOutput);
+	})  
+    // res.json(scriptOutput);
+});
+
 
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
@@ -79,4 +101,30 @@ function getD3Json(species_id) {
         });
     });
 }
+
+function spawnPythonScripts(callback) {
+
+    // run test.py as a child spawned, which takes one string as parameter
+    var child = spawn('python', ['-m', 'test.py']);
+    var pythonOutput = "";
+    child.stderr.on('data', function(data) {
+        console.log('child error output: ' + data);
+    });
+    
+    child.stdout.on('data', function(data) {
+        //console.log('data: ' + data);
+        pythonOutput += data;
+    });
+    child.on('close', function(code) {
+	console.log("child exited with code: " + code);
+	});
+    console.log(pythonOutput);
+    return pythonOutput;
+    
+    // capture json output of script
+    // return the parsed json as a javascript object
+	callback(pythonOutput)
+    
+}
+
 server.listen(8080);
