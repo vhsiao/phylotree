@@ -40,6 +40,19 @@
 </form>
 
 <input id="test" type="range" min="1700" max="2013" step="5"/>
+<div>
+  <form id="searchForm" method="POST" action="/search">
+    <input id="commonNameField" type="text" name="commonName" value="">
+    <input id="scientificNameField" type="text" name="scientificName" value="">
+    <input id="TSNField" type="number" name="TSN" value="">
+    <input type="submit" value="Send">
+  </form>
+</div>
+
+<div>
+  <input id="earlyTimeSlider" type="range" name="earlyTime" value="10">
+  <input id="lateTimeSlider" type="range" name="lateTime" value="90">
+</div>
 
 
 </body>

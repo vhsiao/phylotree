@@ -4,6 +4,20 @@
 // Based on http://mbostock.github.com/d3/ex/force.html
 
 
+window.addEventListener('load', function() {
+	// Need to setup form submit
+        var searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', submitForm, false);
+	
+	var earlySlider = document.getElementById('earlyTimeSlider');
+	earlySlider.addEventListener('mousemove', updateFromEarlySlider, false);
+	
+	var lateSlider = document.getElementById('lateTimeSlider');
+	lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
+	
+}, false);
+
+
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
 var currentTree;
@@ -184,5 +198,49 @@ $(document).ready(function(){
 
 }
 
+function submitForm(e) {
+	// prevent the page from redirecting
+        e.preventDefault();
+	console.log("form submit");
 
+        // create a FormData object from our form
+        var fd = new FormData(document.getElementById('searchForm'));
 
+        // clear the search fields
+	
+        document.getElementById('commonNameField').value = "";
+	document.getElementById('scientificNameField').value = "";
+	document.getElementById('TSNField').value = "";
+	
+
+        // send it to the server
+        var request = new XMLHttpRequest();
+        request.open('POST', '/search', true);
+        request.send(fd);
+}
+
+function updateFromEarlySlider(e) {
+	var earlyTime = document.getElementById('earlyTimeSlider').value;
+	var lateTime = document.getElementById('lateTimeSlider').value;
+	
+	if (earlyTime > lateTime) {
+		document.getElementById('lateTimeSlider').value = earlyTime;
+		lateTime = document.getElementById('lateTimeSlider').value;
+	}
+	
+	document.getElementById('commonNameField').value = earlyTime;
+	document.getElementById('scientificNameField').value = lateTime;
+}
+
+function updateFromLateSlider(e) {
+	var earlyTime = document.getElementById('earlyTimeSlider').value;
+	var lateTime = document.getElementById('lateTimeSlider').value;
+	
+	if (earlyTime > lateTime) {
+		document.getElementById('earlyTimeSlider').value = lateTime;
+		earlyTime = document.getElementById('earlyTimeSlider').value;
+	}
+	
+	document.getElementById('commonNameField').value = earlyTime;
+	document.getElementById('scientificNameField').value = lateTime;
+}
