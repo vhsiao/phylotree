@@ -7,3 +7,11 @@ line.link {
   stroke: #999;
   stroke-opacity: .6;
 }
+
+#d3_phyloviewer {
+  float: left;
+}
+
+#text_search_sidebar {
+  float: right;
+}
