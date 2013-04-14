@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
 	var lateSlider = document.getElementById('lateTimeSlider');
 	//lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
 	lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
-	//lateSlider.addEventListener('mouseout', updateFromLateSlider, false);
+	lateSlider.addEventListener('mouseup',updateLabelFromEndSlider, false);
 	
 }, false);
 
@@ -185,14 +185,16 @@ function updateTree(sDate, eDate){
 }
 
 
-
-
-$(document).ready(function(){
-    function updateEndYear() {
+ function updateEndYear() {
         var endYear = document.getElementById("yearField").value;
+        document.getElementById('lateTimeSlider').value = endYear;
+        updateFromLateSlider();
         if (endYear)
         updateTree(1700,endYear);
     }
+
+
+$(document).ready(function(){
     $("#upClick").click(updateEndYear);
 });
 
@@ -242,6 +244,11 @@ function submitForm(e) {
         var request = new XMLHttpRequest();
         request.open('POST', '/search', true);
         request.send(fd);
+}
+
+function updateLabelFromEndSlider(){
+	document.getElementById("yearField").value = document.getElementById('lateTimeSlider').value;
+	updateEndYear();
 }
 
 
