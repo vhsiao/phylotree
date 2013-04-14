@@ -3,6 +3,9 @@ import sys
 import re
 import json
 
+#more imports
+from sqlalchemy import *
+
 Usage = """
 Usage:
 
@@ -71,38 +74,38 @@ Create Table strippedauthor
 # http://en.wikipedia.org/wiki/Systema_Naturae
 min_year = 1735
 
-
+# tsn, usage, parent_tsn, unit_name1, 
 class Taxon():
 	"""A Taxon """
-        # 77||Aeromonas||hydrophila||||||valid||No review; untreated NODC data|||0|1996-06-13 14:51:08|76|0|0|1|220|1996-07-29||valid|Aeromonas hydrophila
-	def __init__(self, taxonomic_unit_sting = ''):
+#	def __init__(self, taxonomic_unit_sting = ''):
+# (900081L, '', 'Neastacilla', '', 'coonabooloo', '', '', '', '', 'N', 'valid', '', 'TWG standards met', '', '', 0, datetime.datetime(2013, 1, 29, 8, 54, 1), 92557L, 165408L, 0L, 5, 220, datetime.date(2013, 1, 29), 'No', 'valid', 'Neastacilla coonabooloo')
+        def __init__(self, fields = ()):
             # parse the line in the database
-		taxonomic_unit_sting = taxonomic_unit_sting.rstrip()
-		fields = taxonomic_unit_sting.split('|')
-		expected_fields = 18
+        #	taxonomic_unit_sting = taxonomic_unit_sting.rstrip()
+        #	fields = taxonomic_unit_sting.split('|')
+		expected_fields = 26 
 		if len(fields) < expected_fields:
-			raise ValueError('The following taxonomic_unit_sting does not have {0} fields:\n  {1}\n'.format(expected_fields, taxonomic_unit_sting))
-		self.id = int( fields[0] )
-		self.name_usage = fields[10]
+			raise ValueError('The following taxonomic_unit_sting does not have {0} fields:\n  {1}\n'.format(expected_fields, fields))
+		self.id = int( fields[0] ) # 900081 (tsn)
+		self.name_usage = fields[10] # valid (usage)
 		
 		self.parent = -1
 		parent_string = fields[17]
 		try:
-			self.parent = int( parent_string )
+			self.parent = int( parent_string ) #92557 (parent_tsn)
 		except:
 			sys.stderr.write( 'WARNING: Invalid parent id in the string: {0}\n'.format( taxonomic_unit_sting ) )
 		self.children = list()
-		self.name = fields[2]
-		
+		self.name = fields[2] # 'Neastacilla' (unit_name1)
 		self.author_id = -1
 		try:
-			self.author_id = int( fields[ 18 ] )
+			self.author_id = int( fields[ 18 ] ) #165408 (author_id)
 		except:
 			sys.stderr.write( 'WARNING: Invalid taxon_author_id in the string: {0}\n'.format( taxonomic_unit_sting ) )
 		
 		self.author = ''
 		self.year = None
-		if len( fields[4] ) > 0:
+		if len( fields[4] ) > 0: #'coonabooloo' (unit_name2)
 			self.name = self.name + ' ' + fields[4]
 	
 	
@@ -156,87 +159,71 @@ class Taxon():
 		# {"source":1,"target":0,"value":1}
 		return {"source":self.parent,"target":self.id,"value":1}
 		
-		
-if len(sys.argv) < 4:
-	print Usage
-else:
-	
-	# Parse arguments
-	taxon_file_name = sys.argv[1] #taxonomic_units
-	author_file_name = sys.argv[2] #strippedauthor
-	root = int( sys.argv[3] )
-	
-	# Parse the authors file
-	author_handle = open(author_file_name, "rU")
-	
-	n = 0
-	authors = dict()
-	
-        for line in author_handle: # e.g.: 25 | A Binney 1842
-		n = n + 1
-		line = line.strip()
-		
-		#if n==1:
-		#	continue
-			
-		fields = line.split('|')
-		
-		author_id = int( fields[0] ) # 25
-		author_year = fields[1] # A Binney 1842
-		author_year_words = author_year.split(' ')
-		author = ' '.join(author_year_words[:-1])
-		year_string = author_year_words[-1:][0] # 1842
-		year = None
-		
-		#print( year_string )
-		
-		if re.match('^\d\d\d\d$', year_string):
-			year = int( year_string )
-		else:
-			author = author + ' ' + year_string
-		
-		if year < min_year:
-			year = None
-		
-		authors[ author_id ] = ( author, year  ) # authors[25] = (A Binney, 1842)) 
-		
-		
-		#print ( line )
-		#print( id, author, year )
-	
-	# Parse the taxonomy file into the taxa dictionary
-	taxon_handle = open(taxon_file_name, "rU")
+def find_descendents_recursive(tsn_list, taxa_dict):
+    if not tsn_list:
+        return
+    for tsn in tsn_list:
+      direct_children_tsn_s = select([tu]).where(tu.c.parent_tsn==tsn)
+      direct_children_tsn_result = conn.execute(direct_children_tsn_s)
+      direct_children_tsn_list = [Taxon(child) for child in direct_children_tsn_result]
+      for child in direct_children_tsn_list:
+          if(child.author_id):
+             child.year = authors[child.author_id]
+             # Add id/taxon mapping for child
+          else:
+              sys.stderr.write("Warning: child {0} has no author data".format(child.id))
+          taxa_dict[child.id] = child
+          taxa_dict[tsn].add_child(child.id) # Add all child_id to child id list in parent     
+      find_descendents_recursive([child.id for child in direct_children_tsn_list], taxa_dict)
+    
+try:
+    engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
+    conn = engine.connect()
+    metadata = MetaData(engine)
+    tu = Table('taxonomic_units', metadata, autoload=True)
+    sa = Table('strippedauthor', metadata, autoload=True)
+    authors = dict()
+except:
+    sys.exit('Problem connecting to database; goodbye')
 
-	n = 0
-	taxa = dict()
-	
-	for line in taxon_handle: # Goes through entire taxon file
-		n = n + 1
-		line = line.strip()
-		
-		#if n==1:
-		#	continue
-		
-		new_taxon = Taxon( line )
-		#new_taxon.pretty_print()
-		if new_taxon.is_valid():
-			if new_taxon.author_id in authors: # Links taxon author_id to authors table; inefficient
-				author_tuple = authors[ new_taxon.author_id ]
-				new_taxon.author = author_tuple[0]
-				new_taxon.year = author_tuple[1]
-			#new_taxon.pretty_print()
-			taxa[ new_taxon.id ] = new_taxon
-			
-	# Update the children for each taxon
-	for id in taxa.iterkeys():
-		parent = taxa[ id ].parent # find the parent of the taxon
-		if parent:
-			try:
-				taxa [ parent ].add_child( id ) # Add this taxon to the children of its parent
-			except:
-				sys.stderr.write( 'WARNING: Node {0}, listed as the parent of {1}, does not exist\n'.format( parent, id ) )
-	
-	# Scrub the year from internal nodes, since going to propagate these back from the tips
+#if len(sys.argv) < 4:
+#	print Usage
+if len(sys.argv) != 2:
+    print Usage
+else:
+    # Connect to the ITIS database
+    n = 0
+    taxa = dict()
+    root_tsn = int(sys.argv[1])
+    root_s = select([tu]).where(tu.c.tsn==root_tsn) 
+    root_res = conn.execute(root_s)
+    root = [r for r in root_res][0]
+    new_taxon = Taxon(root)
+    root_tsn = int(root[0])
+    taxa[ root_tsn ] = new_taxon
+        # new_taxon = Taxon( line )
+        # new_taxon.pretty_print()
+
+    # Read the strippedauthor table into an in-memory store
+    authors_s = select([sa.c.taxon_author_id, sa.c.shortauthor])
+    author_res = conn.execute(authors_s)
+    for author in author_res:
+        author_id = author[0]
+        shortauthor = author[1]
+        author_year_words = shortauthor.split(' ')
+        year_string = author_year_words[-1]
+        year = None
+
+        if re.match('^\d\d\d\d$', year_string):
+            year = int(year_string)
+        if year < min_year:
+            year = None
+
+        authors[ author_id ] = year 
+    
+    find_descendents_recursive([ root_tsn ], taxa)
+    if new_taxon.is_valid():
+        # Scrub the year from internal nodes, since going to propagate these back from the tips
 	for id in taxa.iterkeys():
 		if not taxa[ id ].is_tip():
 			taxa[ id ].year = None
@@ -264,13 +251,9 @@ else:
 					# Parent doesn't exist, all done
 					taxon_pointer = None
 	
-	
-	
-	
 	# Now, traverse the tree from the user specified root
 	node_stack = list()
-	node_stack.append( root )
-	
+	node_stack.append( root_tsn )
 	
 	tree = { 'nodes':[], 'links':[] }  # a dictionary of nodes and links in the tree
 	
@@ -278,34 +261,16 @@ else:
 	
 	
 	#print 'id,parent,name,year'
-	
-	while len( node_stack ) > 0:
-		id = node_stack.pop()
-		# Only include lineages for which there is a date
-		if taxa[ id ].year:
-			#taxa[ id ].pretty_print()
-			
-			#print taxa[ id ].csv()
-			
-			tree['nodes'].append( taxa[ id ].node() )
-			node_lookup[ id ] = len(tree['nodes']) - 1
-			
-			if id != root:
-				# tree['links'].append( taxa[ id ].link() )
-				
-				# {"source":self.parent,"target":self.id,"value":1}
-				tree['links'].append( {"source" : node_lookup[ taxa[ id ].parent ],"target" : node_lookup[ id ],"value":1} )
-				
-			
-			node_stack = node_stack + taxa[ id ].children
-			
-			
-			
-			
-			
-			
-	print json.dumps( tree, indent = 3 )
-
-	
-	
-	
+ 	while len( node_stack ) > 0:
+ 		id = node_stack.pop()
+ 		# Only include lineages for which there is a date
+ 		if taxa[ id ].year:
+ 			tree['nodes'].append( taxa[ id ].node() )
+ 			node_lookup[ id ] = len(tree['nodes']) - 1
+ 			if id != root_tsn:
+ 				tree['links'].append( {"source" : node_lookup[ taxa[ id ].parent ],"target" : node_lookup[ id ],"value":1} )
+ 				
+ 			node_stack = node_stack + taxa[ id ].children
+ 			
+ 			
+ 	print json.dumps( tree, indent = 3 )
