@@ -1,84 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <title>d3.js ~ Force-Directed Graph</title>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.9.5"></script>
-    <script type="text/javascript" src="/public/phyloforce.js"></script>
-    <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
-     <script>
-       $(document).ready( function() {
-          $("#slider").slider({
-           range: "min",
-            min: 0,
-            max: 100,
-             step: 5;
-          });
-        });
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>d3.js ~ Force-Directed Graph</title>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.9.5"></script>
+  <script type="text/javascript" src="/public/phyloforce.js"></script>
+  <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+  <link href='/public/force.css' rel='stylesheet' type='text/css' />
+  <style type="text/css"></style>
+</head>
+
+<body>
+
+<div id=d3_phyloviewer>
+  <!-- THIS IS WHERE THE PHYLOTREE VIEWER IS. -->
+  <div class='gallery' id='chart'></div>
+  <script>
+    var url = '/siphonophorae_static';
+	  //var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
+	  tree_from_json_file(url);
   </script>
-    <style type="text/css">
-
-
-    </style>
-  </head>
-  <body>
-
-<div class='gallery' id='chart'> 
 </div>
 
-<link href='/public/force.css' rel='stylesheet' type='text/css' />
-<script>
-  var url = '/siphonophorae_static';
-	//var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
-	tree_from_json_file(url);
-</script>
-
-<form>
-<form name="yearSelect">
-  <div>
-    <input type="number" id="startYearField" name="fname" value="">
-    <input type="button" id="startUpClick" value="Update Start Year">
+<div id=text_search_sidebar>
+  <div id=lower_header_box>
+    <h1 id=lower_header_title>Phylotree</h1>
+    <p id=lower_header_paragraph>This is a phylogenetic viewer!</p>
   </div>
-  <div>
-    <input type="number" id="yearField" name="fname" value="">
-    <input type="button" id="upClick" value="Update End Year">
-  </div>
-</form>
-
-<!-- I took the min,max, and added it to my sliders
-<input id="test" type="range" min="1700" max="2013" step="5"/>
--->
-
-<div>
-  <div>
-    <label>Start Year</label>
-    <input id="earlyTimeSlider" type="range" min="1700" max="2013" name="earlyTime" value="1700">
-    <label id="earlyTimeLabel">Early</label>
-  </div>
-  <div>
-    <label>End Year</label>
-    <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
-    <label id="lateTimeLabel">Late</label>
-  </div>
-</div>
-
-<div>
-  <form id="searchForm" method="POST" action="/search">
-    <div>
-      <label>Common Name: </label>
-      <input id="commonNameField" type="text" name="commonName" value="">
+  
+  <form name="yearSelect">
+    <div hidden=true>
+      <input type="number" id="startYearField" name="fname" value="">
+      <input type="button" id="startUpClick" value="Update Start Year">
     </div>
     <div>
-      <label>Scientific Name: </label>
-      <input id="scientificNameField" type="text" name="scientificName" value="">
+      <input type="number" id="yearField" name="fname" value="">
+      <input type="button" id="upClick" value="Update End Year">
     </div>
-    <div>
-      <label>Taxonomic Serial Number: </label>
-      <input id="TSNField" type="number" name="TSN" value="">
-    </div>
-    <input type="submit" value="Search">
   </form>
+  
+  
+  <div>
+    <div hidden=true>
+      <label>Start Year</label>
+      <input id="earlyTimeSlider" type="range" min="1700" max="2013" name="earlyTime" value="1700">
+      <label id="earlyTimeLabel">Early</label>
+    </div>
+    <div>
+      <label>End Year</label>
+      <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
+      <label id="lateTimeLabel">Late</label>
+    </div>
+  </div>
+  
+  <div>
+    <form id="searchForm" method="POST" action="/search">
+      <div>
+	<label>Common Name: </label>
+	<input id="commonNameField" type="text" name="commonName" value="">
+      </div>
+      <div>
+	<label>Scientific Name: </label>
+	<input id="scientificNameField" type="text" name="scientificName" value="">
+      </div>
+      <div>
+	<label>Taxonomic Serial Number: </label>
+	<input id="TSNField" type="number" name="TSN" value="">
+      </div>
+      <input type="submit" value="Search">
+    </form>
+  </div>
 </div>
 
 </body>
