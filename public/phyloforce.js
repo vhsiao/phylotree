@@ -10,10 +10,14 @@ window.addEventListener('load', function() {
         searchForm.addEventListener('submit', submitForm, false);
 	
 	var earlySlider = document.getElementById('earlyTimeSlider');
+	//earlySlider.addEventListener('mouseover', updateFromEarlySlider, false);
 	earlySlider.addEventListener('mousemove', updateFromEarlySlider, false);
+	//earlySlider.addEventListener('mouseout', updateFromEarlySlider, false);
 	
 	var lateSlider = document.getElementById('lateTimeSlider');
+	//lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
 	lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
+	//lateSlider.addEventListener('mouseout', updateFromLateSlider, false);
 	
 }, false);
 
@@ -112,6 +116,7 @@ function tree_from_json_file( url ){
 		currentTree = jQuery.extend(true, {}, tree);
 		visualize();
 	});
+}
 
 	
 
@@ -186,16 +191,36 @@ $(document).ready(function(){
     function updateEndYear() {
         var endYear = document.getElementById("yearField").value;
         if (endYear)
-        updateTree(1850,endYear);
+        updateTree(1700,endYear);
     }
     $("#upClick").click(updateEndYear);
 });
 
 
+function updateFromEarlySlider(e) {
+	var earlyTime = document.getElementById('earlyTimeSlider').value;
+	var lateTime = document.getElementById('lateTimeSlider').value;
+	
+	if (earlyTime > lateTime) {
+		document.getElementById('lateTimeSlider').value = earlyTime;
+		lateTime = document.getElementById('lateTimeSlider').value;
+	}
+	
+	document.getElementById('earlyTimeLabel').innerHTML = earlyTime;
+	document.getElementById('lateTimeLabel').innerHTML = lateTime;
+}
 
-
-
-
+function updateFromLateSlider(e) {
+	var earlyTime = document.getElementById('earlyTimeSlider').value;
+	var lateTime = document.getElementById('lateTimeSlider').value;
+	
+	if (earlyTime > lateTime) {
+		document.getElementById('earlyTimeSlider').value = lateTime;
+		earlyTime = document.getElementById('earlyTimeSlider').value;
+	}
+	
+	document.getElementById('earlyTimeLabel').innerHTML = earlyTime;
+	document.getElementById('lateTimeLabel').innerHTML = lateTime;
 }
 
 function submitForm(e) {
@@ -219,28 +244,4 @@ function submitForm(e) {
         request.send(fd);
 }
 
-function updateFromEarlySlider(e) {
-	var earlyTime = document.getElementById('earlyTimeSlider').value;
-	var lateTime = document.getElementById('lateTimeSlider').value;
-	
-	if (earlyTime > lateTime) {
-		document.getElementById('lateTimeSlider').value = earlyTime;
-		lateTime = document.getElementById('lateTimeSlider').value;
-	}
-	
-	document.getElementById('commonNameField').value = earlyTime;
-	document.getElementById('scientificNameField').value = lateTime;
-}
 
-function updateFromLateSlider(e) {
-	var earlyTime = document.getElementById('earlyTimeSlider').value;
-	var lateTime = document.getElementById('lateTimeSlider').value;
-	
-	if (earlyTime > lateTime) {
-		document.getElementById('earlyTimeSlider').value = lateTime;
-		earlyTime = document.getElementById('earlyTimeSlider').value;
-	}
-	
-	document.getElementById('commonNameField').value = earlyTime;
-	document.getElementById('scientificNameField').value = lateTime;
-}
