@@ -16,41 +16,20 @@
 <div id=d3_phyloviewer>
   <!-- THIS IS WHERE THE PHYLOTREE VIEWER IS. -->
   <div class='gallery' id='chart'></div>
- <script>
-  // var url = '/siphonophorae_static';
-  var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
-  tree_from_json_file(url);
-</script>
+  <script>
+    // var url = '/siphonophorae_static';
+    var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
+    tree_from_json_file(url);
+  </script>
 </div>
-
 
 <div id=text_search_sidebar>
   <div id=lower_header_box>
     <h1 id=lower_header_title>Phylotree</h1>
     <p id=lower_header_paragraph>This is a phylogenetic viewer!</p>
-<link href='/public/force.css' rel='stylesheet' type='text/css' />
-
-
-<form>
-<form name="yearSelect">
-  <div>
-    <input type="number" id="startYearField" name="fname" value="">
-    <input type="button" id="startUpClick" value="Update Start Year">
   </div>
-  <div>
-    <input type="number" id="yearField" name="fname" value="">
-    <input type="button" id="upClick" value="Update End Year">
-  </div>
-</form>
 
 
-<div>
-  <div>
-    <label>Start Year</label>
-    <input id="earlyTimeSlider" type="range" min="1700" max="2013" name="earlyTime" value="1700">
-    <label id="earlyTimeLabel">Early</label>
-  </div>
-  
   <form name="yearSelect">
     <div hidden=true>
       <input type="number" id="startYearField" name="fname" value="">
@@ -67,12 +46,12 @@
     <div hidden=true>
       <label>Start Year</label>
       <input id="earlyTimeSlider" type="range" min="1700" max="2013" name="earlyTime" value="1700">
-      <label id="earlyTimeLabel">Early</label>
+      <label id="earlyTimeLabel">1700</label>
     </div>
     <div>
       <label>End Year</label>
       <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
-      <label id="lateTimeLabel">Late</label>
+      <label id="lateTimeLabel">2013</label>
     </div>
   </div>
   
