@@ -35,25 +35,50 @@
 
 <form>
 <form name="yearSelect">
-<input type="text" id="yearField" name="fname" value="">
-<input type="button" id="upClick" value="Update End Year" >
+  <div>
+    <input type="number" id="startYearField" name="fname" value="">
+    <input type="button" id="startUpClick" value="Update Start Year">
+  </div>
+  <div>
+    <input type="number" id="yearField" name="fname" value="">
+    <input type="button" id="upClick" value="Update End Year">
+  </div>
 </form>
 
+<!-- I took the min,max, and added it to my sliders
 <input id="test" type="range" min="1700" max="2013" step="5"/>
+-->
+
+<div>
+  <div>
+    <label>Start Year</label>
+    <input id="earlyTimeSlider" type="range" min="1700" max="2013" name="earlyTime" value="45">
+    <label id="earlyTimeLabel">Early</label>
+  </div>
+  <div>
+    <label>End Year</label>
+    <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="55">
+    <label id="lateTimeLabel">Late</label>
+  </div>
+</div>
+
 <div>
   <form id="searchForm" method="POST" action="/search">
-    <input id="commonNameField" type="text" name="commonName" value="">
-    <input id="scientificNameField" type="text" name="scientificName" value="">
-    <input id="TSNField" type="number" name="TSN" value="">
-    <input type="submit" value="Send">
+    <div>
+      <label>Common Name: </label>
+      <input id="commonNameField" type="text" name="commonName" value="">
+    </div>
+    <div>
+      <label>Scientific Name: </label>
+      <input id="scientificNameField" type="text" name="scientificName" value="">
+    </div>
+    <div>
+      <label>Taxonomic Serial Number: </label>
+      <input id="TSNField" type="number" name="TSN" value="">
+    </div>
+    <input type="submit" value="Search">
   </form>
 </div>
-
-<div>
-  <input id="earlyTimeSlider" type="range" name="earlyTime" value="10">
-  <input id="lateTimeSlider" type="range" name="lateTime" value="90">
-</div>
-
 
 </body>
 
