@@ -83,12 +83,40 @@ function visualize() {
 				}) // ** set the radius of each circle
 		.style("fill", function(d) { return "rgb(0, " + ((d.year-1700)) + ", 0)"}) // ** set the circle colors
 		.call(force.drag);
-
-
+	/*
+	node.append("text")
+	 	 .attr("dy", "1em") 
+         .attr("dx", 10)
+         .text(function(d) {
+         	var name = d.name;
+         	var check = hasWhiteSpace(name);
+         	//if(check == false){
+         		return name;
+         	//}
+         	//else{
+         	//	return "";
+         	//}
+         });
+	*/
+          
+           
+     /*
+     node.append("text")
+        .append("tspan")
+            .text(function(d) {
+            	console.log(d.name);
+            	return d.name;});
+        
+        svg.selectAll(".node text")
+            .append("tspan")
+            .attr("y", "1em") 
+            .attr("x", 0)
+            .text(function(d) {return d.year;});
+           */
 
 	node.append("title") // ** add a "title" attribute to every node.
 //  node.append("p")
-		.text(function(d) { return d.name + d.itis_id; }); // ** give the title the node's species name and itis i
+		.text(function(d) { return d.name + " " + d.itis_id; }); // ** give the title the node's species name and itis i
 
 	node.data(currentTree.nodes).exit().remove();
 	link.data(currentTree.links).exit().remove();	
@@ -249,6 +277,10 @@ function submitForm(e) {
 function updateLabelFromEndSlider(){
 	document.getElementById("yearField").value = document.getElementById('lateTimeSlider').value;
 	updateEndYear();
+}
+
+function hasWhiteSpace(s) {
+     return s.indexOf(' ') >= 0;
 }
 
 
