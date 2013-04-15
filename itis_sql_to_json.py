@@ -102,7 +102,8 @@ class Taxon():
 		self.year = None
 		if len( fields[4] ) > 0:
 			self.name = self.name + ' ' + fields[4]
-	
+                self.lft = 0
+                self.rgt=0
 	
 	def is_valid(self):
 		"""True if the taxon is considered valid"""
@@ -157,6 +158,35 @@ class Taxon():
 		
 if len(sys.argv) < 4:
 	print Usage
+def dictify_database():
+    all_tu_s = select([tu])
+    all_tu_res = conn.execute(all_tu_s)
+    for row in all_tu_res:
+        child = Taxon(row)
+        taxa[child.id] = child
+        if (child.parent):
+            taxa[child.parent].add_child(child.id) # Add all child_id to child id list in parent
+        if(child.author_id):
+           child.year = authors[child.author_id]
+           # Add id/taxon mapping for child
+        else:
+            sys.stderr.write("Warning: child {0} has no author data".format(child.id))
+    
+try:
+    engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
+    conn = engine.connect()
+    metadata = MetaData(engine)
+    tu = Table('taxonomic_units', metadata, autoload=True)
+    sa = Table('strippedauthor', metadata, autoload=True)
+    authors = dict()
+except:
+    sys.exit('Problem connecting to database; goodbye')
+
+#if len(sys.argv) < 4:
+#	print Usage
+if len(sys.argv) != 2:
+    print Usage
+>>>>>>> Stashed changes
 else:
 	
 	# Parse arguments
@@ -235,6 +265,11 @@ else:
 				sys.stderr.write( 'WARNING: Node {0}, listed as the parent of {1}, does not exist\n'.format( parent, id ) )
 	
 	# Scrub the year from internal nodes, since going to propagate these back from the tips
+        authors[ author_id ] = year 
+    
+    dictify_database()
+    if new_taxon.is_valid():
+        # Scrub the year from internal nodes, since going to propagate these back from the tips
 	for id in taxa.iterkeys():
 		if not taxa[ id ].is_tip():
 			taxa[ id ].year = None
