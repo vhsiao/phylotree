@@ -3,6 +3,9 @@
 // 
 // Based on http://mbostock.github.com/d3/ex/force.html
 
+var url_large = '/siphonophorae_static'; // tree 0
+var url_small = '/clausiphyidae_static'; // tree 1
+var current_tree = 0;
 
 window.addEventListener('load', function() {
 	// Need to setup form submit
@@ -18,6 +21,8 @@ window.addEventListener('load', function() {
 	//lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
 	lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
 	lateSlider.addEventListener('mouseup',updateLabelFromEndSlider, false);
+	
+	tree_from_json_file(url_large);
 	
 }, false);
 
@@ -256,7 +261,12 @@ function updateFromLateSlider(e) {
 function submitForm(e) {
 	// prevent the page from redirecting
         e.preventDefault();
-	console.log("form submit");
+	//console.log("form submit");
+	
+	// switch trees!
+	svg.remove();
+	if (current_tree == 0) { tree_from_json_file(url_small); current_tree = 1; }
+	else { tree_from_json_file(url_large); current_tree = 0; }
 
         // create a FormData object from our form
         var fd = new FormData(document.getElementById('searchForm'));
