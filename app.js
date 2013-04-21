@@ -1,82 +1,24 @@
-var express = require('express');
-// var anyDB = require('any-db');
-var app = express();
-var engines = require('consolidate');
-var http = require('http');
+Wrote profile results to itis_sql_to_json.py.lprof
+Timer unit: 1e-06 s
 
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
-var spawn = require('child_process').spawn;
-var fs = require('fs');
-//var conn = anyDB.createConnection('...');
+File: itis_sql_to_json.py
+Function: dictify_database at line 161
+Total time: 440.23 s
 
-app.engine('html', engines.hogan);
-app.configure(function() {
-    app.set('views', __dirname + '/templates');
-    app.use(express.bodyParser());
-    app.use ('/public', express.static(__dirname + '/public'));
-    app.use(express.cookieParser());
-    app.use(express.session({
-        secret: 'my_secret_key',
-        store: new express.session.MemoryStore({reapInterval: 60000*10}) // Reap every 10 minutes
-    }));
-    app.use(app.router);
-    app.use(express.methodOverride());
-});
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   161                                           @profile
+   162                                           def dictify_database():
+   163         1           72     72.0      0.0      all_tu_s = select([tu])
+   164         1    440230210 440230210.0    100.0      all_tu_res = conn.execute(all_tu_s)
+   165         2           46     23.0      0.0      for row in all_tu_res:
+   166         2           50     25.0      0.0          child = Taxon(row)
+   167         2            3      1.5      0.0          taxa[child.id] = child
+   168         2            2      1.0      0.0          if (child.parent):
+   169         1            6      6.0      0.0              taxa[child.parent].add_child(child.id) # Add all child_id to child id list in parent
+   170         1            1      1.0      0.0          if(child.author_id):
+   171                                                      child.year = authors[child.author_id]
+   172                                                      # Add id/taxon mapping for child
+   173                                                   else:
+   174         1           31     31.0      0.0              sys.stderr.write("Warning: child {0} has no author data".format(child.id))
 
-// static siphonophorae tree
-app.get('/siphonophorae_static', function(req, res) {
-   res.redirect('/public/siphonophorae.json');
-});
-
-// static clausiphyidae tree with just a handful of nodes
-app.get('/clausiphyidae_static', function(req, res) {
-    res.redirect('/public/clausiphyidae.json');
-});
-app.get('/tree/static', function(req, res) {
-    res.render('force.html');
-});
-app.get('/', function(req, res) {
-   res.json(); 
-});
-// =================================================================================
-// socket logic
-var scriptName = 'itis_sql_to_json.py';
-var itisDBFiles =  '/Users/vhsiao/phylogeny-d3/force/itis';
-var taxonomicUnitsFile = itisDBFiles + '/taxonomic_units';
-var strippedAuthorFile = itisDBFiles + '/strippedauthor';
-// io.sockets.on('connection', function(socket) {
-//     // Below: dealing with events emitted by the client.
-// 
-//     // This will be emitted if the user makes a new species request.
-//     socket.on('species', function(species_id) {
-//         // TODO
-//         var url = getD3Json(species_id);
-//     }
-// });
-
-// Given a species id, returns the url to a d3.js-formatted json array corresponding to that species. 
-// Example: getD3Json(718958) (correspondes to Clousophyidae)
-function getD3Json(species_id) {
-    // Spawn a new child process that runs Casey's itis_sql_to_json.py using that
-    // itis species id.
-    var url = __dirname + '/' + species_id;
-    fs.open(url, 'a', function(err, fd) {
-        if (err) {throw err;}
-        //TODO: change this into a stream
-        console.log('About to spawn python process. Json will be redirected to ' + url);
-//        var child = spawn('python > ' + url, ['-m', scriptName, taxonomicUnitsFile, strippedAuthorFile, species_id]);
-        var child = spawn('python', ['-m', scriptName, taxonomicUnitsFile, strippedAuthorFile, species_id]);
-        child.stderr.on('data', function(data) {
-            console.log('child error output: ' + data);
-        });
-        child.stdout.on('data', function(data) {
-            console.log('got: ' + data);
-            fs.writeFile(url, data, function(err) {
-                if (err) throw err;
-                console.log('Finished writing to ' + url);
-            });
-        });
-    });
-}
-server.listen(8080);
