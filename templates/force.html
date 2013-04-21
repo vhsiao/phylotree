@@ -29,7 +29,13 @@
     <p id=lower_header_paragraph>This is a phylogenetic viewer!</p>
   </div>
 
-
+<link href='/public/force.css' rel='stylesheet' type='text/css' />
+<script>
+	var url = '/siphonophorae_static' //static clausiphyidae tree with just a handful of nodes. 
+	// Static siphonophorae tree
+	// var url = '/siphonophorae_static'; //This will be replaced with a more meaningful url
+	tree_from_json_file(url);
+</script>
   <form name="yearSelect">
     <div hidden=true>
       <input type="number" id="startYearField" name="fname" value="">
