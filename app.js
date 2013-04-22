@@ -10,7 +10,6 @@ var server = http.createServer(app);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var orm = require('orm');
-<<<<<<< HEAD
 var _str = require('underscore.string')
 
 var connstring = _str.sprintf('mysql://:%s@localhost/itis', config.mysql.password);
