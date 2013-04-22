@@ -15,7 +15,7 @@ app.configure(function() {
     app.set('views', __dirname + '/templates');
     app.use(express.bodyParser());
     app.use ('/public', express.static(__dirname + '/public'));
-    app.use(orm.express('mysql://root:@localhost/itis', {
+    app.use(orm.express('mysql://:w0rk^rooM@localhost/itis', {
       define: function (db, models) {
         models.taxon = db.define("phylotree_hierarchy", {
           tsn        : Number,
@@ -27,17 +27,16 @@ app.configure(function() {
           year       : Number,
           name       : String
         }, {
-          id : 'tsn'
-        }, {
+          id : 'tsn',
           methods: {
             is_tip : function() {
                       return this.rgt == this.lft+1;
                      },
             print_self : function() {
-                          return this.name
+                          return this.name;
                          }
-          }
-        });
+	     }
+       });
       }
     }));
     app.use(express.cookieParser());
@@ -58,10 +57,10 @@ app.post('/search', function(req, res) {
     req.models.taxon.get(tsn, function (err, taxon) {
       if (err) {
         console.log(err);
-        send.end("Search failed");
+        res.end("Search failed");
       }
-      console.log(taxon)
-      //res.send(taxon.print_self());
+      console.log(taxon.print_self())
+      res.end("...")
     }); 
 });
 // static siphonophorae tree
