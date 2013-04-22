@@ -8,21 +8,46 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
+var orm = require('orm');
 //var conn = anyDB.createConnection('...');
 
 app.engine('html', engines.hogan);
 app.configure(function() {
-    //spawnPythonScripts();
     app.set('views', __dirname + '/templates');
     app.use(express.bodyParser());
     app.use ('/public', express.static(__dirname + '/public'));
+    app.use(orm.express('mysql://root:@localhost/itis', {
+      define: function (db, models) {
+        models.taxon = db.define("phylotree_hierarchy", {
+          tsn        : Number,
+          kingdom_id : Number,
+          lft        : Number,
+          rgt        : Number,
+          parent_tsn : Number,
+          depth      : Number,
+          year       : Number,
+          name       : String
+        }, {
+          id : 'tsn'
+        }, {
+          methods: {
+            is_tip : function() {
+                      return this.rgt == this.lft+1;
+                     },
+            print_self : function() {
+                          return this.name
+                         }
+          }
+        });
+      }
+    }));
     app.use(express.cookieParser());
     app.use(express.session({
         secret: 'my_secret_key',
         store: new express.session.MemoryStore({reapInterval: 60000*10}) // Reap every 10 minutes
     }));
-    app.use(app.router);
     app.use(express.methodOverride());
+    app.use(app.router);
 });
 
 // post url for search form
@@ -30,22 +55,16 @@ app.post('/search', function(req, res) {
     var commonName = req.body.commonName;
     var scientificName = req.body.scientificName;
     var tsn = req.body.TSN;
-    console.log(commonName +", "+scientificName+", "+tsn);
-    
-    res.send('ok');
+    var root = tsn
+    req.models.taxon.get(tsn, function (err, taxon) {
+      if (err) {
+        console.log(err);
+        send.end("Search failed");
+      }
+      console.log(taxon)
+      //res.send(taxon.print_self());
+    }); 
 });
-
-// results of running test python script
-app.get('/pythonChildViewer', function(req, res) {
-//    var scriptOutput = spawnPythonScripts();
-	spawnPythonScripts(function(output) {
-  console.log("sending this output:" + scriptOutput)
-    res.send(scriptOutput);
-	})  
-    // res.json(scriptOutput);
-});
-
-
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
    res.redirect('/public/siphonophorae.json');
@@ -62,11 +81,6 @@ app.get('/', function(req, res) {
    res.json(); 
 });
 // =================================================================================
-// socket logic
-var scriptName = 'itis_sql_to_json.py';
-var itisDBFiles =  '/Users/vhsiao/phylogeny-d3/force/itis';
-var taxonomicUnitsFile = itisDBFiles + '/taxonomic_units';
-var strippedAuthorFile = itisDBFiles + '/strippedauthor';
 // io.sockets.on('connection', function(socket) {
 //     // Below: dealing with events emitted by the client.
 // 
@@ -80,51 +94,8 @@ var strippedAuthorFile = itisDBFiles + '/strippedauthor';
 // Given a species id, returns the url to a d3.js-formatted json array corresponding to that species. 
 // Example: getD3Json(718958) (correspondes to Clousophyidae)
 function getD3Json(species_id) {
-    // Spawn a new child process that runs Casey's itis_sql_to_json.py using that
-    // itis species id.
-    var url = __dirname + '/' + species_id;
-    fs.open(url, 'a', function(err, fd) {
-        if (err) {throw err;}
-        //TODO: change this into a stream
-        console.log('About to spawn python process. Json will be redirected to ' + url);
-//        var child = spawn('python > ' + url, ['-m', scriptName, taxonomicUnitsFile, strippedAuthorFile, species_id]);
-        var child = spawn('python', ['-m', scriptName, taxonomicUnitsFile, strippedAuthorFile, species_id]);
-        child.stderr.on('data', function(data) {
-            console.log('child error output: ' + data);
-        });
-        child.stdout.on('data', function(data) {
-            console.log('got: ' + data);
-            fs.writeFile(url, data, function(err) {
-                if (err) throw err;
-                console.log('Finished writing to ' + url);
-            });
-        });
-    });
-}
+  // TODO
 
-function spawnPythonScripts(callback) {
-
-    // run test.py as a child spawned, which takes one string as parameter
-    var child = spawn('python', ['-m', 'test.py']);
-    var pythonOutput = "";
-    child.stderr.on('data', function(data) {
-        console.log('child error output: ' + data);
-    });
-    
-    child.stdout.on('data', function(data) {
-        //console.log('data: ' + data);
-        pythonOutput += data;
-    });
-    child.on('close', function(code) {
-	console.log("child exited with code: " + code);
-	});
-    console.log(pythonOutput);
-    return pythonOutput;
-    
-    // capture json output of script
-    // return the parsed json as a javascript object
-	callback(pythonOutput)
-    
 }
 
 server.listen(8080);
