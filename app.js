@@ -5,7 +5,6 @@ var engines = require('consolidate');
 var http = require('http');
 
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var orm = require('orm');
@@ -98,4 +97,4 @@ function getD3Json(species_id) {
 
 }
 
-server.listen(8080);
+app.listen(80);
