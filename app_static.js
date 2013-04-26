@@ -1,5 +1,5 @@
 var express = require('express');
-// var anyDB = require('any-db');
+var anyDB = require('any-db');
 var app = express();
 var engines = require('consolidate');
 var http = require('http');
@@ -8,7 +8,12 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-//var conn = anyDB.createConnection('...');
+var conn = anyDB.createConnection('mysql://root:@localhost/ITIS');
+var q = conn.query('SELECT * FROM kingdoms;');
+q.on('row', function(row){
+    console.log(row);
+});
+
 
 app.engine('html', engines.hogan);
 app.configure(function() {
