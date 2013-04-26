@@ -40,6 +40,7 @@ var svg;
 var toggle = true;
 var currentName;
 var currentDate;
+var currentTSN;
 
 function visualize() {
   // Visualize the phylogeny stored in tree
@@ -143,6 +144,7 @@ function visualize() {
     itis_id = d.itis_id;
     currentName = d.name;
     currentDate = d.year; 
+    currentTSN = itis_id;
     socket.emit('click', itis_id);
   });
 
@@ -305,12 +307,15 @@ window.addEventListener('load', function(){
      var li0 = document.createElement('li');
      var li1 = document.createElement('li');
      var li2 = document.createElement('li');
+     var li3 = document.createElement('li');
      li0.innerHTML = 'Species Name: ' + currentName; 
-     li1.innerHTML =  'Kingdom ID: ' + king;
+     li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
+     li3.innerHTML =  'ITIS tsn: ' + currentTSN;
      ul.appendChild(li0);
      ul.appendChild(li2);
      ul.appendChild(li1);
+     ul.appendChild(li3);
     });
     
 }, false);

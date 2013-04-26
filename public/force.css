@@ -27,8 +27,9 @@ line.link {
 	margin-top: 300px;
 }
 
-#infoBox ul li {
-	text-align: left;
+#infoBox ul{
+	list-style: none;
 }
+
 
 
