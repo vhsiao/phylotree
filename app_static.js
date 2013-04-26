@@ -82,6 +82,32 @@ var strippedAuthorFile = itisDBFiles + '/strippedauthor';
 //     }
 // });
 
+io.sockets.on('connection', function(socket){
+    // clients emit this when they join new rooms
+   socket.on('click',function(itis_id){
+       console.log(itis_id);
+       var king = 0;
+      // var connection = new MySqlConnection('mysql://root:@localhost/ITIS');
+       //var command = connection.CreateCommand();
+       //var tsnParameter = new MySqlParameter("?tsn", 718928);
+       //command.Parameters.Add(tsnParameter);
+       //command.CommandText = "SELECT * FROM taxonomic_units WHERE tsn = ?tsn";
+       var q1 = conn.query("SELECT kingdom_id  FROM taxonomic_units WHERE tsn=?", itis_id);
+       q1.on('row', function(row){
+          var king = row.kingdom_id;   
+          //console.log(kingID);
+         // var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
+          //q2.on('row', function(row){
+             // king = row.kingdom_name;
+             socket.emit('update', king);
+         });
+          
+      });
+       //var king = q1.kingdom_id;
+      //socket.emit('update', king);
+    });
+
+
 // Given a species id, returns the url to a d3.js-formatted json array corresponding to that species. 
 // Example: getD3Json(718958) (correspondes to Clousophyidae)
 function getD3Json(species_id) {

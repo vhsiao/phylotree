@@ -6,6 +6,7 @@
 var url_large = '/siphonophorae_static'; // tree 0
 var url_small = '/clausiphyidae_static'; // tree 1
 var current_tree = 0;
+var itis_id = 0;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
@@ -37,6 +38,8 @@ var startDate =1800;
 var force;
 var svg;
 var toggle = true;
+var currentName;
+var currentDate;
 
 function visualize() {
   // Visualize the phylogeny stored in tree
@@ -134,6 +137,13 @@ function visualize() {
 
   node.attr("cx", function(d) { return d.x; })
     .attr("cy", function(d) { return d.y; });
+  });
+
+  node.on("click", function(d){
+    itis_id = d.itis_id;
+    currentName = d.name;
+    currentDate = d.year; 
+    socket.emit('click', itis_id);
   });
 
 
@@ -286,5 +296,23 @@ function updateLabelFromEndSlider(){
 function hasWhiteSpace(s) {
   return s.indexOf(' ') >= 0;
 }
+
+window.addEventListener('load', function(){
+    // handle incoming messages
+    socket.on('update', function(king){
+     $('#speciesInfo li').remove();
+     var ul = document.getElementById('speciesInfo')
+     var li0 = document.createElement('li');
+     var li1 = document.createElement('li');
+     var li2 = document.createElement('li');
+     li0.innerHTML = 'Species Name: ' + currentName; 
+     li1.innerHTML =  'Kingdom ID: ' + king;
+     li2.innerHTML = 'Discovery Date: ' + currentDate;
+     ul.appendChild(li0);
+     ul.appendChild(li2);
+     ul.appendChild(li1);
+    });
+    
+}, false);
 
 
