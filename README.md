@@ -1,46 +1,7 @@
-> Getting Started:
+We’re working on a web application to display the evolution of species. Our project is an interactive viewer for phylogenetic trees. In evolutionary biology, phylogeny is the study of how species are related to one another. A phylogenetic tree is a way to show these relationships,  like a family tree for groups of species. 
 
-cd phylotree
+In our tree viewer, each species will be represented as an animated, interactive node, with connections based upon evolutionary relationships. Currently, there are very few good ways for people to easily explore evolutionary data for all species on Earth. Using PhyloTree, you can see the process of species discovery in action.
 
-npm install
+As you move a slider to adjust the date range you want to see, nodes will collapse into the tree, and new nodes will appear. It will be simple to adjust the tree’s root, click through each node and query the enormous database of species information available from itiis.gov. We have plans to make our project easily extensible for other developers. 
 
-node app.js
-
-
-> URLs available to play with:
-
-http://localhost:8080/tree/static
-
-http://localhost:8080/siphonophorae_static (the url to a static d3.js formatted tree)
-
-http://localhost:8080/clausiphyidae_static (the url to a static d3.js formatted tree with just a handful of nodes)
-
-> Files to edit:
-
-phylotree/templates/force.html (Expand the contents of the last script tag)
-
-phylotree/public/phyloforce.js (Controls the behavior of the graphics. Make a copy to use as a reference)
-
-> To do:
-
-1. (John) Allow users to request nodes only between certain years. Make nodes disappear from the tree when they don't
-fall between these years. Make them reappear again if they do. Try this set of tutorials:
-http://bl.ocks.org/mbostock/3808218
-http://bl.ocks.org/mbostock/3808221
-http://bl.ocks.org/mbostock/3808234
-
-as well as stuff from here:
-https://github.com/mbostock/d3/wiki/Tutorials
-
-2.(Tyler) Add in search. Experiment with some node search libraries, perhaps- come up with a simple search bar that searches the
-  current tree by species name, id or date. Should be able to suggest alternate spellings; eg, a search for 'clousiphyidae'
-  should return a link to the 'clausiphyidae' node.
-
-  The search could return a list of links that are displayed on the page. When the links are clicked, the corresponding node
-  could be highlighted
-
-3. (Ethan) Styling- make some changes to the force.html template (leave the script part alone for now) Figure out how adding 
-   sliders works; try to make one that looks like the one in our mockup. It's ok if it isn't hooked up to the rest for now
-
-4. (Vivian) Port the itis MySQL dump files to a real MySQL database. Modify Casey's script so that it connects to the database
-   instead of manually parsing the dump files. Create a restful API interface for requesting a tree rooted at a given node ID
+The D3.js library will help display data as interactive nodes that respond to one another and flow across the screen. In summary, we are making a tool that can be used by scientists, students and enthusiasts to better visualize and interact with the vast quantities of data about life on earth.

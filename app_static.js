@@ -1,5 +1,5 @@
 var express = require('express');
-// var anyDB = require('any-db');
+var anyDB = require('any-db');
 var app = express();
 var engines = require('consolidate');
 var http = require('http');
@@ -8,7 +8,12 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-//var conn = anyDB.createConnection('...');
+var conn = anyDB.createConnection('mysql://root:@localhost/ITIS');
+var q = conn.query('SELECT * FROM kingdoms;');
+q.on('row', function(row){
+    console.log(row);
+});
+
 
 app.engine('html', engines.hogan);
 app.configure(function() {
@@ -76,6 +81,32 @@ var strippedAuthorFile = itisDBFiles + '/strippedauthor';
 //         var url = getD3Json(species_id);
 //     }
 // });
+
+io.sockets.on('connection', function(socket){
+    // clients emit this when they join new rooms
+   socket.on('click',function(itis_id){
+       console.log(itis_id);
+       var king = 0;
+      // var connection = new MySqlConnection('mysql://root:@localhost/ITIS');
+       //var command = connection.CreateCommand();
+       //var tsnParameter = new MySqlParameter("?tsn", 718928);
+       //command.Parameters.Add(tsnParameter);
+       //command.CommandText = "SELECT * FROM taxonomic_units WHERE tsn = ?tsn";
+       var q1 = conn.query("SELECT kingdom_id  FROM taxonomic_units WHERE tsn=?", itis_id);
+       q1.on('row', function(row){
+          var king = row.kingdom_id;   
+          //console.log(kingID);
+         // var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
+          //q2.on('row', function(row){
+             // king = row.kingdom_name;
+             socket.emit('update', king);
+         });
+          
+      });
+       //var king = q1.kingdom_id;
+      //socket.emit('update', king);
+    });
+
 
 // Given a species id, returns the url to a d3.js-formatted json array corresponding to that species. 
 // Example: getD3Json(718958) (correspondes to Clousophyidae)
