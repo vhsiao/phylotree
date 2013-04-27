@@ -36,10 +36,10 @@
 
 <link href='/public/force.css' rel='stylesheet' type='text/css' />
 <script>
-	var url = '/siphonophorae_static' //static clausiphyidae tree with just a handful of nodes. 
+	//var url = '/siphonophorae_static' //static clausiphyidae tree with just a handful of nodes. 
 	// Static siphonophorae tree
 	// var url = '/siphonophorae_static'; //This will be replaced with a more meaningful url
-	tree_from_json_file(url);
+	//tree_from_json_file(url);
 </script>
 
   <form name="yearSelect">
@@ -68,7 +68,7 @@
   </div>
   
   <div>
-    <form id="searchForm" method="POST" action="/searchbytsn.json">
+    <form id="searchForm" method="POST" action="">
       <div>
 	<label>Common Name: </label>
 	<input id="commonNameField" type="text" name="commonName" value="">
@@ -79,7 +79,7 @@
       </div>
       <div>
 	<label>Taxonomic Serial Number: </label>
-	<input id="TSNField" type="number" name="TSN" value="">
+	<input id="TSNField" type="number" name="tsn" value="">
       </div>
       <input type="submit" value="Search">
     </form>
@@ -94,6 +94,7 @@
   </ul>
 </div>
 
+<script type="text/javascript" src="/public/trees.js"></script>
 </body>
 
 </html>

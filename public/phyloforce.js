@@ -6,12 +6,12 @@
 var url_large = '/siphonophorae_static'; // tree 0
 var url_small = '/clausiphyidae_static'; // tree 1
 var current_tree = 0;
-var itis_id = 0;
+var tsn = 0;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
   var searchForm = document.getElementById('searchForm');
-  searchForm.addEventListener('submit', submitForm, false);
+//  searchForm.addEventListener('submit', submitForm, false);
 
   var earlySlider = document.getElementById('earlyTimeSlider');
   //earlySlider.addEventListener('mouseover', updateFromEarlySlider, false);
@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
   lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
   lateSlider.addEventListener('mouseup',updateLabelFromEndSlider, false);
 
-  tree_from_json_file(url_large);
+  // tree_from_json_file(url_large);
 
 }, false);
 
@@ -86,10 +86,11 @@ function visualize() {
     node.enter().append("circle") // ** add a circle corresponding to every node
     .attr("class", "node") // ** add the attribute 'class' and 'node' to each node
     .attr("r", function(d){ 		
-      var r = ((2100-d.year)/320)*15;
+      //var r = ((2100-d.year)/320)*15;
+      var r = (1/d.group)*80;
       return r;
     }) // ** set the radius of each circle
-  .style("fill", function(d) { return "rgb(0, " + ((d.year-1700)) + ", 0)"}) // ** set the circle colors
+  .style("fill", function(d) { return "rgb(0, " + 20*d.group + ", 0)"}) // ** set the circle colors
     .call(force.drag);
   /*
      node.append("text")
@@ -124,7 +125,7 @@ function visualize() {
 
   node.append("title") // ** add a "title" attribute to every node.
     //  node.append("p")
-    .text(function(d) { return d.name + " " + d.itis_id; }); // ** give the title the node's species name and itis i
+    .text(function(d) { return d.name + " " + d.tsn; }); // ** give the title the node's species name and itis i
 
   node.data(currentTree.nodes).exit().remove();
   link.data(currentTree.links).exit().remove();	
@@ -140,10 +141,10 @@ function visualize() {
   });
 
   node.on("click", function(d){
-    itis_id = d.itis_id;
+    tsn = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
-    socket.emit('click', itis_id);
+    socket.emit('click', tsn);
   });
 
 
@@ -151,15 +152,15 @@ function visualize() {
 
 }
 
-function tree_from_json_file( url ){
-  // url = 'siphonophorae.json'
-  // document.write(url);
-  d3.json(url, function(json) {
-    tree = jQuery.extend(true, {}, json);
-    currentTree = jQuery.extend(true, {}, tree);
-    visualize();
-  });
-}
+// function tree_from_json_file( url ){
+//   // url = 'siphonophorae.json'
+//   // document.write(url);
+//   d3.json(url, function(json) {
+//     tree = jQuery.extend(true, {}, json);
+//     currentTree = jQuery.extend(true, {}, tree);
+//     visualize();
+//   });
+// }
 
 
 
@@ -268,25 +269,25 @@ function updateFromLateSlider(e) {
   document.getElementById('lateTimeLabel').innerHTML = lateTime;
 }
 
-function submitForm(e) {
-  // prevent the page from redirecting
-  e.preventDefault();
-
-  // create a FormData object from our form
-  var fd = new FormData(document.getElementById('searchForm'));
-
-  // clear the search fields
-
-  document.getElementById('commonNameField').value = "";
-  document.getElementById('scientificNameField').value = "";
-  document.getElementById('TSNField').value = "";
-
-
-  // send it to the server
-  var request = new XMLHttpRequest();
-  request.open('POST', '/searchbytsn.json', true);
-  request.send(fd);
-}
+// function submitForm(e) {
+//   // prevent the page from redirecting
+//   e.preventDefault();
+// 
+//   // create a FormData object from our form
+//   var fd = new FormData(document.getElementById('searchForm'));
+// 
+//   // clear the search fields
+// 
+//   document.getElementById('commonNameField').value = "";
+//   document.getElementById('scientificNameField').value = "";
+//   document.getElementById('TSNField').value = "";
+// 
+// 
+//   // send it to the server
+//   var request = new XMLHttpRequest();
+//   request.open('POST', '/searchbytsn.json', true);
+//   request.send(fd);
+// }
 
 function updateLabelFromEndSlider(){
   document.getElementById("yearField").value = document.getElementById('lateTimeSlider').value;
