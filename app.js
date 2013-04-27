@@ -8,7 +8,6 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-//var conn = anyDB.createConnection('mysql://:@localhost/ITIS');
 var _str = require('underscore.string')
 var config = require('./config');
 
@@ -67,7 +66,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var rgt = row.rgt;
     var root_txn = new taxon(row);
     var kingdom_id = root_txn.kingdom_id;
-    var max_depth = root_txn.depth+6;
+    var max_depth = root_txn.depth+5;
     nodeLookup[root_txn.tsn] = position;
     position += 1;
     nodes.push(root_txn.node());
