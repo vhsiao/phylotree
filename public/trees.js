@@ -20,7 +20,9 @@ $searchForm.submit(function(e) {
     console.log('searching...');
     if (request.status == 200) { //ok
       var content = request.responseText;
-      currentTree = JSON.parse(content);
+      tree = JSON.parse(content);
+      currentTree = $.extend(true, {}, tree);
+      //tree = $.extend(true, {}, currentTree);
       visualize();
       console.log(content);
     } else {
