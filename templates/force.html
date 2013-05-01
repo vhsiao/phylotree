@@ -9,6 +9,11 @@
   <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
   <link href='/public/force.css' rel='stylesheet' type='text/css' />
   <style type="text/css"></style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+  var socket = io.connect();
+  // the rest of your client-side scripting here...
+  </script>
 </head>
 
 <body>
@@ -63,7 +68,7 @@
   </div>
   
   <div>
-    <form id="searchForm" method="POST" action="/searchbytsn.json">
+    <form id="searchForm" method="POST" action="">
       <div>
 	<label>Common Name: </label>
 	<input id="commonNameField" type="text" name="commonName" value="">
@@ -74,13 +79,23 @@
       </div>
       <div>
 	<label>Taxonomic Serial Number: </label>
-	<input id="TSNField" type="number" name="TSN" value="">
+	<input id="TSNField" type="number" name="tsn" value="">
       </div>
       <input type="submit" value="Search">
     </form>
   </div>
 </div>
+<div id ="infoBox">
+  <ul id = "speciesInfo">
+    <h3>Species Info</h3>
+    <li>Species Name:</li>
+    <li>Discovery Date: </li>
+    <li>Kingdom:</li>
+    <li>ITIS tsn:</li>
+  </ul>
+</div>
 
+<script type="text/javascript" src="/public/trees.js"></script>
 </body>
 
 </html>
