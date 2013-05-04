@@ -51,7 +51,6 @@ app.post('/search', function(req, res) {
     res.send('ok');
 });
 
-// results of running test python script
 app.post('/search/tsn/tree.json', function(req, res) {
   var tsn = req.body.tsn;
   var nodeLookup = {}; 
@@ -59,30 +58,51 @@ app.post('/search/tsn/tree.json', function(req, res) {
   var links = [];
   var descendents = [];
   var position = 0;
+  var maxNodes = 500;
+  var nodeCount = 0;
   conn.query('SELECT * FROM phylotree_hierarchy WHERE tsn=?;', [tsn])
     .on('row', function(row) {
     var lft = row.lft;
     var rgt = row.rgt;
     var root_txn = new taxon(row);
+    root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
-    var max_depth = root_txn.depth+5;
     nodeLookup[root_txn.tsn] = position;
     position += 1;
+    nodeCount += 1;
     nodes.push(root_txn.node());
-    conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? AND depth < ?', [lft, rgt, kingdom_id, max_depth])
+    conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth', [lft, rgt, kingdom_id])
       .on('row', function(row) {
-        //console.log(row);
-        var txn = new taxon(row);
-        nodeLookup[txn.tsn] = position; 
-        position +=1;
-        nodes.push(txn.node());
-        descendents.push(txn);
+        //check if there's enough room.
+        if (nodeCount < maxNodes) {
+          var txn = new taxon(row);
+          nodeLookup[txn.tsn] = position; 
+          position +=1;
+          //nodes.push(txn.node());
+          descendents.push(txn);
+          nodeCount += 1;
+        }
       })
       .on('end', function(err) {
         for (descendent in descendents) {
           //console.log(descendents[des]);
           des = descendents[descendent];
-          links.push({'source': nodeLookup[des.parent_tsn], 'target':nodeLookup[des.tsn], 'value':1})
+          //desParentTxn = descendents[nodeLookup[des.parent_tsn]];
+          //links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
+          // mark parent as NOT being a leaf.
+          //desParentTxn.moreBelow = false; 
+          descendents[nodeLookup[des.parent_tsn]].moreBelow = false;
+          console.log(descendents[nodeLookup[des.parent_tsn]].node());
+          if (des.depth==8){
+            des.moreBelow = false;
+          }
+        }
+        for (descendent in descendents) {
+          des = descendents[descendent];
+          desParent = nodeLookup[des.parent_tsn];
+          nodes.push(des.node())
+          links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
+          //console.log(des.node());
         }
         res.json({"nodes": nodes, "links":links});
       })

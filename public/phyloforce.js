@@ -47,8 +47,6 @@ var currentName;
 var currentDate;
 var currentTSN;
 var endDate = 2013; 
-var width = 960;
-var height = 700;
 var color;
 var firstTime = true; 
 
@@ -58,8 +56,8 @@ function visualize() {
 
   // Setup
   
-  var width = 960;
-  var height = 700;
+  var width = 1500;
+  var height = 2000;
 
 
   //console.log(node.data(currentTree.nodes).exit())
@@ -108,7 +106,15 @@ function visualize() {
       var r = (1/d.group)*80;
       return r;
     }) // ** set the radius of each circle
-  .style("fill", function(d) { return "rgb(0, " + 20*d.group + ", 0)"}) // ** set the circle colors
+  .style("fill", function(d) {
+    if (d.moreBelow == true) {
+      console.log('moar below');
+      return "rgb(224, 0, 0)"; // ** set the circle colors
+    }
+    else {
+      return "rgb(, " + 20*d.group + ", 0)"; // ** set the circle colors
+    }
+  })
   .style('opacity', function(d){
     if (d.year> endDate){
       return 0;
