@@ -9,7 +9,7 @@ var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var _str = require('underscore.string')
-var config = require('./config');
+var config = require('./_config');
 
 var connstring = _str.sprintf('mysql://%s:%s@localhost/ITIS', config.mysql.user_name, config.mysql.password);
 var conn = anyDB.createConnection(connstring);
@@ -17,7 +17,6 @@ console.log(connstring);
 var port = config.web.port;
 
 app.engine('html', engines.hogan);
-var config = require('./config.js');
 var taxon = require('./taxon.js');
 
 // var q = conn.query('SELECT * FROM kingdoms;');
