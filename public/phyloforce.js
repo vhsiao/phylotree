@@ -13,14 +13,10 @@ window.addEventListener('load', function() {
   var searchForm = document.getElementById('searchForm');
 //  searchForm.addEventListener('submit', submitForm, false);
 
-  var earlySlider = document.getElementById('earlyTimeSlider');
-  //earlySlider.addEventListener('mouseover', updateFromEarlySlider, false);
-  earlySlider.addEventListener('mousemove', updateFromEarlySlider, false);
-  //earlySlider.addEventListener('mouseout', updateFromEarlySlider, false);
+ 
 
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
-  lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
   lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false);
  // startTree();
 
@@ -68,12 +64,12 @@ function visualize() {
     .size([width, height])
 
 
-    if(firstTime){
+  if(firstTime){
     svg = d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height);
     firstTime = false;
-  }
+    }
 
   // Layout
   // ** Notice that the json file consists of a json object with two items: the first item is an array of nodes. The second item is an array of links between the nodes.
@@ -132,6 +128,16 @@ function visualize() {
         if(d.source.year > endDate || d.target.year > endDate){
             return 0;
         }
+        else if(endDate-d.source.year< 11||endDate-d.target.year<11){
+          if((endDate-d.source.year)<(endDate-d.target.year)){
+            var closem = (endDate-d.source.year)/10;
+            return closem;
+          }
+          else{
+             var closem = (endDate-d.target.year)/10;
+             return closem;
+          }
+        }
         else{
           return 1;
         }
@@ -142,6 +148,10 @@ function visualize() {
     .style("opacity", function(d){
         if(d.year > endDate){
             return 0;
+        }
+        else if(endDate-d.year < 11){
+            var closeness = (endDate - d.year)/10;
+            return closeness;
         }
         else{
           return 1;
@@ -180,7 +190,7 @@ function visualize() {
 function updateEndYear() {
   var endYear = document.getElementById("yearField").value;
   document.getElementById('lateTimeSlider').value = endYear;
-  updateFromLateSlider();
+  document.getElementById('lateTimeLabel').innerHTML = endYear;
   endDate = endYear;
 }
 
@@ -190,31 +200,7 @@ $(document).ready(function(){
 });
 
 
-function updateFromEarlySlider(e) {
-  var earlyTime = document.getElementById('earlyTimeSlider').value;
-  var lateTime = document.getElementById('lateTimeSlider').value;
 
-  if (earlyTime > lateTime) {
-    document.getElementById('lateTimeSlider').value = earlyTime;
-    lateTime = document.getElementById('lateTimeSlider').value;
-  }
-
-  document.getElementById('earlyTimeLabel').innerHTML = earlyTime;
-  document.getElementById('lateTimeLabel').innerHTML = lateTime;
-}
-
-function updateFromLateSlider(e) {
-  var earlyTime = document.getElementById('earlyTimeSlider').value;
-  var lateTime = document.getElementById('lateTimeSlider').value;
-
-  if (earlyTime > lateTime) {
-    document.getElementById('earlyTimeSlider').value = lateTime;
-    earlyTime = document.getElementById('earlyTimeSlider').value;
-  }
-
-  document.getElementById('earlyTimeLabel').innerHTML = earlyTime;
-  document.getElementById('lateTimeLabel').innerHTML = lateTime;
-}
 
 // function submitForm(e) {
 //   // prevent the page from redirecting
