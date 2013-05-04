@@ -7,6 +7,7 @@ var url_large = '/siphonophorae_static'; // tree 0
 var url_small = '/clausiphyidae_static'; // tree 1
 var current_tree = 0;
 var tsn = 0;
+var upInterval;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
@@ -17,9 +18,16 @@ window.addEventListener('load', function() {
 
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
-  lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false);
- // startTree();
+  lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false); 
+  lateSlider.addEventListener('mousedown', function(){
+     upInterval = setInterval(function(){force.start()},10);
+   });
+  lateTimeSlider.addEventListener('mouseup', function(){
+    clearInterval(upInterval);
+  })
 
+ // startTree();
+  //updateNullYears();
   // tree_from_json_file(url_large);
 
 }, false);
@@ -58,10 +66,10 @@ function visualize() {
   
   var color = d3.scale.category20();
 
-  var force = d3.layout.force()
+  force = d3.layout.force()
     .charge(-90) // ** Play with these; they control how nodes interact physically
     .linkDistance(60)
-    .size([width, height])
+    .size([width, height]);
 
 
   if(firstTime){
@@ -173,6 +181,7 @@ function visualize() {
     currentDate = d.year; 
     socket.emit('click', tsn);
   });
+  //setInterval(function(){force.start()},10);
 }
 
 // function tree_from_json_file( url ){
@@ -194,10 +203,11 @@ function updateEndYear() {
   endDate = endYear;
 }
 
-
+/*
 $(document).ready(function(){
   $("#upClick").click(updateEndYear);
 });
+*/
 
 
 
@@ -226,7 +236,23 @@ function updateLabelFromEndSlider(){
   document.getElementById("yearField").value = document.getElementById('lateTimeSlider').value;
   updateEndYear();
 }
+/*
+function updateNullYears(){
+     $.each(currentTree.nodes, function(index, value){
+        if(currentTree.nodes[index].year == null){
+            var newYear = 2013;
+            var linksLen = currentTree.links.length;
+            while(linksLen--){
+                if(currentTree.links.target == index){
+                    var posYear = currentTree.nodes[currentTree.links.source].year;
 
+                }
+
+            }
+        }
+     }
+}
+*/
 
 window.addEventListener('load', function(){
     // handle incoming messages
