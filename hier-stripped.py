@@ -172,7 +172,7 @@ def prep_for_database(tsn, left, depth):
     root_taxon = taxa[tsn]
     for child_id in root_taxon.children:
         right = prep_for_database(child_id, right, depth+1)
-    values.append({'tsn': root_taxon.id, 'kingdom_id':root_taxon.kingdom_id, 'lft':left, 'rgt':right, 'parent_tsn':root_taxon.parent, 'depth':depth, 'year':root_taxon.year, 'name':root_taxon.name})
+    values.append({'tsn': root_taxon.id, 'kingdom_id':root_taxon.kingdom_id, 'lft':left, 'rgt':right, 'parent_tsn':root_taxon.parent, 'depth':depth, 'direct_children':len(root_taxon.children), 'year':root_taxon.year, 'name':root_taxon.name})
     return right+1
 	
 taxa = dict()
@@ -283,8 +283,7 @@ else:
     				taxon_pointer = None
     
     print ("***Finished constructing tree.")
-    engine = create_engine('')
-    conn = engine.connect()
+    conn = engine.connect('')
 
     phylotree_hierarchy = Table()
 
@@ -300,6 +299,7 @@ else:
                 Column('rgt', Integer, nullable=False),
 		Column('parent_tsn', Integer, nullable=False),
                 Column('depth', Integer, nullable=False),
+                Column('direct_children', Integer, nullable=False),
                 Column('year', Integer),
                 Column('name', String(50)),
                 Index('kingdom_lft', 'lft', 'kingdom_id')
