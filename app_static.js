@@ -9,11 +9,6 @@ var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var conn = anyDB.createConnection('mysql://root:@localhost/ITIS');
-var q = conn.query('SELECT * FROM kingdoms;');
-q.on('row', function(row){
-    console.log(row);
-});
-
 
 app.engine('html', engines.hogan);
 app.configure(function() {
@@ -92,13 +87,12 @@ io.sockets.on('connection', function(socket){
        //var tsnParameter = new MySqlParameter("?tsn", 718928);
        //command.Parameters.Add(tsnParameter);
        //command.CommandText = "SELECT * FROM taxonomic_units WHERE tsn = ?tsn";
-       var q1 = conn.query("SELECT kingdom_id  FROM taxonomic_units WHERE tsn=?", itis_id);
+       var q1 = conn.query("SELECT kingdom_id  FROM ITIS.taxonomic_units WHERE tsn=?", itis_id);
        q1.on('row', function(row){
-          var king = row.kingdom_id;   
-          //console.log(kingID);
-         // var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
-          //q2.on('row', function(row){
-             // king = row.kingdom_name;
+          var kingID = row.kingdom_id;   
+          var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
+          q2.on('row', function(row){
+             king = row.kingdom_name;
              socket.emit('update', king);
          });
           
@@ -106,6 +100,7 @@ io.sockets.on('connection', function(socket){
        //var king = q1.kingdom_id;
       //socket.emit('update', king);
     });
+});
 
 
 // Given a species id, returns the url to a d3.js-formatted json array corresponding to that species. 

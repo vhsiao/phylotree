@@ -283,7 +283,7 @@ else:
     				taxon_pointer = None
     
     print ("***Finished constructing tree.")
-    engine = create_engine('')
+    engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
     conn = engine.connect()
 
     phylotree_hierarchy = Table()
