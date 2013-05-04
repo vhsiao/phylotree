@@ -13,7 +13,7 @@ body {
 }
 
 #d3_phyloviewer {
-  float: left;
+  float: right;
   background: white;
 }
 
@@ -40,12 +40,12 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #text_search_sidebar {
-  float: right;
+  float: left;
   display: block;
   padding: 10px;
   position: absolute;
-  margin-left: 1000px;
-  background-color: white;
+  margin: 10px;
+  background-color: transparent;
   border: solid;
   border-color: gray;
 }
