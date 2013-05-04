@@ -1,5 +1,8 @@
 $searchForm = $('#searchForm');
-$searchForm.submit(function(e) {
+$searchForm.submit(reroot);
+
+
+function reroot(e) {
   // prevent the page from redirecting
   e.preventDefault();
 
@@ -30,4 +33,4 @@ $searchForm.submit(function(e) {
     }
   });
   request.send(fd);
-});
+};
