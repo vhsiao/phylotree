@@ -8,28 +8,42 @@ line.link {
   stroke-opacity: .6;
 }
 
+body {
+  background-color: #cccccc;
+}
+
 #d3_phyloviewer {
   float: left;
+  background: white;
 }
 
 #text_search_sidebar {
   float: right;
   position: absolute;
   margin-left: 1000px;
+  background-color: #cccccc;
 }
 
-#infoBox{
-	height:300px;
-	width: 300px;
-	display: inline-block;
-	position: absolute;
-	margin-left: 1000px;
-	margin-top: 300px;
+#infoBox {
+  display: block;
+  margin: 0px;
 }
 
-#infoBox ul{
-	list-style: none;
+#speciesInfo {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
 }
+
+#speciesInfoHeader {
+  
+}
+
+#speciesInfo li {
+  color: red;
+}
+
 
 
 

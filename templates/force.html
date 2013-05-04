@@ -20,27 +20,18 @@
 
 <div id=d3_phyloviewer>
   <!-- THIS IS WHERE THE PHYLOTREE VIEWER IS. -->
-  <div class='gallery' id='chart'></div>
-  <!--script>
-    var url = '/siphonophorae_static';
-    // var url = '/clausiphyidae_static'; //This will be replaced with a more meaningful url
-    tree_from_json_file(url);
-  </script-->
+  <div class='gallery' id='chart'>
+    
+  </div>
 </div>
 
 <div id=text_search_sidebar>
   <div id=lower_header_box>
-    <h1 id=lower_header_title>Phylotree</h1>
+    <h1 id=lower_header_title>Phylotree 48738</h1>
     <p id=lower_header_paragraph>This is a phylogenetic viewer!</p>
   </div>
 
-<link href='/public/force.css' rel='stylesheet' type='text/css' />
-<!--script>
-	var url = '/siphonophorae_static' //static clausiphyidae tree with just a handful of nodes. 
-	// Static siphonophorae tree
-	// var url = '/siphonophorae_static'; //This will be replaced with a more meaningful url
-	tree_from_json_file(url);
-</script-->
+
 
   <form name="yearSelect">
     <div hidden=true>
@@ -84,15 +75,17 @@
       <input type="submit" value="Search">
     </form>
   </div>
-</div>
-<div id ="infoBox">
-  <ul id = "speciesInfo">
-    <h3>Species Info</h3>
-    <li>Species Name:</li>
-    <li>Discovery Date: </li>
-    <li>Kingdom:</li>
-    <li>ITIS tsn:</li>
-  </ul>
+
+  <div id ="infoBox">
+    <ul id = "speciesInfo">
+      <h3 id="speciesInfoHeader">Species Info</h3>
+      <li class="speciesInfoLabel" id="nameLabel">Species Name:</li>
+      <li class="speciesInfoLabel" id="discoveryDateLabel">Discovery Date:</li>
+      <li class="speciesInfoLabel" id="kingdomLabel">Kingdom:</li>
+      <li class="speciesInfoLabel" id="itisTSNLabel">ITIS tsn:</li>
+    </ul>
+  </div>
+  
 </div>
 
 <script type="text/javascript" src="/public/trees.js"></script>
