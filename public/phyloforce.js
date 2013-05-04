@@ -21,7 +21,8 @@ window.addEventListener('load', function() {
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
   lateSlider.addEventListener('mousemove', updateFromLateSlider, false);
-  lateSlider.addEventListener('mouseup',updateLabelFromEndSlider, false);
+  lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false);
+ // startTree();
 
   // tree_from_json_file(url_large);
 
@@ -41,17 +42,24 @@ var toggle = true;
 var currentName;
 var currentDate;
 var currentTSN;
+var endDate = 2013; 
+var width = 960;
+var height = 700;
+var color;
+var firstTime = true; 
+
 
 function visualize() {
   // Visualize the phylogeny stored in tree
 
   // Setup
-  var width = 960,
-      height = 700;
+  
+  var width = 960;
+  var height = 700;
 
 
   //console.log(node.data(currentTree.nodes).exit())
-
+  
   var color = d3.scale.category20();
 
   var force = d3.layout.force()
@@ -59,9 +67,13 @@ function visualize() {
     .linkDistance(60)
     .size([width, height])
 
+
+    if(firstTime){
     svg = d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height);
+    firstTime = false;
+  }
 
   // Layout
   // ** Notice that the json file consists of a json object with two items: the first item is an array of nodes. The second item is an array of links between the nodes.
@@ -70,6 +82,7 @@ function visualize() {
     .nodes(currentTree.nodes) 
     .links(currentTree.links)
     .start();
+    
 
 
 
@@ -92,37 +105,16 @@ function visualize() {
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) { return "rgb(0, " + 20*d.group + ", 0)"}) // ** set the circle colors
-    .call(force.drag);
-  /*
-     node.append("text")
-     .attr("dy", "1em") 
-     .attr("dx", 10)
-     .text(function(d) {
-     var name = d.name;
-     var check = hasWhiteSpace(name);
-  //if(check == false){
-  return name;
-  //}
-  //else{
-  //	return "";
-  //}
-  });
-   */
-
-
-  /*
-     node.append("text")
-     .append("tspan")
-     .text(function(d) {
-     console.log(d.name);
-     return d.name;});
-
-     svg.selectAll(".node text")
-     .append("tspan")
-     .attr("y", "1em") 
-     .attr("x", 0)
-     .text(function(d) {return d.year;});
-   */
+  .style('opacity', function(d){
+    if (d.year> endDate){
+      return 0;
+    }
+    else{
+      return 1;
+    }
+  })
+  .call(force.drag);
+ 
 
   node.append("title") // ** add a "title" attribute to every node.
     //  node.append("p")
@@ -135,10 +127,34 @@ function visualize() {
     link.attr("x1", function(d) { return d.source.x; })
     .attr("y1", function(d) { return d.source.y; })
     .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; });
+    .attr("y2", function(d) { return d.target.y; })
+    .style("opacity", function(d){
+        if(d.source.year > endDate || d.target.year > endDate){
+            return 0;
+        }
+        else{
+          return 1;
+        }
+        });
 
   node.attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; });
+    .attr("cy", function(d) { return d.y; })
+    .style("opacity", function(d){
+        if(d.year > endDate){
+            return 0;
+        }
+        else{
+          return 1;
+        }
+    })
+    .style("fill", function(d) { 
+      if(endDate-d.year<10){
+        return '#FF0000';
+      }
+      else{
+        return "rgb(0, " + 20*d.group + ", 0)";
+      }
+    });
   });
 
   node.on("click", function(d){
@@ -147,10 +163,6 @@ function visualize() {
     currentDate = d.year; 
     socket.emit('click', tsn);
   });
-
-
-
-
 }
 
 // function tree_from_json_file( url ){
@@ -165,77 +177,11 @@ function visualize() {
 
 
 
-function updateTree(sDate, eDate){
-  currentTree = jQuery.extend(true, {}, tree);
-  startDate = sDate;
-  endDate = eDate;
-  $.each(currentTree.nodes, function(index, value){
-    if(currentTree.nodes[index] != undefined){
-      var foundYear = value.year;
-      if(value.year > endDate) {
-        //removeNode(index);
-        delete currentTree.nodes[index];
-        //updateLinks(index);
-      }     
-    }
-  });
-
-  var nodesLen = currentTree.nodes.length;
-  var linksLen = currentTree.links.length;
-
-
-  while(nodesLen--){
-    if(currentTree.nodes[nodesLen]== undefined){
-      currentTree.nodes.splice(nodesLen,1);
-
-    }
-  }
-
-
-  $.each(currentTree.links, function(index, value){
-    //console.log(currentTree.links[index].source)
-    if(currentTree.nodes[currentTree.links[index].source] == undefined ||
-      currentTree.nodes[currentTree.links[index].target] == undefined){
-      delete currentTree.links[index];
-    }
-    else{
-      var count1 = 0;
-      var count2 = 0;
-      for (var i=0;i<currentTree.links[index].source;i++){
-        if(currentTree.nodes[i] == undefined){
-          count1 = count1+1;
-        }
-      }
-      currentTree.links[index].source = currentTree.links[index].source - count1;
-      for (var i=0;i<currentTree.links[index].target;i++){
-        if(currentTree.nodes[i] == undefined){
-          count2 = count2+1;
-        }
-      }
-      currentTree.links[index].target = currentTree.links[index].target-count2;
-
-    }
-  });	
-
-  while(linksLen--){
-    if(currentTree.links[linksLen]== undefined){
-      currentTree.links.splice(linksLen,1);
-    }
-  }
-
-  //updateIndices();
-
-  svg.remove();
-  visualize();
-}
-
-
 function updateEndYear() {
   var endYear = document.getElementById("yearField").value;
   document.getElementById('lateTimeSlider').value = endYear;
   updateFromLateSlider();
-  if (endYear)
-    updateTree(1700,endYear);
+  endDate = endYear;
 }
 
 
@@ -295,9 +241,6 @@ function updateLabelFromEndSlider(){
   updateEndYear();
 }
 
-function hasWhiteSpace(s) {
-  return s.indexOf(' ') >= 0;
-}
 
 window.addEventListener('load', function(){
     // handle incoming messages
