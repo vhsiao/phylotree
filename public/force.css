@@ -12,6 +12,11 @@ body {
   background-color: white;
 }
 
+#chart{
+  height: 700px;
+  width: 960px;
+}
+
 #d3_phyloviewer {
   float: right;
   background: white;
