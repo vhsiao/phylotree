@@ -8,6 +8,10 @@ var url_small = '/clausiphyidae_static'; // tree 1
 var current_tree = 0;
 var tsn = 0;
 var upInterval;
+var playing = false;
+var playInterval;
+var minYear = 2013;
+var nodeslen;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
@@ -22,11 +26,17 @@ window.addEventListener('load', function() {
   lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false); 
   lateSlider.addEventListener('mousedown', function(){
      upInterval = setInterval(function(){force.start()},10);
+     clearInterval(playInterval);
+     playing = false;
+     document.getElementById('playButton').value = "Play";
+
    });
   lateTimeSlider.addEventListener('mouseup', function(){
     clearInterval(upInterval);
-  })
-
+  });
+  var fbButton = document.getElementById("fromStartButton").addEventListener("click", fromBeginning);
+  var button = document.getElementById("playButton").addEventListener("click",playForward);
+  var stopButton = document.getElementById("stopButton").addEventListener("click", stopAnimation);
  // startTree();
   //updateNullYears();
   // tree_from_json_file(url_large);
@@ -53,8 +63,6 @@ var currentName;
 var currentDate;
 var currentTSN;
 var endDate = 2013; 
-var width = 960;
-var height = 700;
 var color;
 var firstTime = true; 
 var selected = null;
@@ -64,8 +72,8 @@ function visualize() {
 
   // Setup
   
-  var width = 960;
-  var height = 700;
+  var width = 1500;
+  var height = 2000;
 
 
   //console.log(node.data(currentTree.nodes).exit())
@@ -114,7 +122,15 @@ function visualize() {
       var r = (1/d.group)*80;
       return r;
     }) // ** set the radius of each circle
-  .style("fill", function(d) { return "rgb(0, " + 20*d.group + ", 0)"}) // ** set the circle colors
+  .style("fill", function(d) {
+    if (d.moreBelow == true) {
+      console.log('moar below');
+      return "rgb(224, 0, 0)"; // ** set the circle colors
+    }
+    else {
+      return "rgb(, " + 20*d.group + ", 0)"; // ** set the circle colors
+    }
+  })
   .style('opacity', function(d){
     if (d.year> endDate){
       return 0;
@@ -222,8 +238,71 @@ $(document).ready(function(){
 });
 */
 
+function playForward(){
+  if(playing==false){
+    console.log(minYear);
+    playing = true;
+    nodeslen = currentTree.nodes.length;
+    document.getElementById('playButton').value = "Pause";
 
+        playInterval = setInterval(function(){
+        document.getElementById('lateTimeSlider').value = minYear;
+        updateLabelFromEndSlider();
+        minYear = minYear+1;
+        if(minYear==2014){
+          clearInterval(playInterval);
+          document.getElementById('playButton').value = "Play";
+          minYear = 2013;
+          playing = false;
+        }
+        force.start();
+    }, 50);
+  }
+  else{
+    clearInterval(playInterval);
+    document.getElementById('playButton').value = "Play";
+    playing = false;
+  }
+}
 
+function stopAnimation(){
+  if(playing ==true){
+    playing = false;
+    clearInterval(playInterval);
+    document.getElementById('playButton').value = "Play";
+  }
+  minYear = 2013;
+  document.getElementById('lateTimeSlider').value = minYear;
+  updateLabelFromEndSlider();
+
+}
+
+function fromBeginning(){
+  minYear=2013;
+  playing = true;
+  nodeslen = currentTree.nodes.length;
+  document.getElementById("playButton").value = "Pause";
+  if(minYear == 2013){
+  for(i=0; i<nodeslen; i++){
+        if(currentTree.nodes[i].year != null && currentTree.nodes[i].year<minYear){
+          minYear = currentTree.nodes[i].year;
+        }  
+    }
+  }
+
+     playInterval = setInterval(function(){
+        document.getElementById('lateTimeSlider').value = minYear;
+        updateLabelFromEndSlider();
+        minYear = minYear+1;
+        if(minYear==2014){
+          clearInterval(playInterval);
+          document.getElementById('playButton').value = "Play";
+          minYear = 2013;
+          playing = false;
+        }
+        force.start();
+    }, 50);
+}
 
 // function submitForm(e) {
 //   // prevent the page from redirecting

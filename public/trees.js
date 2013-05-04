@@ -24,6 +24,7 @@ function reroot(e) {
     if (request.status == 200) { //ok
       var content = request.responseText;
       tree = JSON.parse(content);
+      console.log(tree);
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
       visualize();
