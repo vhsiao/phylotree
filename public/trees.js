@@ -24,7 +24,7 @@ $searchForm.submit(function(e) {
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
       visualize();
-      console.log(content);
+      //console.log(content);
     } else {
     //something went wront
     }

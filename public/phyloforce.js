@@ -98,7 +98,7 @@ function visualize() {
     .start();
     
 
-
+    console.log(currentTree.nodes);
 
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
   var link = svg.selectAll("line.link")
