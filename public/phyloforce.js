@@ -79,7 +79,7 @@ function visualize() {
 
 
   //console.log(node.data(currentTree.nodes).exit())
-  
+  console.log(currentTree.nodes);
   var color = d3.scale.category20();
 
   force = d3.layout.force()
@@ -352,6 +352,7 @@ function updateNullYears(){
 }
 */
 
+
 function clearTree(){
   node.remove();
   link.remove();
@@ -359,20 +360,26 @@ function clearTree(){
 
 window.addEventListener('load', function(){
     // handle incoming messages
-    socket.on('update', function(king){
+    socket.on('update', function(king,rank, cName){
      $('#taxonInfo li').remove();
      var ul = document.getElementById('taxonInfo')
      var li0 = document.createElement('li');
      var li1 = document.createElement('li');
      var li2 = document.createElement('li');
      var li3 = document.createElement('li');
+     var li4 = document.createElement('li');
+     var li5 = document.createElement('li');
      li0.innerHTML = 'Taxon Name: ' + currentName; 
      li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
      li3.innerHTML =  'ITIS tsn: ' + currentTSN;
+     li4.innerHTML = 'Rank: ' + rank;
+     li5.innerHTML = 'Common Name: ' + cName;
      ul.appendChild(li0);
-     ul.appendChild(li2);
+     ul.appendChild(li5);
      ul.appendChild(li1);
+     ul.appendChild(li4);
+     ul.appendChild(li2);
      ul.appendChild(li3);
     });
     
