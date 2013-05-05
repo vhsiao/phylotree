@@ -96,7 +96,6 @@ function visualize() {
     .start();
     
 
-    console.log(currentTree.nodes);
 
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
   var link = svg.selectAll("line.link")
@@ -118,8 +117,7 @@ function visualize() {
     }) // ** set the radius of each circle
   .style("fill", function(d) {
     if (d.moreBelow == true) {
-      console.log('moar below');
-      return "rgb(224, 0, 0)"; // ** set the circle colors
+      return "rgb(0, 0, 100)"; // ** set the circle colors
     }
     else {
       return "rgb(, " + 20*d.group + ", 0)"; // ** set the circle colors
@@ -186,9 +184,15 @@ function visualize() {
         return '#FF0000';
       }
       else{
-        return "rgb(0, " + 20*d.group + ", 0)";
+        if(d.moreBelow){
+          return '#00aedb';
+        }
+        else{
+        return "rgb(0, " + 30*d.group + ", 0)";
+        }
       }
     });
+
   });
 
   node.on("click", function(d){
@@ -227,7 +231,6 @@ $(document).ready(function(){
 
 function playForward(){
   if(playing==false){
-    console.log(minYear);
     playing = true;
     nodeslen = currentTree.nodes.length;
     document.getElementById('playButton').value = "Pause";
