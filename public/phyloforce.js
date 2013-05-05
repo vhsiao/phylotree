@@ -3,8 +3,8 @@
 // 
 // Based on http://mbostock.github.com/d3/ex/force.html
 
-var url_large = '/siphonophorae_static'; // tree 0
-var url_small = '/clausiphyidae_static'; // tree 1
+var url_large = '/siphonophorae_static';
+var url_small = '/clausiphyidae_static';
 var current_tree = 0;
 var tsn = 0;
 var upInterval;
@@ -189,7 +189,7 @@ function visualize() {
     })
     .style("fill", function(d) { 
       if (d.selected) {
-           return "rgb(99, 99, 0)";
+           return "#FFFF00";
       }
       if(endDate-d.year<10){
         return '#FF0000';
@@ -203,7 +203,14 @@ function visualize() {
           return "rgb(0, " + 30*d.group + ", 0)";
         }
       }
-    });
+    })
+    .style("stroke", function(d) {
+	if (d.isRoot) {
+		return "#FF00FF";
+	}
+	else return "#FFFFFF";
+	});
+    
 
   });
 

@@ -15,7 +15,7 @@ body {
   width: 100%;
 }
 
-#chart {
+#chart {  
   height: 700px;
   width: 960px;
 }
@@ -27,7 +27,7 @@ body {
   position: absolute;
   margin: 0 auto;
   display: block;
-  margin-top: 130px;
+  margin-top: 8%;
   background: white;
   overflow: scroll;
 }
@@ -55,7 +55,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #header_controls {
-  position: fixed;
+  position: absolute;
   display: block;
   
   top: 0px;
@@ -85,7 +85,6 @@ input[type='range']::-webkit-slider-thumb {
   display: block;
   padding: 10px;
   margin: 0px;
-  border: solid;
 }
 
 #searchForm {
@@ -93,7 +92,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #infoBox {
-
+  margin-top: -30px;
 }
 
 #speciesInfo {
@@ -104,7 +103,11 @@ input[type='range']::-webkit-slider-thumb {
   color: black;
 }
 
-#speciesInfo li {
+#taxonInfoHeader {
+  margin: 0px;
+}
+
+#taxonInfo li {
   color: black;
 }
 
