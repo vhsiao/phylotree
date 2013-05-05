@@ -82,7 +82,7 @@ function visualize() {
   var color = d3.scale.category20();
 
   force = d3.layout.force()
-    .charge(-150) // ** Play with these; they control how nodes interact physically
+    .charge(-170) // ** Play with these; they control how nodes interact physically
     .linkDistance(50)
     .size([width, height]);
 
@@ -120,7 +120,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 35-Math.floor(Math.log(d.group+1))*15;
+      var r = 43-Math.floor(Math.log(d.group+1))*12;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -191,6 +191,9 @@ function visualize() {
       if (d.selected) {
            return "#FFFF00";
       }
+      if(d.tsn == root_tsn){
+        return "#FF00FF";
+      }
       if(endDate-d.year<10){
         return '#FF0000';
       }
@@ -205,10 +208,8 @@ function visualize() {
       }
     })
     .style("stroke", function(d) {
-	identifyRootNode();
-	console.log("XXXXXXXXXXXXX " +d.isRoot);
-	if (d.isRoot) {
-		return "#FF00FF";
+	if (d.tsn == root_tsn) {
+		return '#070014';
 	}
 	else return "#FFFFFF";
 	});
