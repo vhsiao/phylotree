@@ -3,8 +3,8 @@
 // 
 // Based on http://mbostock.github.com/d3/ex/force.html
 
-var url_large = '/siphonophorae_static'; // tree 0
-var url_small = '/clausiphyidae_static'; // tree 1
+var url_large = '/siphonophorae_static';
+var url_small = '/clausiphyidae_static';
 var current_tree = 0;
 var tsn = 0;
 var upInterval;
@@ -64,6 +64,8 @@ var toggle = true;
 var currentName;
 var currentDate;
 var currentTSN;
+var currentDirectChildren;
+var currentChildrenShown;
 var endDate = 2013; 
 var color;
 var firstTime = true; 
@@ -73,17 +75,16 @@ function visualize() {
   // Visualize the phylogeny stored in tree
 
   // Setup
-  
+    
   var width = 1500;
   var height = 2000;
 
 
   //console.log(node.data(currentTree.nodes).exit())
-  
   var color = d3.scale.category20();
 
   force = d3.layout.force()
-    .charge(-150) // ** Play with these; they control how nodes interact physically
+    .charge(-170) // ** Play with these; they control how nodes interact physically
     .linkDistance(50)
     .size([width, height]);
 
@@ -120,7 +121,7 @@ function visualize() {
     .attr("class", "node") // ** add the attribute 'class' and 'node' to each node
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
-      var r = (1/(1+Math.floor(Math.log(1+d.group))))*20;
+      var r = 20-Math.floor(Math.log(d.group+1))*12;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -189,7 +190,10 @@ function visualize() {
     })
     .style("fill", function(d) { 
       if (d.selected) {
-           return "rgb(99, 99, 0)";
+           return "#FFFF00";
+      }
+      if(d.tsn == root_tsn){
+        return "#FF00FF";
       }
       if(endDate-d.year<10){
         return '#FF0000';
@@ -203,14 +207,22 @@ function visualize() {
           return "rgb(0, " + 30*d.group + ", 0)";
         }
       }
-    });
-
+    })
+    .style("stroke", function(d) {
+	if (d.tsn == root_tsn) {
+		return '#070014';
+	}
+	else return "#FFFFFF";
+	});
+    
   });
 
   node.on("click", function(d){
     currentTSN = d.tsn;
     currentName = d.name;
-    currentDate = d.year; 
+    rurrentDate = d.year; 
+    currentDirectChildren = d.directChildren;
+    currentChildrenShown = d.childrenShown;
     socket.emit('click', currentTSN);
     if (selected != null) selected.selected = false;
     selected = d;
@@ -218,6 +230,7 @@ function visualize() {
     force.start();
   });
   //setInterval(function(){force.start()},10);
+  
 }
 
 // function tree_from_json_file( url ){
@@ -352,6 +365,7 @@ function updateNullYears(){
 }
 */
 
+
 function clearTree(){
   node.remove();
   link.remove();
@@ -359,20 +373,29 @@ function clearTree(){
 
 window.addEventListener('load', function(){
     // handle incoming messages
-    socket.on('update', function(king){
+    socket.on('update', function(king,rank, cName){
+     if(cName==null){
+      cName='none';
+     }
      $('#taxonInfo li').remove();
      var ul = document.getElementById('taxonInfo')
      var li0 = document.createElement('li');
      var li1 = document.createElement('li');
      var li2 = document.createElement('li');
      var li3 = document.createElement('li');
+     var li4 = document.createElement('li');
+     var li5 = document.createElement('li');
      li0.innerHTML = 'Taxon Name: ' + currentName; 
      li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
      li3.innerHTML =  'ITIS tsn: ' + currentTSN;
+     li4.innerHTML = 'Rank: ' + rank + currentDirectChildren + currentChildrenShown;
+     li5.innerHTML = 'Common Name: ' + cName;
      ul.appendChild(li0);
-     ul.appendChild(li2);
      ul.appendChild(li1);
+     ul.appendChild(li4);
+     ul.appendChild(li5);
+     ul.appendChild(li2);
      ul.appendChild(li3);
     });
     

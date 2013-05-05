@@ -66,14 +66,17 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var root_txn = new taxon(row);
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
-    //descendents.push(root_txn);
+    descendents.push(root_txn);
     nodeLookup[root_txn.tsn] = position;
     position += 1;
     nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
-        //console.log(txn);
+        if (txn===root_txn) {
+          return;
+        }
+        console.log(txn.depth);
         nodeLookup[txn.tsn] = position; 
         position +=1;
         //console.log(txn.depth);
@@ -94,28 +97,33 @@ app.post('/search/tsn/tree.json', function(req, res) {
 });
 
 function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
-  console.log(descendents);
+  //console.log(descendents);
   for (descendent in descendents) {
           var des = descendents[descendent];
+          //console.log(des.depth);
           //console.log(des);
           if (des===root_txn) {
             console.log("skipping over root");
             continue;
           }
           desParent = descendents[nodeLookup[des.parent_tsn]];
-          if (desParent.children_shown == desParent.direct_children) {
-            desParent.moreBelow = false;
-            console.log(desParent);
+          if (des.children_shown == des.direct_children) {
+            des.moreBelow = false;
+//            console.log(desParent);
           } else {
-            console.log("xxxxxxxxxx");
-            console.log(desParent);
+//            console.log("xxxxxxxxxx");
+//            console.log(desParent);
           } 
   }
-  return callback(descendents, nodes, links, nodeLookup);
+  return callback(descendents, nodes, links, nodeLookup, root_txn);
 }
-function populateD3Array(descendents, nodes, links, nodeLookup) {
+function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
       for (descendent in descendents) {
-          var des = descendents[descendent];
+        var des = descendents[descendent];
+        if (des===root_txn) {
+            console.log("skipping over root");
+            continue;
+        }
           nodes.push(des.node());
           links.push({'source': nodeLookup[des.parent_tsn], 'target':nodeLookup[des.tsn], 'value':1})
       }
