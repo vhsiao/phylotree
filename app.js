@@ -66,37 +66,36 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var root_txn = new taxon(row);
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
+    descendents.push(root_txn);
     nodeLookup[root_txn.tsn] = position;
     position += 1;
-    nodes.push(root_txn.node());
+    //nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
+        //console.log(txn);
         nodeLookup[txn.tsn] = position; 
         position +=1;
-        //nodes.push(txn.node());
+        //console.log(txn.depth);
+        //console.log(descendents[nodeLookup[txn.parent_tsn]]);
         descendents.push(txn);
+        descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        if (txn.direct_children==0){
+            txn.moreBelow = false;
+          }
+
       })
       .on('end', function(err) {
         for (descendent in descendents) {
-          //console.log(descendents[des]);
           des = descendents[descendent];
-          //desParentTxn = descendents[nodeLookup[des.parent_tsn]];
-          //links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
-          // mark parent as NOT being a leaf.
-          //desParentTxn.moreBelow = false; 
-          descendents[nodeLookup[des.parent_tsn]].moreBelow = false;
-          //console.log(descendents[nodeLookup[des.parent_tsn]].node());
-          if (des.direct_children==0){
-            des.moreBelow = false;
-          }
-        }
-        for (descendent in descendents) {
-          des = descendents[descendent];
+          //console.log(des);
           desParent = nodeLookup[des.parent_tsn];
-          nodes.push(des.node())
+          nodes.push(des.node());
+          if (des===root_txn) {
+            console.log("skipping over root");
+            continue;
+          }
           links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
-          //console.log(des.node());
         }
         res.json({"nodes": nodes, "links":links});
       })

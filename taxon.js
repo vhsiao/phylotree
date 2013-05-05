@@ -14,7 +14,7 @@ function taxon(db_row) {
     return this.name;
     },
   this.node = function() {
-    return {'name':this.name, 'group':this.depth, 'year':this.year, 'tsn':this.tsn, 'moreBelow':this.moreBelow}
+    return {'name':this.name, 'group':this.depth, 'year':this.year, 'tsn':this.tsn, 'moreBelow':this.moreBelow, 'directChildren':this.direct_children}
   },
   this.link = function() {
     return {'source':this.parent_tsn, 'target':this.tsn, 'value':1}
