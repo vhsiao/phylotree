@@ -58,8 +58,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
   var links = [];
   var descendents = [];
   var position = 0;
-  var maxNodes = 500;
-  var nodeCount = 0;
+  var maxNodes = 700;
   conn.query('SELECT * FROM phylotree_hierarchy WHERE tsn=?;', [tsn])
     .on('row', function(row) {
     var lft = row.lft;
@@ -69,19 +68,15 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var kingdom_id = root_txn.kingdom_id;
     nodeLookup[root_txn.tsn] = position;
     position += 1;
-    nodeCount += 1;
     nodes.push(root_txn.node());
-    conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth', [lft, rgt, kingdom_id])
+    conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         //check if there's enough room.
-        if (nodeCount < maxNodes) {
-          var txn = new taxon(row);
-          nodeLookup[txn.tsn] = position; 
-          position +=1;
-          //nodes.push(txn.node());
-          descendents.push(txn);
-          nodeCount += 1;
-        }
+        var txn = new taxon(row);
+        nodeLookup[txn.tsn] = position; 
+        position +=1;
+        //nodes.push(txn.node());
+        descendents.push(txn);
       })
       .on('end', function(err) {
         for (descendent in descendents) {
@@ -92,7 +87,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
           // mark parent as NOT being a leaf.
           //desParentTxn.moreBelow = false; 
           descendents[nodeLookup[des.parent_tsn]].moreBelow = false;
-          console.log(descendents[nodeLookup[des.parent_tsn]].node());
+          //console.log(descendents[nodeLookup[des.parent_tsn]].node());
           if (des.depth==8){
             des.moreBelow = false;
           }
