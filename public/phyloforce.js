@@ -77,8 +77,8 @@ function visualize() {
   // Setup
     
   var width = 1500;
-  var height = 2000;
-
+  var height = 1500;
+  //console.log(currentTree.nodes);
 
   //console.log(node.data(currentTree.nodes).exit())
   var color = d3.scale.category20();
@@ -129,8 +129,8 @@ function visualize() {
     if (d.moreBelow == true) {
       return "rgb(0, 0, 100)"; // ** set the circle colors
     }
-    else {
-      return "rgb(, " + 80*d.group + ", 0)"; // ** set the circle colors
+   else{
+     "rgb(, " + 80*d.group + ", 0)"; // ** set the circle colors
     }
   })
   .style('opacity', function(d){
@@ -272,6 +272,9 @@ function visualize() {
     if (selected != null) selected.selected = false;
     selected = d;
     d.selected = true;
+    if(d.tsn == root_tsn){
+        currentChildrenShown = currentDirectChildren;
+    }
     force.start();
    }
   });
@@ -431,18 +434,21 @@ window.addEventListener('load', function(){
      var li3 = document.createElement('li');
      var li4 = document.createElement('li');
      var li5 = document.createElement('li');
+     var li6 = document.createElement('li');
      li0.innerHTML = 'Taxon Name: ' + currentName; 
      li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
      li3.innerHTML =  'ITIS tsn: ' + currentTSN;
-     li4.innerHTML = 'Rank: ' + rank + currentDirectChildren + currentChildrenShown;
+     li4.innerHTML = 'Rank: ' + rank;
      li5.innerHTML = 'Common Name: ' + cName;
+     li6.innerHTML = 'Children Shown: ' + currentChildrenShown + '/' + currentDirectChildren;  
      ul.appendChild(li0);
      ul.appendChild(li1);
      ul.appendChild(li4);
      ul.appendChild(li5);
      ul.appendChild(li2);
      ul.appendChild(li3);
+     ul.appendChild(li6);
     });
     
 }, false);

@@ -13,7 +13,7 @@ var config = require('./_config');
 
 var connstring = _str.sprintf('mysql://%s:%s@localhost/ITIS', config.mysql.user_name, config.mysql.password);
 var conn = anyDB.createConnection(connstring);
-console.log(connstring);
+//console.log(connstring);
 var port = config.web.port;
 
 app.engine('html', engines.hogan);
@@ -76,7 +76,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
         if (txn===root_txn) {
           return;
         }
-        console.log(txn.depth);
+        //console.log(txn.depth);
         nodeLookup[txn.tsn] = position; 
         position +=1;
         //console.log(txn.depth);
@@ -165,7 +165,7 @@ io.sockets.on('connection', function(socket){
       var q2 = conn.query("SELECT taxonomic_units.rank_id, rank_name FROM taxonomic_units, taxon_unit_types WHERE taxonomic_units.rank_id = taxon_unit_types.rank_id AND taxonomic_units.tsn=? limit 1",tsn);
       q2.on('row',function(row){
         rank = row.rank_name;
-        console.log(rank);
+        //console.log(rank);
         socket.emit('update',king,rank,cName);
        });
       });
