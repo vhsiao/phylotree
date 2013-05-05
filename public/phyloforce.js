@@ -18,7 +18,8 @@ window.addEventListener('load', function() {
   var searchForm = document.getElementById('searchForm');
 //  searchForm.addEventListener('submit', submitForm, false);
 
- 
+  var rerootButton = document.getElementById('rerootButton');
+  rerootButton.addEventListener('click',rerootAtCurrentNode, false);
 
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
@@ -42,6 +43,11 @@ window.addEventListener('load', function() {
 
 }, false);
 
+function rerootAtCurrentNode(e) {
+	console.log("rerooting tree at node "+selected.tsn);
+	document.getElementById("TSNField").value = selected.tsn;
+	reroot(e);
+}
 
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
@@ -59,7 +65,7 @@ var currentTSN;
 var endDate = 2013; 
 var color;
 var firstTime = true; 
-
+var selected = null;
 
 function visualize() {
   // Visualize the phylogeny stored in tree
@@ -180,17 +186,23 @@ function visualize() {
         }
     })
     .style("fill", function(d) { 
+      if (d.selected) {
+           return "rgb(99, 99, 0)";
+      }
       if(endDate-d.year<10){
         return '#FF0000';
       }
+
       else{
         if(d.moreBelow){
           return '#00aedb';
         }
-        else{
-        return "rgb(0, " + 30*d.group + ", 0)";
+        else if {
+          return "rgb(0, " + 30*d.group + ", 0)";
         }
-      }
+        else {
+          return "rgb(0, " + 20*d.group + ", 0)";
+        }
     });
 
   });
@@ -200,6 +212,10 @@ function visualize() {
     currentName = d.name;
     currentDate = d.year; 
     socket.emit('click', tsn);
+    if (selected != null) selected.selected = false;
+    selected = d;
+    d.selected = true;
+    force.start();
   });
   //setInterval(function(){force.start()},10);
 }
