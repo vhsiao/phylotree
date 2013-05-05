@@ -173,8 +173,14 @@ function visualize() {
         }
         });
 
-  node.attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
+  node.attr("cx", function(d) {
+	if (d.tsn == root_tsn) return width/2;
+	else return d.x;
+	})
+    .attr("cy", function(d) {
+	if (d.tsn == root_tsn) return height/2;
+	return d.y;
+	})
     .style("opacity", function(d){
         if(d.year > endDate){
             return 0;
