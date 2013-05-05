@@ -18,7 +18,8 @@ window.addEventListener('load', function() {
   var searchForm = document.getElementById('searchForm');
 //  searchForm.addEventListener('submit', submitForm, false);
 
- 
+  var rerootButton = document.getElementById('rerootButton');
+  rerootButton.addEventListener('click',rerootAtCurrentNode, false);
 
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
@@ -42,6 +43,11 @@ window.addEventListener('load', function() {
 
 }, false);
 
+function rerootAtCurrentNode(e) {
+	console.log("rerooting tree at node "+selected.tsn);
+	document.getElementById("TSNField").value = selected.tsn;
+	reroot(e);
+}
 
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
@@ -59,7 +65,7 @@ var currentTSN;
 var endDate = 2013; 
 var color;
 var firstTime = true; 
-
+var selected = null;
 
 function visualize() {
   // Visualize the phylogeny stored in tree
@@ -97,7 +103,6 @@ function visualize() {
     
 
 
-
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
   var link = svg.selectAll("line.link")
     .data(currentTree.links) // ** bind the data in the link json array to the graphic
@@ -118,8 +123,7 @@ function visualize() {
     }) // ** set the radius of each circle
   .style("fill", function(d) {
     if (d.moreBelow == true) {
-      console.log('moar below');
-      return "rgb(224, 0, 0)"; // ** set the circle colors
+      return "rgb(0, 0, 100)"; // ** set the circle colors
     }
     else {
       return "rgb(, " + 20*d.group + ", 0)"; // ** set the circle colors
@@ -182,13 +186,23 @@ function visualize() {
         }
     })
     .style("fill", function(d) { 
+      if (d.selected) {
+           return "rgb(99, 99, 0)";
+      }
       if(endDate-d.year<10){
         return '#FF0000';
       }
+
       else{
-        return "rgb(0, " + 20*d.group + ", 0)";
+        if(d.moreBelow){
+          return '#00aedb';
+        }
+        else {
+          return "rgb(0, " + 30*d.group + ", 0)";
+        }
       }
     });
+
   });
 
   node.on("click", function(d){
@@ -196,6 +210,10 @@ function visualize() {
     currentName = d.name;
     currentDate = d.year; 
     socket.emit('click', tsn);
+    if (selected != null) selected.selected = false;
+    selected = d;
+    d.selected = true;
+    force.start();
   });
   //setInterval(function(){force.start()},10);
 }
@@ -227,7 +245,6 @@ $(document).ready(function(){
 
 function playForward(){
   if(playing==false){
-    console.log(minYear);
     playing = true;
     nodeslen = currentTree.nodes.length;
     document.getElementById('playButton').value = "Pause";

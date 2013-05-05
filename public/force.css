@@ -8,12 +8,20 @@ line.link {
   stroke-opacity: .6;
 }
 
+
 body {
   background-color: white;
 }
 
+#chart{
+  height: 700px;
+  width: 960px;
+}
+
 #d3_phyloviewer {
-  float: right;
+  position: absolute;
+  margin-left: 200px;
+  margin-top: -600px;
   background: white;
 }
 
