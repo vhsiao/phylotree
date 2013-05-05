@@ -66,37 +66,36 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var root_txn = new taxon(row);
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
+    descendents.push(root_txn);
     nodeLookup[root_txn.tsn] = position;
     position += 1;
-    nodes.push(root_txn.node());
+    //nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
+        //console.log(txn);
         nodeLookup[txn.tsn] = position; 
         position +=1;
-        //nodes.push(txn.node());
+        //console.log(txn.depth);
+        //console.log(descendents[nodeLookup[txn.parent_tsn]]);
         descendents.push(txn);
+        descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        if (txn.direct_children==0){
+            txn.moreBelow = false;
+          }
+
       })
       .on('end', function(err) {
         for (descendent in descendents) {
-          //console.log(descendents[des]);
           des = descendents[descendent];
-          //desParentTxn = descendents[nodeLookup[des.parent_tsn]];
-          //links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
-          // mark parent as NOT being a leaf.
-          //desParentTxn.moreBelow = false; 
-          descendents[nodeLookup[des.parent_tsn]].moreBelow = false;
-          //console.log(descendents[nodeLookup[des.parent_tsn]].node());
-          if (des.direct_children==0){
-            des.moreBelow = false;
-          }
-        }
-        for (descendent in descendents) {
-          des = descendents[descendent];
+          //console.log(des);
           desParent = nodeLookup[des.parent_tsn];
-          nodes.push(des.node())
+          nodes.push(des.node());
+          if (des===root_txn) {
+            console.log("skipping over root");
+            continue;
+          }
           links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
-          //console.log(des.node());
         }
         res.json({"nodes": nodes, "links":links});
       })
@@ -120,26 +119,28 @@ app.get('/', function(req, res) {
 });
 // =================================================================================
 io.sockets.on('connection', function(socket){
-    // clients emit this when they join new rooms
    socket.on('click',function(tsn){
-       console.log(tsn);
-       var king = 0;
-       //var command = connection.CreateCommand();
-       //var tsnParameter = new MySqlParameter("?tsn", 718928);
-       //command.Parameters.Add(tsnParameter);
-       //command.CommandText = "SELECT * FROM taxonomic_units WHERE tsn = ?tsn";
-       var q1 = conn.query("SELECT kingdom_id  FROM taxonomic_units WHERE tsn=?", tsn);
-       q1.on('row', function(row){
-          var king = row.kingdom_id;   
-          //console.log(kingID);
-         // var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
-          //q2.on('row', function(row){
-             // king = row.kingdom_name;
-             socket.emit('update', king);
-         });
-          
+      var king;
+      var rank;
+      var cName;
+      var q = conn.query('select vernacular_name FROM vernaculars WHERE tsn=? limit 1', tsn);
+      q.on('row', function(row){
+          cName = row.vernacular_name;
+      })
+      //Query to get the kingdom name of the selected node
+      var q1 = conn.query("SELECT taxonomic_units.kingdom_id, kingdom_name FROM taxonomic_units, kingdoms WHERE taxonomic_units.kingdom_id = kingdoms.kingdom_id AND taxonomic_units.tsn=?", tsn);
+      q1.on('row', function(row){
+        king = row.kingdom_name;
       });
-       //var king = q1.kingdom_id;
-      //socket.emit('update', king);
+      //Query to get the Rank name for a selected node
+      var q2 = conn.query("SELECT taxonomic_units.rank_id, rank_name FROM taxonomic_units, taxon_unit_types WHERE taxonomic_units.rank_id = taxon_unit_types.rank_id AND taxonomic_units.tsn=? limit 1",tsn);
+      q2.on('row',function(row){
+        rank = row.rank_name;
+        console.log(rank);
+        socket.emit('update',king,rank,cName);
+      });
+      var q3 = conn.query
     });
+ });
+
 server.listen(port);
