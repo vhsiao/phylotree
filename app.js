@@ -120,26 +120,28 @@ app.get('/', function(req, res) {
 });
 // =================================================================================
 io.sockets.on('connection', function(socket){
-    // clients emit this when they join new rooms
    socket.on('click',function(tsn){
-       console.log(tsn);
-       var king = 0;
-       //var command = connection.CreateCommand();
-       //var tsnParameter = new MySqlParameter("?tsn", 718928);
-       //command.Parameters.Add(tsnParameter);
-       //command.CommandText = "SELECT * FROM taxonomic_units WHERE tsn = ?tsn";
-       var q1 = conn.query("SELECT kingdom_id  FROM taxonomic_units WHERE tsn=?", tsn);
-       q1.on('row', function(row){
-          var king = row.kingdom_id;   
-          //console.log(kingID);
-         // var q2 = conn.query("SELECT kingdom_name FROM kingdoms WHERE kingdom_id=?", kingID);
-          //q2.on('row', function(row){
-             // king = row.kingdom_name;
-             socket.emit('update', king);
-         });
-          
+      var king;
+      var rank;
+      var cName;
+      var q = conn.query('select vernacular_name FROM vernaculars WHERE tsn=? limit 1', tsn);
+      q.on('row', function(row){
+          cName = row.vernacular_name;
+      })
+      //Query to get the kingdom name of the selected node
+      var q1 = conn.query("SELECT taxonomic_units.kingdom_id, kingdom_name FROM taxonomic_units, kingdoms WHERE taxonomic_units.kingdom_id = kingdoms.kingdom_id AND taxonomic_units.tsn=?", tsn);
+      q1.on('row', function(row){
+        king = row.kingdom_name;
       });
-       //var king = q1.kingdom_id;
-      //socket.emit('update', king);
+      //Query to get the Rank name for a selected node
+      var q2 = conn.query("SELECT taxonomic_units.rank_id, rank_name FROM taxonomic_units, taxon_unit_types WHERE taxonomic_units.rank_id = taxon_unit_types.rank_id AND taxonomic_units.tsn=? limit 1",tsn);
+      q2.on('row',function(row){
+        rank = row.rank_name;
+        console.log(rank);
+        socket.emit('update',king,rank,cName);
+      });
+      var q3 = conn.query
     });
+ });
+
 server.listen(port);
