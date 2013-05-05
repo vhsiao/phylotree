@@ -31,48 +31,46 @@
   </div>
 </div>
 
-<div id=text_search_sidebar>
-  <div id=lower_header_box>
-    <h1 id=lower_header_title>Phylotree</h1>
-    <p id=lower_header_paragraph>This is a phylogenetic viewer!</p>
+<div id=header_controls>
+  <div id=title_box class=header_column>
+    <h1 id=main_title>Phylotree</h1>
   </div>
 
 
-
-  <form name="yearSelect">
-    <input type="number" id="yearField" name="fname" value="">
-    <input type="button" id="upClick" value="Update End Year">
-  </form>
-  
-  
-  <div>
+  <div id=year_select_form class=header_column>
+    <form name="yearSelect">
+      <input type="number" id="yearField" name="fname" value="">
+      <input type="button" id="upClick" value="Update End Year">
+    </form>
     <label>End Year</label>
     <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
     <label id="lateTimeLabel">2013</label>
+    <div id=visual_controls>
+      <input type="button" value="Play From Beginning" id="fromStartButton"></label>
+      <input type="button" value="Play" id="playButton"></label>
+      <input type="button" value="Reset" id="stopButton"></label>
+    </div>
   </div>
   
-  <div>
+  <div class=header_column>
     <form id="searchForm" method="POST" action="">
       <div>
 	<label>Common Name: </label>
-	<input id="commonNameField" type="text" name="commonName" value="">
+	<input id="commonNameField" type="text" name="commonName" value=""></input>
       </div>
       <div>
 	<label>Scientific Name: </label>
-	<input id="scientificNameField" type="text" name="scientificName" value="">
+	<input id="scientificNameField" type="text" name="scientificName" value=""></input>
       </div>
       <div>
 	<label>Taxonomic Serial Number: </label>
-	<input id="TSNField" type="number" name="tsn" value="">
+	<input id="TSNField" type="number" name="tsn" value=""></input>
       </div>
-      <input type="submit" value="Search">
+      <input type="submit" value="Search"></input>
+      <input id="rerootButton" type="submit" value="Reroot"></input>
     </form>
   </div>
-  <input type="button" value="Play From Beginning" id="fromStartButton">
-  <input type="button" value="Play" id="playButton">
-  <input type="button" value="Reset" id="stopButton">
-
-  <div id ="infoBox">
+  <div id ="infoBox"class=header_column>
     <ul id = "taxonInfo">
       <h3 id="taxonInfoHeader">Taxon Information:</h3>
       <li class="taxonInfoLabel" id="nameLabel">Taxon Name:</li>
@@ -80,8 +78,6 @@
       <li class="taxonInfoLabel" id="kingdomLabel">Kingdom:</li>
       <li class="taxonInfoLabel" id="itisTSNLabel">ITIS tsn:</li>
     </ul>
-    <h4>Reroot Tree at this Node</h4>
-    <input id="rerootButton" type="submit" value="Reroot">
   </div>
   
 </div>
