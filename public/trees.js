@@ -1,6 +1,8 @@
 $searchForm = $('#searchForm');
 $searchForm.submit(reroot);
 
+var first = false;
+
 
 function reroot(e) {
   // prevent the page from redirecting
@@ -27,6 +29,10 @@ function reroot(e) {
       console.log(tree);
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
+     if(first){
+      clearTree();
+    }
+      first = true;
       visualize();
       //console.log(content);
     } else {

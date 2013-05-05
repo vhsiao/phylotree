@@ -12,6 +12,8 @@ var playing = false;
 var playInterval;
 var minYear = 2013;
 var nodeslen;
+var node;
+var link;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
@@ -104,14 +106,14 @@ function visualize() {
 
 
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
-  var link = svg.selectAll("line.link")
+   link = svg.selectAll("line.link")
     .data(currentTree.links) // ** bind the data in the link json array to the graphic
 
     link.enter().append("line") // ** add a physical line to the graphic corresponding to each link datum. Look up what enter() does
     .attr("class", "link") // ** Adds 'link' to the class attribute
     .style("stroke-width", function(d) { return Math.sqrt(d.value); }); // ** format the line
 
-  var node = svg.selectAll("circle.node")
+  node = svg.selectAll("circle.node")
     .data(currentTree.nodes) // ** bind node data from the node json array to the graphic
 
     node.enter().append("circle") // ** add a circle corresponding to every node
@@ -349,6 +351,11 @@ function updateNullYears(){
      }
 }
 */
+
+function clearTree(){
+  node.remove();
+  link.remove();
+}
 
 window.addEventListener('load', function(){
     // handle incoming messages
