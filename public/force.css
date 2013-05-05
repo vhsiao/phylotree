@@ -11,6 +11,8 @@ line.link {
 
 body {
   background-color: white;
+  height: 100%;
+  width: 100%;
 }
 
 #chart {
@@ -19,10 +21,15 @@ body {
 }
 
 #d3_phyloviewer {
+  height: 90%;
+  width: 90%;
+  padding: 2%;
   position: absolute;
+  margin: 0 auto;
   display: block;
   margin-top: 130px;
   background: white;
+  overflow: scroll;
 }
 
 input[type='range'] {
