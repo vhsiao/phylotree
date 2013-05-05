@@ -13,7 +13,7 @@ body {
   background-color: white;
 }
 
-#chart{
+#chart {
   height: 700px;
   width: 960px;
 }
@@ -58,7 +58,7 @@ input[type='range']::-webkit-slider-thumb {
   padding: 10px;
   margin: 0px;
   
-  background-color: transparent;
+  background-color: white;
   border: solid;
   border-color: gray;
 }
@@ -75,25 +75,21 @@ input[type='range']::-webkit-slider-thumb {
 
 .header_column {
   float: left;
+  display: block;
+  padding: 10px;
+  margin: 0px;
+  border: solid;
 }
 
 #searchForm {
-  display: block;
-  padding: 10px;
-  margin: 0px;
+  
 }
 
 #infoBox {
-  display: block;
-  margin: 0px;
+
 }
 
 #speciesInfo {
-  display: block;
-  border-top: solid;
-  border-color: gray;
-  padding: 10px;
-  margin: 0px;
   list-style: none;
 }
 
