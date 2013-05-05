@@ -120,7 +120,7 @@ function visualize() {
     .attr("class", "node") // ** add the attribute 'class' and 'node' to each node
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
-      var r = (1/(Math.floor(Math.log(1+d.group))))*20;
+      var r = (1/(1+Math.floor(Math.log(1+d.group))))*20;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {

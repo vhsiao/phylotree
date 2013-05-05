@@ -10,6 +10,7 @@ function taxon(db_row) {
   this.year       = db_row.year,
   this.name       = db_row.name,
   this.moreBelow = true,
+  this.children_shown = 0,
   this.print_self = function() {
     return this.name;
     },

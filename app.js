@@ -66,10 +66,10 @@ app.post('/search/tsn/tree.json', function(req, res) {
     var root_txn = new taxon(row);
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
-    descendents.push(root_txn);
+    //descendents.push(root_txn);
     nodeLookup[root_txn.tsn] = position;
     position += 1;
-    //nodes.push(root_txn.node());
+    nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
@@ -79,28 +79,48 @@ app.post('/search/tsn/tree.json', function(req, res) {
         //console.log(txn.depth);
         //console.log(descendents[nodeLookup[txn.parent_tsn]]);
         descendents.push(txn);
-        descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        //descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        descendents[nodeLookup[txn.parent_tsn]].children_shown += 1;
         if (txn.direct_children==0){
             txn.moreBelow = false;
           }
-
       })
       .on('end', function(err) {
-        for (descendent in descendents) {
-          des = descendents[descendent];
+//                res.json({"nodes": nodes, "links":links});
+        D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
+        res.json(D3Array);
+      })
+  });
+});
+
+function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
+  console.log(descendents);
+  for (descendent in descendents) {
+          var des = descendents[descendent];
           //console.log(des);
-          desParent = nodeLookup[des.parent_tsn];
-          nodes.push(des.node());
           if (des===root_txn) {
             console.log("skipping over root");
             continue;
           }
-          links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
-        }
-        res.json({"nodes": nodes, "links":links});
-      })
-  });
-});
+          desParent = descendents[nodeLookup[des.parent_tsn]];
+          if (desParent.children_shown == desParent.direct_children) {
+            desParent.moreBelow = false;
+            console.log(desParent);
+          } else {
+            console.log("xxxxxxxxxx");
+            console.log(desParent);
+          } 
+  }
+  return callback(descendents, nodes, links, nodeLookup);
+}
+function populateD3Array(descendents, nodes, links, nodeLookup) {
+      for (descendent in descendents) {
+          var des = descendents[descendent];
+          nodes.push(des.node());
+          links.push({'source': nodeLookup[des.parent_tsn], 'target':nodeLookup[des.tsn], 'value':1})
+      }
+      return {"nodes":nodes, "links":links};
+}
 
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
