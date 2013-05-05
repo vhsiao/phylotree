@@ -76,7 +76,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
         if (txn===root_txn) {
           return;
         }
-        console.log(txn.depth);
+        //console.log(txn.depth);
         nodeLookup[txn.tsn] = position; 
         position +=1;
         //console.log(txn.depth);
@@ -91,7 +91,9 @@ app.post('/search/tsn/tree.json', function(req, res) {
       .on('end', function(err) {
 //                res.json({"nodes": nodes, "links":links});
         D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
-        res.json(D3Array);
+        addNavigation(tsn, D3Array, function() {
+          res.json(D3Array);
+        });
       })
   });
 });
@@ -100,8 +102,6 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
   //console.log(descendents);
   for (descendent in descendents) {
           var des = descendents[descendent];
-          //console.log(des.depth);
-          //console.log(des);
           if (des===root_txn) {
             console.log("skipping over root");
             continue;
@@ -109,10 +109,7 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
           desParent = descendents[nodeLookup[des.parent_tsn]];
           if (des.children_shown == des.direct_children) {
             des.moreBelow = false;
-//            console.log(desParent);
           } else {
-//            console.log("xxxxxxxxxx");
-//            console.log(desParent);
           } 
   }
   return callback(descendents, nodes, links, nodeLookup, root_txn);
@@ -129,6 +126,29 @@ function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
       }
       return {"nodes":nodes, "links":links};
 }
+
+function addNavigation(tsn, D3Array, callback){
+  var navNodes = [];
+  var navLinks = [];
+  conn.query("SELECT parent.tsn as tsn, parent.kingdom_id as kingdom_id, parent.lft as lft, parent.rgt as rgt, parent.parent_tsn as parent_tsn, parent.depth as depth, parent.direct_children as direct_children, parent.year as year, parent.name as name FROM phylotree_hierarchy AS parent, phylotree_hierarchy AS node WHERE node.lft BETWEEN parent.lft AND parent.rgt AND parent.kingdom_id=node.kingdom_id AND node.tsn=? ORDER BY parent.depth", [tsn])
+    .on('row', function(row) {
+      var txn = new taxon(row);
+      navNodes.push(txn.node());
+      console.log(txn.node());
+    })
+    .on('end', function(e) {
+      for (var i=0; i<navNodes.length-1;i++) {
+        navLinks.push({'source': i, 'target': i+1});
+      }
+      D3Array.navNodes = navNodes;
+      D3Array.navLinks = navLinks;
+  //console.log(D3Array);
+  callback();
+
+    });
+  console.log(navNodes);
+  console.log(navLinks);
+ }
 
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
@@ -165,7 +185,7 @@ io.sockets.on('connection', function(socket){
       var q2 = conn.query("SELECT taxonomic_units.rank_id, rank_name FROM taxonomic_units, taxon_unit_types WHERE taxonomic_units.rank_id = taxon_unit_types.rank_id AND taxonomic_units.tsn=? limit 1",tsn);
       q2.on('row',function(row){
         rank = row.rank_name;
-        console.log(rank);
+        //console.log(rank);
         socket.emit('update',king,rank,cName);
        });
       });

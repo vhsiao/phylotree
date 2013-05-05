@@ -122,7 +122,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 35-Math.floor(Math.log(d.group+1))*13;
+      var r = 35-(Math.floor(Math.log(d.group)))*13;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -265,7 +265,7 @@ function visualize() {
    if(d.year < endDate){
     currentTSN = d.tsn;
     currentName = d.name;
-    currentDate = d.year; 
+    rurrentDate = d.year; 
     currentDirectChildren = d.directChildren;
     currentChildrenShown = d.childrenShown;
     socket.emit('click', currentTSN);
