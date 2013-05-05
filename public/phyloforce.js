@@ -82,8 +82,8 @@ function visualize() {
   var color = d3.scale.category20();
 
   force = d3.layout.force()
-    .charge(-170) // ** Play with these; they control how nodes interact physically
-    .linkDistance(50)
+    .charge(-90) // ** Play with these; they control how nodes interact physically
+    .linkDistance(70)
     .size([width, height]);
 
 
@@ -150,10 +150,38 @@ function visualize() {
   link.data(currentTree.links).exit().remove();	
   // ** update the graphic continuously
   force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-    .attr("y1", function(d) { return d.source.y; })
-    .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; })
+    link.attr("x1", function(d) { 
+      if(d.source.tsn==root_tsn){
+        return width/2;
+      }
+      else{
+        return d.source.x; 
+      }
+      })
+    .attr("y1", function(d) { 
+      if(d.source.tsn==root_tsn){
+        return height/2;
+      }
+      else{
+        return d.source.y; 
+      }
+      })
+    .attr("x2", function(d) { 
+      if(d.target.tsn==root_tsn){
+        return width/2;
+      }
+      else{
+        return d.target.x; 
+      }
+    })
+    .attr("y2", function(d) { 
+      if(d.target.tsn==root_tsn){
+        return height/2;
+      }
+      else{
+        return d.target.y; 
+      }
+      })
     .style("opacity", function(d){
         if(d.source.year > endDate || d.target.year > endDate){
             return 0;
@@ -173,8 +201,22 @@ function visualize() {
         }
         });
 
-  node.attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
+  node.attr("cx", function(d) { 
+    if(d.tsn == root_tsn){
+      return width/2;
+    }
+    else{
+    return d.x;
+    } 
+    })
+    .attr("cy", function(d) { 
+      if(d.tsn ==root_tsn){
+        return height/2;
+      }
+      else{
+        return d.y;
+        } 
+      })
     .style("opacity", function(d){
         if(d.year > endDate){
             return 0;
