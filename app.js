@@ -91,7 +91,9 @@ app.post('/search/tsn/tree.json', function(req, res) {
       .on('end', function(err) {
 //                res.json({"nodes": nodes, "links":links});
         D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
-        res.json(D3Array);
+        addNavigation(tsn, D3Array, function() {
+          res.json(D3Array);
+        });
       })
   });
 });
@@ -100,8 +102,6 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
   //console.log(descendents);
   for (descendent in descendents) {
           var des = descendents[descendent];
-          //console.log(des.depth);
-          //console.log(des);
           if (des===root_txn) {
             console.log("skipping over root");
             continue;
@@ -109,10 +109,7 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
           desParent = descendents[nodeLookup[des.parent_tsn]];
           if (des.children_shown == des.direct_children) {
             des.moreBelow = false;
-//            console.log(desParent);
           } else {
-//            console.log("xxxxxxxxxx");
-//            console.log(desParent);
           } 
   }
   return callback(descendents, nodes, links, nodeLookup, root_txn);
@@ -129,6 +126,29 @@ function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
       }
       return {"nodes":nodes, "links":links};
 }
+
+function addNavigation(tsn, D3Array, callback){
+  var navNodes = [];
+  var navLinks = [];
+  conn.query("SELECT * FROM phylotree_hierarchy AS parent, phylotree_hierarchy AS node WHERE node.lft BETWEEN parent.lft AND parent.rgt AND parent.kingdom_id=node.kingdom_id AND node.tsn=? ORDER BY parent.depth", [tsn])
+    .on('row', function(row) {
+      var txn = new taxon(row);
+      navNodes.push(txn.node());
+      console.log(txn.node());
+    })
+    .on('end', function(e) {
+      for (var i=0; i<navNodes.length-1;i++) {
+        navLinks.push({'source': i, 'target': i+1});
+      }
+      D3Array.navNodes = navNodes;
+      D3Array.navLinks = navLinks;
+  //console.log(D3Array);
+  callback();
+
+    });
+  console.log(navNodes);
+  console.log(navLinks);
+ }
 
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
