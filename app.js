@@ -69,38 +69,66 @@ app.post('/search/tsn/tree.json', function(req, res) {
     descendents.push(root_txn);
     nodeLookup[root_txn.tsn] = position;
     position += 1;
-    //nodes.push(root_txn.node());
+    nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
-        //console.log(txn);
+        if (txn===root_txn) {
+          return;
+        }
+        console.log(txn.depth);
         nodeLookup[txn.tsn] = position; 
         position +=1;
         //console.log(txn.depth);
         //console.log(descendents[nodeLookup[txn.parent_tsn]]);
         descendents.push(txn);
-        descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        //descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
+        descendents[nodeLookup[txn.parent_tsn]].children_shown += 1;
         if (txn.direct_children==0){
             txn.moreBelow = false;
           }
-
       })
       .on('end', function(err) {
-        for (descendent in descendents) {
-          des = descendents[descendent];
+//                res.json({"nodes": nodes, "links":links});
+        D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
+        res.json(D3Array);
+      })
+  });
+});
+
+function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
+  //console.log(descendents);
+  for (descendent in descendents) {
+          var des = descendents[descendent];
+          //console.log(des.depth);
           //console.log(des);
-          desParent = nodeLookup[des.parent_tsn];
-          nodes.push(des.node());
           if (des===root_txn) {
             console.log("skipping over root");
             continue;
           }
-          links.push({'source': desParent, 'target':nodeLookup[des.tsn], 'value':1})
+          desParent = descendents[nodeLookup[des.parent_tsn]];
+          if (des.children_shown == des.direct_children) {
+            des.moreBelow = false;
+//            console.log(desParent);
+          } else {
+//            console.log("xxxxxxxxxx");
+//            console.log(desParent);
+          } 
+  }
+  return callback(descendents, nodes, links, nodeLookup, root_txn);
+}
+function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
+      for (descendent in descendents) {
+        var des = descendents[descendent];
+        if (des===root_txn) {
+            console.log("skipping over root");
+            continue;
         }
-        res.json({"nodes": nodes, "links":links});
-      })
-  });
-});
+          nodes.push(des.node());
+          links.push({'source': nodeLookup[des.parent_tsn], 'target':nodeLookup[des.tsn], 'value':1})
+      }
+      return {"nodes":nodes, "links":links};
+}
 
 // static siphonophorae tree
 app.get('/siphonophorae_static', function(req, res) {
@@ -119,9 +147,10 @@ app.get('/', function(req, res) {
 });
 // =================================================================================
 io.sockets.on('connection', function(socket){
+    // clients emit this when they join new rooms
    socket.on('click',function(tsn){
-      var king;
-      var rank;
+        var king;
+     var rank;
       var cName;
       var q = conn.query('select vernacular_name FROM vernaculars WHERE tsn=? limit 1', tsn);
       q.on('row', function(row){
@@ -138,9 +167,7 @@ io.sockets.on('connection', function(socket){
         rank = row.rank_name;
         console.log(rank);
         socket.emit('update',king,rank,cName);
+       });
       });
-      var q3 = conn.query
     });
- });
-
 server.listen(port);

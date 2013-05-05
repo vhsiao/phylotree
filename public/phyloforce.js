@@ -64,6 +64,8 @@ var toggle = true;
 var currentName;
 var currentDate;
 var currentTSN;
+var currentDirectChildren;
+var currentChildrenShown;
 var endDate = 2013; 
 var color;
 var firstTime = true; 
@@ -120,7 +122,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 43-Math.floor(Math.log(d.group+1))*12;
+      var r = 35-Math.floor(Math.log(d.group+1))*13;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -258,15 +260,20 @@ function visualize() {
     
   });
 
+
   node.on("click", function(d){
+   if(d.year < endDate){
     currentTSN = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
+    currentDirectChildren = d.directChildren;
+    currentChildrenShown = d.childrenShown;
     socket.emit('click', currentTSN);
     if (selected != null) selected.selected = false;
     selected = d;
     d.selected = true;
     force.start();
+   }
   });
   //setInterval(function(){force.start()},10);
   
@@ -428,7 +435,7 @@ window.addEventListener('load', function(){
      li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
      li3.innerHTML =  'ITIS tsn: ' + currentTSN;
-     li4.innerHTML = 'Rank: ' + rank;
+     li4.innerHTML = 'Rank: ' + rank + currentDirectChildren + currentChildrenShown;
      li5.innerHTML = 'Common Name: ' + cName;
      ul.appendChild(li0);
      ul.appendChild(li1);
