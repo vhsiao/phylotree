@@ -265,7 +265,7 @@ function visualize() {
    if(d.year < endDate){
     currentTSN = d.tsn;
     currentName = d.name;
-    rurrentDate = d.year; 
+    currentDate = d.year; 
     currentDirectChildren = d.directChildren;
     currentChildrenShown = d.childrenShown;
     socket.emit('click', currentTSN);
