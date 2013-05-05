@@ -73,7 +73,7 @@ function visualize() {
   // Visualize the phylogeny stored in tree
 
   // Setup
-  
+    
   var width = 1500;
   var height = 2000;
 
@@ -205,13 +205,14 @@ function visualize() {
       }
     })
     .style("stroke", function(d) {
+	identifyRootNode();
+	console.log("XXXXXXXXXXXXX " +d.isRoot);
 	if (d.isRoot) {
 		return "#FF00FF";
 	}
 	else return "#FFFFFF";
 	});
     
-
   });
 
   node.on("click", function(d){
@@ -225,6 +226,7 @@ function visualize() {
     force.start();
   });
   //setInterval(function(){force.start()},10);
+  
 }
 
 // function tree_from_json_file( url ){

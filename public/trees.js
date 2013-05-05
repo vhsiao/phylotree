@@ -3,6 +3,7 @@ $searchForm.submit(reroot);
 
 var first = false;
 var root_node = null;
+var root_tsn = 0;
 
 function reroot(e) {
   // prevent the page from redirecting
@@ -13,7 +14,8 @@ function reroot(e) {
   var fd = new FormData(document.getElementById('searchForm'));
 
   // re-identify root node
-  var root_tsn = document.getElementById('TSNField').value;
+  root_tsn = document.getElementById('TSNField').value;
+  console.log("Heres the root "+root_tsn);
   
   // clear the search fields
   document.getElementById('commonNameField').value = "";
@@ -42,14 +44,11 @@ function reroot(e) {
     }
   });
   request.send(fd);
-  
-  identifyRootNode(root_tsn);
-
 };
 
-function identifyRootNode(rootTSN) {
+function identifyRootNode() {
   for (var i=1; i<currentTree.nodes.length; i++) {
-    if (currentTree.nodes[i].tsn == rootTSN) {
+    if (currentTree.nodes[i].tsn == root_tsn) {
       if (root_node != null) {root_node.isRoot = false;}
       currentTree.nodes[i].isRoot = true;
       root_node = currentTree.nodes[i];
