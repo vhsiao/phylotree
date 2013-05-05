@@ -58,7 +58,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
   var links = [];
   var descendents = [];
   var position = 0;
-  var maxNodes = 700;
+  var maxNodes = 500;
   conn.query('SELECT * FROM phylotree_hierarchy WHERE tsn=?;', [tsn])
     .on('row', function(row) {
     var lft = row.lft;
@@ -71,7 +71,6 @@ app.post('/search/tsn/tree.json', function(req, res) {
     nodes.push(root_txn.node());
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
-        //check if there's enough room.
         var txn = new taxon(row);
         nodeLookup[txn.tsn] = position; 
         position +=1;
@@ -88,7 +87,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
           //desParentTxn.moreBelow = false; 
           descendents[nodeLookup[des.parent_tsn]].moreBelow = false;
           //console.log(descendents[nodeLookup[des.parent_tsn]].node());
-          if (des.depth==8){
+          if (des.direct_children==0){
             des.moreBelow = false;
           }
         }
@@ -125,7 +124,6 @@ io.sockets.on('connection', function(socket){
    socket.on('click',function(tsn){
        console.log(tsn);
        var king = 0;
-      // var connection = new MySqlConnection('mysql://root:@localhost/ITIS');
        //var command = connection.CreateCommand();
        //var tsnParameter = new MySqlParameter("?tsn", 718928);
        //command.Parameters.Add(tsnParameter);

@@ -83,8 +83,8 @@ function visualize() {
   var color = d3.scale.category20();
 
   force = d3.layout.force()
-    .charge(-90) // ** Play with these; they control how nodes interact physically
-    .linkDistance(60)
+    .charge(-150) // ** Play with these; they control how nodes interact physically
+    .linkDistance(50)
     .size([width, height]);
 
 
@@ -120,7 +120,7 @@ function visualize() {
     .attr("class", "node") // ** add the attribute 'class' and 'node' to each node
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
-      var r = (1/d.group)*80;
+      var r = (1/(Math.floor(Math.log(1+d.group))))*20;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -128,7 +128,7 @@ function visualize() {
       return "rgb(0, 0, 100)"; // ** set the circle colors
     }
     else {
-      return "rgb(, " + 20*d.group + ", 0)"; // ** set the circle colors
+      return "rgb(, " + 80*d.group + ", 0)"; // ** set the circle colors
     }
   })
   .style('opacity', function(d){
@@ -208,10 +208,10 @@ function visualize() {
   });
 
   node.on("click", function(d){
-    tsn = d.tsn;
+    currentTSN = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
-    socket.emit('click', tsn);
+    socket.emit('click', currentTSN);
     if (selected != null) selected.selected = false;
     selected = d;
     d.selected = true;
@@ -360,13 +360,13 @@ function clearTree(){
 window.addEventListener('load', function(){
     // handle incoming messages
     socket.on('update', function(king){
-     $('#speciesInfo li').remove();
-     var ul = document.getElementById('speciesInfo')
+     $('#taxonInfo li').remove();
+     var ul = document.getElementById('taxonInfo')
      var li0 = document.createElement('li');
      var li1 = document.createElement('li');
      var li2 = document.createElement('li');
      var li3 = document.createElement('li');
-     li0.innerHTML = 'Species Name: ' + currentName; 
+     li0.innerHTML = 'Taxon Name: ' + currentName; 
      li1.innerHTML =  'Kingdom: ' + king;
      li2.innerHTML = 'Discovery Date: ' + currentDate;
      li3.innerHTML =  'ITIS tsn: ' + currentTSN;
