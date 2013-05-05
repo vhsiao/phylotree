@@ -197,12 +197,10 @@ function visualize() {
         if(d.moreBelow){
           return '#00aedb';
         }
-        else if {
+        else {
           return "rgb(0, " + 30*d.group + ", 0)";
         }
-        else {
-          return "rgb(0, " + 20*d.group + ", 0)";
-        }
+      }
     });
 
   });
