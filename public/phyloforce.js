@@ -120,7 +120,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 43-Math.floor(Math.log(d.group+1))*12;
+      var r = 35-Math.floor(Math.log(d.group+1))*13;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -258,7 +258,9 @@ function visualize() {
     
   });
 
+
   node.on("click", function(d){
+   if(d.year < endDate){
     currentTSN = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
@@ -267,6 +269,7 @@ function visualize() {
     selected = d;
     d.selected = true;
     force.start();
+   }
   });
   //setInterval(function(){force.start()},10);
   
