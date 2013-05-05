@@ -53,22 +53,22 @@
   </div>
   
   <div class=header_column>
-    <form id="searchForm" method="POST" action="">
-      <div>
-	<label>Common Name: </label>
-	<input id="commonNameField" type="text" name="commonName" value=""></input>
-      </div>
-      <div>
-	<label>Scientific Name: </label>
-	<input id="scientificNameField" type="text" name="scientificName" value=""></input>
-      </div>
-      <div>
-	<label>Taxonomic Serial Number: </label>
-	<input id="TSNField" type="number" name="tsn" value=""></input>
+    <form id="tsnSearchForm" method="POST" action="">
+       <div>
+	      <label>Taxonomic Serial Number: </label>
+	      <input id="TSNField" type="number" name="tsn" value=""></input>
       </div>
       <input type="submit" value="Search"></input>
       <input id="rerootButton" type="submit" value="Reroot"></input>
     </form>
+    <form id="snSearchForm" method="POST" action="">
+       <div>
+	      <label>Scientific Name: </label>
+	      <input id="snField" type="text" name="sn" value=""></input>
+      </div>
+      <input type="submit" value="Search"></input>
+    </form>
+
   </div>
 
   <div id ="infoBox"class=header_column>

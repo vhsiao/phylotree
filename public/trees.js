@@ -1,35 +1,40 @@
-$searchForm = $('#searchForm');
-$searchForm.submit(reroot);
-
 var first = false;
 var root_node = null;
 var root_tsn = 0;
 var root_node_index;
 
+$tsnSearchForm = $('#tsnSearchForm');
+$tsnSearchForm.submit(reroot);
+
+$snSearchForm = $('#snField');
+$snSearchForm.submit(function(e) {
+})
+
+function snSearch() {
+  root_tsn = document.getElementById('tsnField').value;
+}
+
 function reroot(e) {
   // prevent the page from redirecting
+  console.log('reroot.')
   e.preventDefault();
 
   console.log('attempted submit');
   // create a FormData object from our form
-  var fd = new FormData(document.getElementById('searchForm'));
+  var fd = new FormData(document.getElementById('tsnSearchForm'));
 
   // re-identify root node
   root_tsn = document.getElementById('TSNField').value;
   console.log("Heres the root "+ root_tsn);
   
   // clear the search fields
-  document.getElementById('commonNameField').value = "";
-  document.getElementById('scientificNameField').value = "";
+  //document.getElementById('scientificNameField').value = "";
   document.getElementById('TSNField').value = "";
 
   // send it to the server
-  var request = new XMLHttpRequest();
-  request.open('POST', '/search/tsn/tree.json', true);
-  request.addEventListener('load', function(e) {
-    console.log('searching...');
-    if (request.status == 200) { //ok
-      var content = request.responseText;
+  sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
+    //if (request.status == 200) { //ok
+      //var content = request.responseText;
       tree = JSON.parse(content);
       console.log(tree);
       currentTree = $.extend(true, {}, tree);
@@ -41,11 +46,26 @@ function reroot(e) {
       first = true;
       visualize();
       //console.log(content);
+   // } else {
+    //something went wrong
+    //}
+  });
+}
+
+function sendAjaxForm(url,form, callback) {
+ var request = new XMLHttpRequest();
+  request.open('POST', url, true);
+  request.addEventListener('load', function(e) {
+    console.log('searching...');
+    if (request.status == 200) { //ok
+      var content = request.responseText;
+      //console.log(content);
+      callback(content);
     } else {
     //something went wrong
     }
   });
-  request.send(fd);
-};
+  request.send(form);
+}
 
 
