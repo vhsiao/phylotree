@@ -31,6 +31,7 @@ function reroot(e) {
       //tree = $.extend(true, {}, currentTree);
      if(first){
       clearTree();
+      stopAnimation();
     }
       first = true;
       visualize();

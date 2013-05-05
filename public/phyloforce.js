@@ -79,7 +79,6 @@ function visualize() {
 
 
   //console.log(node.data(currentTree.nodes).exit())
-  console.log(currentTree.nodes);
   var color = d3.scale.category20();
 
   force = d3.layout.force()
@@ -120,7 +119,8 @@ function visualize() {
     .attr("class", "node") // ** add the attribute 'class' and 'node' to each node
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
-      var r = (1/(Math.floor(Math.log(1+d.group))))*20;
+      //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
+      var r = 35-Math.floor(Math.log(d.group+1))*15;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -361,6 +361,9 @@ function clearTree(){
 window.addEventListener('load', function(){
     // handle incoming messages
     socket.on('update', function(king,rank, cName){
+     if(cName==null){
+      cName='none';
+     }
      $('#taxonInfo li').remove();
      var ul = document.getElementById('taxonInfo')
      var li0 = document.createElement('li');
@@ -376,9 +379,9 @@ window.addEventListener('load', function(){
      li4.innerHTML = 'Rank: ' + rank;
      li5.innerHTML = 'Common Name: ' + cName;
      ul.appendChild(li0);
-     ul.appendChild(li5);
      ul.appendChild(li1);
      ul.appendChild(li4);
+     ul.appendChild(li5);
      ul.appendChild(li2);
      ul.appendChild(li3);
     });
