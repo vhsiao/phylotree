@@ -20,6 +20,7 @@ function snSearch(e) {
       console.log('content found');
       treeFromJson(tree);
     } else {
+      console.log(tree);
       console.log('No results found for sn');
     }
   });

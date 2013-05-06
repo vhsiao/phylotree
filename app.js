@@ -76,12 +76,13 @@ function treeFromTSN(res, tsn) {
   var links = [];
   var descendents = [];
   var position = 0;
+  var root_txn;
   var maxNodes = 500;
   conn.query('SELECT * FROM phylotree_hierarchy WHERE tsn=?;', [tsn])
     .on('row', function(row) {
     var lft = row.lft;
     var rgt = row.rgt;
-    var root_txn = new taxon(row);
+    root_txn = new taxon(row);
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
     descendents.push(root_txn);
@@ -110,12 +111,15 @@ function treeFromTSN(res, tsn) {
 //                res.json({"nodes": nodes, "links":links});
         D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
         addNavigation(tsn, D3Array, function() {
+          console.log(D3Array);
           res.json(D3Array);
         });
       })
   })
   .on('end', function(err) {
-    res.json({});
+    if (!root_txn) {
+      res.json({});
+    }
   });
 }
 
