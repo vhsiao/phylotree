@@ -124,7 +124,7 @@ function visualize() {
        return 300+(d.group)*150;
     })
     .attr('cy', function(d){
-      return 100;
+      return 150;
     })
   // ** set the radius of each circle
     /*
@@ -141,7 +141,7 @@ function visualize() {
             .append("tspan")
             .text(function(d) {return d.name;})
             .attr("dx", function(d){return 270+(d.group)*150;})
-            .attr("dy", function(d){return 150;})
+            .attr("dy", function(d){return 200;})
             .attr("class", "navText")
             .attr("fill", '#181818');
 
@@ -328,7 +328,6 @@ function visualize() {
     currentDate = d.year; 
     currentDirectChildren = d.directChildren;
     currentChildrenShown = d.childrenShown;
-    console.log(currentTSN);
     socket.emit('click', currentTSN);
     if (selected != null) selected.selected = false;
     selected = d;
@@ -503,8 +502,9 @@ window.addEventListener('load', function(){
      $('#kingdomLabel').text(king);
      $('#discoveryDateLabel').text(currentDate);
      $('#itisTSNLabel').text(currentTSN);
-     $('#rankLabel').text(rank + currentDirectChildren + currentChildrenShown);
+     $('#rankLabel').text(rank);
      $('#cNameLabel').text(cName);
+     $('#childrenShownLabel').text(currentChildrenShown + '/' + currentDirectChildren);
     });
     
 }, false);
