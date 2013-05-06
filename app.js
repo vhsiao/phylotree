@@ -88,9 +88,6 @@ function treeFromTSN(res, tsn) {
     nodeLookup[root_txn.tsn] = position;
     position += 1;
     nodes.push(root_txn.node());
-    if (!root_txn) {
-      res.json({});
-    }
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
@@ -116,6 +113,9 @@ function treeFromTSN(res, tsn) {
           res.json(D3Array);
         });
       })
+  })
+  .on('end', function(err) {
+    res.json({});
   });
 }
 
