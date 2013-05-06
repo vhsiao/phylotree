@@ -6,12 +6,14 @@ var root_node_index;
 $tsnSearchForm = $('#tsnSearchForm');
 $tsnSearchForm.submit(reroot);
 
-$snSearchForm = $('#snField');
-$snSearchForm.submit(function(e) {
-})
+$snSearchForm = $('#snSearchForm');
+$snSearchForm.submit(snSearch);
 
-function snSearch() {
-  root_tsn = document.getElementById('tsnField').value;
+function snSearch(e) {
+  console.log('snSearch');
+  e.preventDefault();
+  var fd = new FormData(document.getElementById('snSearchForm'));
+  sendAjaxForm('/search/sn/tree.json', fd, treeFromJson);
 }
 
 function reroot(e) {
@@ -32,10 +34,13 @@ function reroot(e) {
   document.getElementById('TSNField').value = "";
 
   // send it to the server
-  sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
+  sendAjaxForm('/search/tsn/tree.json', fd, treeFromJson);
+}
+
+function treeFromJson(jsonContent){
     //if (request.status == 200) { //ok
       //var content = request.responseText;
-      tree = JSON.parse(content);
+      tree = JSON.parse(jsonContent);
       console.log(tree);
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
@@ -49,7 +54,6 @@ function reroot(e) {
    // } else {
     //something went wrong
     //}
-  });
 }
 
 function sendAjaxForm(url,form, callback) {

@@ -50,9 +50,21 @@ app.post('/search', function(req, res) {
     
     res.send('ok');
 });
-
+app.post('/search/sn/tree.json', function(req, res) {
+  var tsn;
+  conn.query('SELECT tsn FROM phylotree_hierarchy WHERE name LIKE ? LIMIT 1', [req.body.sn])
+  .on('row', function(row) {
+    tsn = row.tsn;
+  })
+  .on('end', function(e) {
+    treeFromTSN(res, tsn);
+  });
+});
 app.post('/search/tsn/tree.json', function(req, res) {
-  var tsn = req.body.tsn;
+  treeFromTSN(res, req.body.tsn);
+});
+
+function treeFromTSN(res, tsn) {
   var nodeLookup = {}; 
   var nodes = [];
   var links = [];
@@ -96,7 +108,7 @@ app.post('/search/tsn/tree.json', function(req, res) {
         });
       })
   });
-});
+}
 
 function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
   //console.log(descendents);

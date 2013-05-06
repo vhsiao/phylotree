@@ -402,9 +402,7 @@ function updateNullYears(){
             while(linksLen--){
                 if(currentTree.links.target == index){
                     var posYear = currentTree.nodes[currentTree.links.source].year;
-
                 }
-
             }
         }
      }
