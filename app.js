@@ -18,15 +18,6 @@ var port = config.web.port;
 
 app.engine('html', engines.hogan);
 var taxon = require('./taxon.js');
-
-// var q = conn.query('SELECT * FROM kingdoms;');
-// q.on('row', function(row){
-//     console.log(row);
-// });
-
-
-
-app.engine('html', engines.hogan);
 app.configure(function() {
     //spawnPythonScripts();
     app.set('views', __dirname + '/templates');
@@ -39,6 +30,13 @@ app.configure(function() {
     }));
     app.use(app.router);
     app.use(express.methodOverride());
+});
+
+app.get('/about', function(req, res) {
+  res.render('about.html');
+})
+app.get('/', function(req, res) {
+  res.render('force.html');
 });
 
 // post url for search form
@@ -175,22 +173,6 @@ function addNavigation(tsn, D3Array, callback){
   console.log(navNodes);
   console.log(navLinks);
  }
-
-// static siphonophorae tree
-app.get('/siphonophorae_static', function(req, res) {
-   res.redirect('/public/siphonophorae.json');
-});
-
-// static clausiphyidae tree with just a handful of nodes
-app.get('/clausiphyidae_static', function(req, res) {
-    res.redirect('/public/clausiphyidae.json');
-});
-app.get('/tree/static', function(req, res) {
-    res.render('force.html');
-});
-app.get('/', function(req, res) {
-   res.json(); 
-});
 // =================================================================================
 io.sockets.on('connection', function(socket){
     // clients emit this when they join new rooms

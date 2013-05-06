@@ -204,11 +204,17 @@ navNode = svg.selectAll("g.navNode")
     .attr("y2", function(d) { 
       return d.target.y; 
       })
+    .style("stroke-width", function(d) {
+      if (d.source.selected) {
+        return 5;
+      } else {
+        return d.value;
+      }
+    })
     .style("opacity", function(d){
         if(d.source.year > endDate || d.target.year > endDate){
             return 0;
-        }
-        else if(endDate-d.source.year< 11||endDate-d.target.year<11){
+        } else if(endDate-d.source.year< 11||endDate-d.target.year<11){
           if((endDate-d.source.year)<(endDate-d.target.year)){
             var closem = (endDate-d.source.year)/10;
             return closem;

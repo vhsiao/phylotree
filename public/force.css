@@ -68,20 +68,23 @@ input[type='range']::-webkit-slider-thumb {
   top: 0px;
   left: 0px;
   right: 0px;
-  height: 42px;
+  height: 60px;
   padding: 10px;
   margin: 0px;
   
-  background-color: silver;
+  background-color: #343434;
   border: solid;
   border-width: 2px;
   border-color: gray;
 }
 
+#header_controls label {
+  color: white;
+}
+
 #main_title {
-  color: green;
+  color: #44C736; /* Light green */
   margin: 0px;
-  padding: 0px;
 }
 
 #header_title_box {
@@ -89,6 +92,7 @@ input[type='range']::-webkit-slider-thumb {
   position: absolute;
   top: 0px;
   left: 0px;
+  padding: 0.7%;
 }
 
 #header_date_controls {
@@ -96,6 +100,7 @@ input[type='range']::-webkit-slider-thumb {
   position: absolute;
   top: 0px;
   left: 20%;
+  padding: 0.5%;
 }
 
 #header_search {
@@ -103,17 +108,17 @@ input[type='range']::-webkit-slider-thumb {
   position: absolute;
   top: 0px;
   right: 0px;
+  padding: 0.7%;
 }
 
 #infoBox {
-  width:10em;
+  width:12em;
   display: block;
   position: fixed;
   top: 70px;
   left: 0px;
   margin: 0px;
-  pading: 0px;
-  width: 200px;
+  padding: 1em;
   z-index: 1;
 }
 
@@ -159,8 +164,16 @@ input[type=number]::-webkit-outer-spin-button {
   border: solid;
 }
 
-#yearField {
-  
+a {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#aboutLink {
+  font-size: 1em;
+  font-weight: bold;
+  display: block;
+  margin: 5% auto;
 }
 
 
