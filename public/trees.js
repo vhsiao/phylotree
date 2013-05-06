@@ -13,12 +13,19 @@ function snSearch(e) {
   console.log('snSearch');
   e.preventDefault();
   var fd = new FormData(document.getElementById('snSearchForm'));
-  sendAjaxForm('/search/sn/tree.json', fd, treeFromJson);
+  sendAjaxForm('/search/sn/tree.json', fd, function(content) {
+    if(content === 'Object {}') {
+      console.log('content found');
+      treeFromJson(content);
+    } else {
+      console.log('No results found for sn');
+    }
+  });
 }
 
 function reroot(e) {
   // prevent the page from redirecting
-  console.log('reroot.')
+  console.log('reroot.');
   e.preventDefault();
 
   console.log('attempted submit');
@@ -34,12 +41,19 @@ function reroot(e) {
   document.getElementById('TSNField').value = "";
 
   // send it to the server
-  sendAjaxForm('/search/tsn/tree.json', fd, treeFromJson);
+  sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
+    if(content === 'Object {}') {
+      treeFromJson(content);
+    } else {
+      console.log('No results found tsn');
+    }
+  });
 }
 
 function treeFromJson(jsonContent){
     //if (request.status == 200) { //ok
       //var content = request.responseText;
+      console.log(jsonContent);
       tree = JSON.parse(jsonContent);
       console.log(tree);
       currentTree = $.extend(true, {}, tree);

@@ -57,7 +57,13 @@ app.post('/search/sn/tree.json', function(req, res) {
     tsn = row.tsn;
   })
   .on('end', function(e) {
-    treeFromTSN(res, tsn);
+    if (tsn) {
+      treeFromTSN(res, tsn);
+    } else {
+      console.log('no such scientific name');
+      res.json({});
+      //res.json({'nodes':[], 'links':[]});
+    }
   });
 });
 app.post('/search/tsn/tree.json', function(req, res) {
@@ -82,6 +88,9 @@ function treeFromTSN(res, tsn) {
     nodeLookup[root_txn.tsn] = position;
     position += 1;
     nodes.push(root_txn.node());
+    if (!root_txn) {
+      res.json({});
+    }
     conn.query('SELECT * FROM phylotree_hierarchy WHERE lft>? AND rgt<? and kingdom_id=? ORDER BY depth LIMIT ?', [lft, rgt, kingdom_id, maxNodes])
       .on('row', function(row) {
         var txn = new taxon(row);
@@ -121,8 +130,7 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
           desParent = descendents[nodeLookup[des.parent_tsn]];
           if (des.children_shown == des.direct_children) {
             des.moreBelow = false;
-          } else {
-          } 
+          }
   }
   return callback(descendents, nodes, links, nodeLookup, root_txn);
 }
