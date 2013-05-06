@@ -201,12 +201,7 @@ navNode = svg.selectAll("g.navNode")
       }
       })
     .attr("y1", function(d) { 
-      if(d.source.tsn==root_tsn){
-        return rootHeight; 
-      }
-      else{
-        return d.source.y; 
-      }
+      return d.source.y; 
       })
     .attr("x2", function(d) { 
       if(d.target.tsn==root_tsn){
@@ -217,12 +212,7 @@ navNode = svg.selectAll("g.navNode")
       }
     })
     .attr("y2", function(d) { 
-      if(d.target.tsn==root_tsn){
-        return rootHeight; 
-      }
-      else{
-        return d.target.y; 
-      }
+      return d.target.y; 
       })
     .style("opacity", function(d){
         if(d.source.year > endDate || d.target.year > endDate){
@@ -252,12 +242,7 @@ navNode = svg.selectAll("g.navNode")
     } 
     })
     .attr("cy", function(d) { 
-      if(d.tsn ==root_tsn){
-        return rootHeight; 
-      }
-      else{
-        return d.y;
-        } 
+      return d.y;
       })
     .style("opacity", function(d){
         if(d.year > endDate){
@@ -332,9 +317,6 @@ navNode = svg.selectAll("g.navNode")
     if (selected != null) selected.selected = false;
     selected = d;
     d.selected = true;
-    if(d.tsn == root_tsn){
-        currentChildrenShown = currentDirectChildren;
-    }
     force.start();
   });
 
@@ -349,9 +331,6 @@ navNode = svg.selectAll("g.navNode")
     if (selected != null) selected.selected = false;
     selected = d;
     d.selected = true;
-    if(d.tsn == root_tsn){
-        currentChildrenShown = currentDirectChildren;
-    }
     force.start();
    }
   });
