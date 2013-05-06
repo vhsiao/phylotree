@@ -16,14 +16,9 @@ body {
   font-family: 'Noto Sans', sans-serif;
 }
 
-#chart {  
-  height: 700px;
-  width: 960px;
-}
-
 #d3_phyloviewer {
   height: 90%;
-  width: 90%;
+  width: 100%;
   padding: 2%;
   position: absolute;
   margin: 0 auto;
@@ -107,10 +102,6 @@ input[type='range']::-webkit-slider-thumb {
   right: 0px;
 }
 
-#searchForm {
-  
-}
-
 #infoBox {
   width:10em;
   display: block;
@@ -142,14 +133,10 @@ input[type='range']::-webkit-slider-thumb {
   color: green;
 }
 
-.navNode{
-  
-}
-
-tspan.navText{
+tspan.navText {
+  font-size: 0.9em;
   color: black;
 }
-
 
 #tsnField {
   border: solid;
