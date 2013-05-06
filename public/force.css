@@ -62,7 +62,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #header_controls {
-  position: absolute;
+  position: fixed;
   display: block;
   
   top: 0px;
@@ -108,8 +108,8 @@ input[type='range']::-webkit-slider-thumb {
 #infoBox {
   width:10em;
   display: block;
-  position: relative;
-  top: 60px;
+  position: fixed;
+  top: 70px;
   left: 0px;
   margin: 0px;
   pading: 0px;
