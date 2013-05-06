@@ -5,6 +5,7 @@ var first = false;
 var root_node = null;
 var root_tsn = 0;
 var root_node_index;
+var currentNavTree
 
 function reroot(e) {
   // prevent the page from redirecting

@@ -14,6 +14,8 @@ var minYear = 2013;
 var nodeslen;
 var node;
 var link;
+var navNode
+var linkNode;
 
 window.addEventListener('load', function() {
   // Need to setup form submit
@@ -105,8 +107,47 @@ function visualize() {
     .start();
     
 
-
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
+
+
+  navNode = svg.selectAll(".navNode")
+    .data(currentTree.navNodes)
+    .enter().append("g")
+    .attr("class", "navNode")
+
+  var navCircles = navNode.append("circle") // ** add a circle corresponding to every node
+    .attr("r", function(d){     
+      var r = 30-3*d.group;
+      return r;
+    })
+    .attr('cx', function(d){
+       return 300+(d.group)*150;
+    })
+    .attr('cy', function(d){
+      return 100;
+    })
+  // ** set the radius of each circle
+    /*
+    var navLines = navNode.append('line')
+      .attr("class", "navLink") // ** Adds 'link' to the class attribute
+      .style("stroke-width", function(d) { return 5; })
+      .attr('y1', 200)
+      .attr('y2', 200)
+      .attr('x1', 150)
+      .attr('x2',200);
+      */
+
+  navNode.append("text")
+            .append("tspan")
+            .text(function(d) {return d.name;})
+            .attr("dx", function(d){return 270+(d.group)*150;})
+            .attr("dy", function(d){return 150;})
+            .attr("class", "navText")
+            .attr("fill", '#181818');
+
+        
+    
+
    link = svg.selectAll("line.link")
     .data(currentTree.links) // ** bind the data in the link json array to the graphic
 
@@ -257,9 +298,46 @@ function visualize() {
 	}
 	else return "#FFFFFF";
 	});
-    
-  });
+  /*
+  navLink.attr("x1", function(d) { return 100+d.source.group*100})
+    .attr("y1", function(d) { return 100 })
+    .attr("x2", function(d) { return 100+d.target.group*100 })
+    .attr("y2", function(d) { return 100 })
+  */
+  
+  navNode.attr('cx', function(d){
+    return 300+(d.group)*150;
+  })
+    .attr('cy', function(d){
+      return 200;
+    })
+    .attr('fill', function(d){
+        if(d.tsn == currentTSN){
+            return "#FFFF00";
+        }
+    else{
+      return '#18e99f';
+    }
 
+    })
+  });
+  
+  navNode.on('click', function(d){
+    currentTSN = d.tsn;
+    currentName = d.name;
+    rurrentDate = d.year; 
+    currentDirectChildren = d.directChildren;
+    currentChildrenShown = d.childrenShown;
+    console.log(currentTSN);
+    socket.emit('click', currentTSN);
+    if (selected != null) selected.selected = false;
+    selected = d;
+    d.selected = true;
+    if(d.tsn == root_tsn){
+        currentChildrenShown = currentDirectChildren;
+    }
+    force.start();
+  });
 
   node.on("click", function(d){
    if(d.year < endDate){
@@ -418,6 +496,7 @@ function updateNullYears(){
 function clearTree(){
   node.remove();
   link.remove();
+  navNode.remove();
 }
 
 window.addEventListener('load', function(){
