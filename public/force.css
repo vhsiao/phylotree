@@ -73,6 +73,7 @@ input[type='range']::-webkit-slider-thumb {
   top: 0px;
   left: 0px;
   right: 0px;
+  height: 60px;
   padding: 10px;
   margin: 0px;
   
@@ -81,31 +82,29 @@ input[type='range']::-webkit-slider-thumb {
   border-color: gray;
 }
 
-#title_box {
-  display: block;
-  float: left;
-  padding: 5px;
-}
-
 #main_title {
   color: green;
 }
 
 #header_title_box {
   display: block;
-  float: left;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 #header_date_controls {
   display: block;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
+  position: absolute;
+  top: 0px;
+  left: 25%;
 }
 
 #header_search {
   display: block;
-  float: right;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 
 #searchForm {
