@@ -122,7 +122,7 @@ navNode = svg.selectAll("g.navNode")
       return r;
     })
     .attr('cx', function(d){
-       return 280+(d.group)*110;
+       return 280+(d.group)*140;
     })
     .attr('cy', function(d){
       return 70;
@@ -141,7 +141,7 @@ navNode = svg.selectAll("g.navNode")
   navNode.append("text")
             .append("tspan")
             .text(function(d) {return d.name;})
-            .attr("dx", function(d){return 240+(d.group)*110;})
+            .attr("dx", function(d){return 240+(d.group)*140;})
             .attr("dy", function(d){return 130;})
             .attr("class", "navText")
             .attr("fill", '#181818');
