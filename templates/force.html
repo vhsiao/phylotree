@@ -39,11 +39,11 @@
 
   <div id=year_select_form class=header_column>
     <form name="yearSelect">
-      <input type="number" id="yearField" name="fname" value="">
+      <input type="number" id="yearField" name="fname" min="1700" max="2013" value="2013">
       <input type="button" id="upClick" value="Update End Year">
     </form>
     <label>End Year</label>
-    <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
+    <input id="lateTimeSlider" type="range" min="1700" max="2013" name="lateTime" value="2013">
     <label id="lateTimeLabel">2013</label>
     <div id=visual_controls>
       <input type="button" value="Play From Beginning" id="fromStartButton"></label>
@@ -56,7 +56,7 @@
     <form id="tsnSearchForm" method="POST" action="">
        <div>
 	      <label>Taxonomic Serial Number: </label>
-	      <input id="TSNField" type="number" name="tsn" value=""></input>
+	      <input id="TSNField" type="number" name="tsn" min="1" value=""></input>
       </div>
       <input type="submit" value="Search"></input>
       <input id="rerootButton" type="submit" value="Reroot"></input>
