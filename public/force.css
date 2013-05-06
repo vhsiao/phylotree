@@ -113,6 +113,7 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #infoBox {
+  width:10em;
   display: block;
   position: relative;
   top: 200px;
@@ -127,7 +128,6 @@ input[type='range']::-webkit-slider-thumb {
 #speciesInfoHeader {
   color: black;
 }
-
 #taxonInfoHeader {
   margin: 0px;
 }

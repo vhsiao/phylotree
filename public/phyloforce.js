@@ -110,7 +110,7 @@ function visualize() {
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
 
 
-  navNode = svg.selectAll(".navNode")
+navNode = svg.selectAll("g.navNode")
     .data(currentTree.navNodes)
     .enter().append("g")
     .attr("class", "navNode")
@@ -322,7 +322,8 @@ function visualize() {
     })
   });
   
-  navNode.on('click', function(d){
+  navNode.on("click", function(d){
+    console.log(d);
     currentTSN = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
