@@ -80,6 +80,7 @@ function visualize() {
     
   var width = 1500;
   var height = 1500;
+  var rootHeight = height/2-100;
   //console.log(currentTree.nodes);
 
   //console.log(node.data(currentTree.nodes).exit())
@@ -201,7 +202,7 @@ navNode = svg.selectAll("g.navNode")
       })
     .attr("y1", function(d) { 
       if(d.source.tsn==root_tsn){
-        return height/2 - 200*d.group;
+        return rootHeight; 
       }
       else{
         return d.source.y; 
@@ -217,7 +218,7 @@ navNode = svg.selectAll("g.navNode")
     })
     .attr("y2", function(d) { 
       if(d.target.tsn==root_tsn){
-        return height/2 - 100*d.group;
+        return rootHeight; 
       }
       else{
         return d.target.y; 
@@ -252,7 +253,7 @@ navNode = svg.selectAll("g.navNode")
     })
     .attr("cy", function(d) { 
       if(d.tsn ==root_tsn){
-        return height/2 - 100*d.group;
+        return rootHeight; 
       }
       else{
         return d.y;
@@ -275,7 +276,7 @@ navNode = svg.selectAll("g.navNode")
            return "#FFFF00";
       }
       if(d.tsn == root_tsn){
-        return "#FF00FF";
+        return "E01B1B";
       }
       if(endDate-d.year<10){
         return '#FF0000';

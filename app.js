@@ -153,6 +153,7 @@ function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
 }
 
 function addNavigation(tsn, D3Array, callback){
+  D3Array.root_tsn = tsn;
   var navNodes = [];
   var navLinks = [];
   conn.query("SELECT parent.tsn as tsn, parent.kingdom_id as kingdom_id, parent.lft as lft, parent.rgt as rgt, parent.parent_tsn as parent_tsn, parent.depth as depth, parent.direct_children as direct_children, parent.year as year, parent.name as name FROM phylotree_hierarchy AS parent, phylotree_hierarchy AS node WHERE node.lft BETWEEN parent.lft AND parent.rgt AND parent.kingdom_id=node.kingdom_id AND node.tsn=? ORDER BY parent.depth", [tsn])
