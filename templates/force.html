@@ -11,7 +11,7 @@
   
   <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/>
   <link href='/public/force.css' rel='stylesheet' type='text/css' />
-  <!--link href='/bootstrap.css' rel='stylesheet' type='text/css' /-->
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>  <!--link href='/bootstrap.css' rel='stylesheet' type='text/css' /-->
   
   <style type="text/css"></style>
   
@@ -53,35 +53,47 @@
   </div>
   
   <div class=header_column>
-    <form id="searchForm" method="POST" action="">
-      <div>
-	<label>Common Name: </label>
-	<input id="commonNameField" type="text" name="commonName" value=""></input>
-      </div>
-      <div>
-	<label>Scientific Name: </label>
-	<input id="scientificNameField" type="text" name="scientificName" value=""></input>
-      </div>
-      <div>
-	<label>Taxonomic Serial Number: </label>
-	<input id="TSNField" type="number" name="tsn" value=""></input>
+    <form id="tsnSearchForm" method="POST" action="">
+       <div>
+	      <label>Taxonomic Serial Number: </label>
+	      <input id="TSNField" type="number" name="tsn" value=""></input>
       </div>
       <input type="submit" value="Search"></input>
       <input id="rerootButton" type="submit" value="Reroot"></input>
     </form>
+    <form id="snSearchForm" method="POST" action="">
+       <div>
+	      <label>Scientific Name: </label>
+	      <input id="snField" type="text" name="sn" value=""></input>
+      </div>
+      <input type="submit" value="Search"></input>
+    </form>
+
   </div>
 
   <div id ="infoBox"class=header_column>
-    <ul id = "taxonInfo">
+    <div id = "taxonInfo">
       <h3 id="taxonInfoHeader">Taxon Information:</h3>
-      <li class="taxonInfoLabel" id="nameLabel">Taxon Name:</li>
-      <li class="taxonInfoLabel" id="kingdomLabel">Kingdom:</li>
-      <li class="taxonInfoLabel" id="rankLabel">Rank:</li>
-      <li class="taxonInfoLabel" id="cNameLabel">Common Name:</li>
-      <li class="taxonInfoLabel" id="discoveryDateLabel">Discovery Date:</li>
-      <li class="taxonInfoLabel" id="itisTSNLabel">ITIS tsn:</li>
-      <li class="taxonInfoLabel" id="childrenLabel">Children Shown:</li>
-    </ul>
+
+      <label class="taxonInfoLabel">Taxon Name:
+	<label id="nameLabel">___</label>
+      </label>
+      <label class="taxonInfoLabel">Kingdom:
+	<label id="kingdomLabel">___</label>
+      </label>
+      <label class="taxonInfoLabel">Rank:
+	<label id="rankLabel">___</label>
+      </label>
+      <label class="taxonInfoLabel">Common Name:
+	<label id="cNameLabel">___</label>
+      </label>
+      <label class="taxonInfoLabel">Discovery Date:
+	<label id="discoveryDateLabel">___</label>
+      </label>
+      <label class="taxonInfoLabel">ITIS tsn:
+	<label id="itisTSNLabel">___</label>
+      </label>
+    </div>
   </div>
   
 </div>

@@ -325,7 +325,7 @@ function visualize() {
   navNode.on('click', function(d){
     currentTSN = d.tsn;
     currentName = d.name;
-    rurrentDate = d.year; 
+    currentDate = d.year; 
     currentDirectChildren = d.directChildren;
     currentChildrenShown = d.childrenShown;
     console.log(currentTSN);
@@ -343,7 +343,7 @@ function visualize() {
    if(d.year < endDate){
     currentTSN = d.tsn;
     currentName = d.name;
-    rurrentDate = d.year; 
+    currentDate = d.year; 
     currentDirectChildren = d.directChildren;
     currentChildrenShown = d.childrenShown;
     socket.emit('click', currentTSN);
@@ -370,7 +370,9 @@ function visualize() {
 //   });
 // }
 
-
+$(document).ready(function(){
+  $("#upClick").click(updateEndYear);
+});
 
 function updateEndYear() {
   var endYear = document.getElementById("yearField").value;
@@ -378,12 +380,6 @@ function updateEndYear() {
   document.getElementById('lateTimeLabel').innerHTML = endYear;
   endDate = endYear;
 }
-
-/*
-$(document).ready(function(){
-  $("#upClick").click(updateEndYear);
-});
-*/
 
 function playForward(){
   if(playing==false){
@@ -505,29 +501,12 @@ window.addEventListener('load', function(){
      if(cName==null){
       cName='none';
      }
-     $('#taxonInfo li').remove();
-     var ul = document.getElementById('taxonInfo')
-     var li0 = document.createElement('li');
-     var li1 = document.createElement('li');
-     var li2 = document.createElement('li');
-     var li3 = document.createElement('li');
-     var li4 = document.createElement('li');
-     var li5 = document.createElement('li');
-     var li6 = document.createElement('li');
-     li0.innerHTML = 'Taxon Name: ' + currentName; 
-     li1.innerHTML =  'Kingdom: ' + king;
-     li2.innerHTML = 'Discovery Date: ' + currentDate;
-     li3.innerHTML =  'ITIS tsn: ' + currentTSN;
-     li4.innerHTML = 'Rank: ' + rank;
-     li5.innerHTML = 'Common Name: ' + cName;
-     li6.innerHTML = 'Children Shown: ' + currentChildrenShown + '/' + currentDirectChildren;  
-     ul.appendChild(li0);
-     ul.appendChild(li1);
-     ul.appendChild(li4);
-     ul.appendChild(li5);
-     ul.appendChild(li2);
-     ul.appendChild(li3);
-     ul.appendChild(li6);
+     $('#nameLabel').text(currentName); 
+     $('#kingdomLabel').text(king);
+     $('#discoveryDateLabel').text(currentDate);
+     $('#itisTSNLabel').text(currentTSN);
+     $('#rankLabel').text(rank + currentDirectChildren + currentChildrenShown);
+     $('#cNameLabel').text(cName);
     });
     
 }, false);
