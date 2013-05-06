@@ -376,7 +376,6 @@ $(document).ready(function(){
 function updateEndYear() {
   var endYear = document.getElementById("yearField").value;
   document.getElementById('lateTimeSlider').value = endYear;
-  document.getElementById('lateTimeLabel').innerHTML = endYear;
   endDate = endYear;
 }
 
