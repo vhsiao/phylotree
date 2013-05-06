@@ -126,9 +126,21 @@ input[type='range']::-webkit-slider-thumb {
   color: blue;
 }
 
+<<<<<<< HEAD
+.navNode{
+  color: 
+}
+
+tspan.navText{
+  color: black;
+}
+
+
+=======
 #tsnField {
   border: solid;
 }
+>>>>>>> 7ea2b731a07e425a17fd41960f06881c841e4225
 
 #yearField {
 
