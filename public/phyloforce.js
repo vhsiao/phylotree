@@ -152,7 +152,7 @@ navNode = svg.selectAll("g.navNode")
 
     link.enter().append("line") // ** add a physical line to the graphic corresponding to each link datum. Look up what enter() does
     .attr("class", "link") // ** Adds 'link' to the class attribute
-    .style("stroke-width", function(d) { return Math.sqrt(d.value); }); // ** format the line
+    .style("stroke-width", function(d) { return d.value; }); // ** format the line
 
   node = svg.selectAll("circle.node")
     .data(currentTree.nodes) // ** bind node data from the node json array to the graphic
@@ -193,23 +193,13 @@ navNode = svg.selectAll("g.navNode")
   // ** update the graphic continuously
   force.on("tick", function() {
     link.attr("x1", function(d) { 
-      if(d.source.tsn==root_tsn){
-        return width/2;
-      }
-      else{
-        return d.source.x; 
-      }
-      })
+      return d.source.x; 
+    })
     .attr("y1", function(d) { 
       return d.source.y; 
-      })
+    })
     .attr("x2", function(d) { 
-      if(d.target.tsn==root_tsn){
-        return width/2;
-      }
-      else{
-        return d.target.x; 
-      }
+      return d.target.x; 
     })
     .attr("y2", function(d) { 
       return d.target.y; 
@@ -234,16 +224,11 @@ navNode = svg.selectAll("g.navNode")
         });
 
   node.attr("cx", function(d) { 
-    if(d.tsn == root_tsn){
-      return width/2;
-    }
-    else{
     return d.x;
-    } 
     })
     .attr("cy", function(d) { 
       return d.y;
-      })
+    })
     .style("opacity", function(d){
         if(d.year > endDate){
             return 0;
