@@ -73,17 +73,20 @@ input[type='range']::-webkit-slider-thumb {
   top: 0px;
   left: 0px;
   right: 0px;
-  height: 60px;
+  height: 42px;
   padding: 10px;
   margin: 0px;
   
-  background-color: white;
+  background-color: silver;
   border: solid;
+  border-width: 2px;
   border-color: gray;
 }
 
 #main_title {
   color: green;
+  margin: 0px;
+  padding: 0px;
 }
 
 #header_title_box {
@@ -97,7 +100,7 @@ input[type='range']::-webkit-slider-thumb {
   display: block;
   position: absolute;
   top: 0px;
-  left: 25%;
+  left: 20%;
 }
 
 #header_search {
@@ -114,9 +117,17 @@ input[type='range']::-webkit-slider-thumb {
 #infoBox {
   display: block;
   position: relative;
-  top: 200px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  top: 60px;
+  left: 0px;
+  margin: 0px;
+  pading: 0px;
+  width: 200px;
+  z-index: 1;
+}
+
+#taxonInfo {
+  display: block;
+  background-color: white;  
 }
 
 #speciesInfo {
@@ -150,13 +161,18 @@ tspan.navText{
   color: black;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0px;
+}
 
 #tsnField {
   border: solid;
 }
 
 #yearField {
-
+  
 }
 
 

@@ -52,26 +52,25 @@
   
   <div id="header_search">
     <form id="tsnSearchForm" method="POST" action="">
-       <div>
-	      <label>Taxonomic Serial Number: </label>
-	      <input id="TSNField" type="number" name="tsn" min="1" value=""></input>
-      </div>
-      <input type="submit" value="Search"></input>
-      <input id="rerootButton" type="submit" value="Reroot"></input>
+	<div>
+	  <label>Taxonomic Serial Number: </label>
+	  <input id="TSNField" type="number" name="tsn" min="1" value=""></input>
+	  <input type="submit" value="Search"></input>
+	</div>
     </form>
     <form id="snSearchForm" method="POST" action="">
-       <div>
-	      <label>Scientific Name: </label>
-	      <input id="snField" type="text" name="sn" value=""></input>
-      </div>
-      <input type="submit" value="Search"></input>
+	<div>
+	  <label>Scientific Name: </label>
+	  <input id="snField" type="text" name="sn" value=""></input>
+	  <input type="submit" value="Search"></input>
+	</div>
     </form>
   </div>
 
 </div>
 
-<div id ="infoBox">
-  <div id = "taxonInfo">
+<div id="infoBox">
+  <div id="taxonInfo">
     <h3 id="taxonInfoHeader">Taxon Information:</h3>
     <label class="taxonInfoLabel">Taxon Name:
       <label id="nameLabel" class="infoData">___</label>
@@ -94,6 +93,7 @@
     <label class="taxonInfoLabel">Children Shown:
       <label id="childrenShownLabel"class="infoData">___</label>
     </label>
+    <input id="rerootButton" type="submit" value="Reroot"></input>
   </div>
 </div>
 
