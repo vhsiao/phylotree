@@ -63,6 +63,7 @@ function treeFromJson(tree){
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
      if(first){
+      force.stop();
       clearTree();
       stopAnimation();
     }

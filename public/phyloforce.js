@@ -90,13 +90,13 @@ function visualize() {
     .linkDistance(70)
     .size([width, height]);
 
-
-  if(firstTime){
-    svg = d3.select("#chart").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-    firstTime = false;
-    }
+  svg = d3.select("#chart").append("svg")
+  .attr("width", width)                    //if(firstTime){
+  .attr("height", height);                 //  svg = d3.select("#chart").append("svg")
+  //firstTime = false;                       //  .attr("width", width)
+  //  .attr("height", height);
+  //  firstTime = false;
+  //  }
 
   // Layout
   // ** Notice that the json file consists of a json object with two items: the first item is an array of nodes. The second item is an array of links between the nodes.
@@ -487,9 +487,11 @@ function updateNullYears(){
 
 
 function clearTree(){
-  node.remove();
-  link.remove();
-  navNode.remove();
+  //node.remove();
+  //link.remove();
+  //navNode.remove();
+  svg.remove();
+  svg = d3.select("#chart > svg");
 }
 
 window.addEventListener('load', function(){
