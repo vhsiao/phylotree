@@ -32,19 +32,17 @@
 </div>
 
 <div id=header_controls>
-  <div id=title_box class=header_column>
+  <div id="header_title_box">
     <h1 id=main_title>Phylotree</h1>
   </div>
 
 
-  <div id=year_select_form class=header_column>
-    <form name="yearSelect">
-      <input type="number" id="yearField" name="fname" value="">
-      <input type="button" id="upClick" value="Update End Year">
-    </form>
-    <label>End Year</label>
-    <input id="lateTimeSlider" type="range" min="1700" max="2015" name="lateTime" value="2013">
-    <label id="lateTimeLabel">2013</label>
+  <div id="header_date_controls">
+    <label>Discovery Date</label>
+    <input id="lateTimeSlider" type="range" min="1700" max="2013" name="lateTime" value="2013">
+    <input type="number" id="yearField" name="fname" min="1700" max="2013" value="2013">
+    <input type="button" id="upClick" value="Update End Year">
+    
     <div id=visual_controls>
       <input type="button" value="Play From Beginning" id="fromStartButton"></label>
       <input type="button" value="Play" id="playButton"></label>
@@ -52,11 +50,11 @@
     </div>
   </div>
   
-  <div class=header_column>
+  <div id="header_search">
     <form id="tsnSearchForm" method="POST" action="">
        <div>
 	      <label>Taxonomic Serial Number: </label>
-	      <input id="TSNField" type="number" name="tsn" value=""></input>
+	      <input id="TSNField" type="number" name="tsn" min="1" value=""></input>
       </div>
       <input type="submit" value="Search"></input>
       <input id="rerootButton" type="submit" value="Reroot"></input>
@@ -68,33 +66,35 @@
       </div>
       <input type="submit" value="Search"></input>
     </form>
-
   </div>
 
-  <div id ="infoBox"class=header_column>
-    <div id = "taxonInfo">
-      <h3 id="taxonInfoHeader">Taxon Information:</h3>
-      <label class="taxonInfoLabel">Taxon Name:
-	<label id="nameLabel">___</label>
-      </label>
-      <label class="taxonInfoLabel">Kingdom:
-	<label id="kingdomLabel">___</label>
-      </label>
-      <label class="taxonInfoLabel">Rank:
-	<label id="rankLabel">___</label>
-      </label>
-      <label class="taxonInfoLabel">Common Name:
-	<label id="cNameLabel">___</label>
-      </label>
-      <label class="taxonInfoLabel">Discovery Date:
-	<label id="discoveryDateLabel">___</label>
-      </label>
-      <label class="taxonInfoLabel">ITIS tsn:
-	<label id="itisTSNLabel">___</label>
-      </label>
-    </div>
+</div>
+
+<div id ="infoBox">
+  <div id = "taxonInfo">
+    <h3 id="taxonInfoHeader">Taxon Information:</h3>
+    <label class="taxonInfoLabel">Taxon Name:
+      <label id="nameLabel" class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">Kingdom:
+      <label id="kingdomLabel"class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">Rank:
+      <label id="rankLabel"class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">Common Name:
+      <label id="cNameLabel"class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">Discovery Date:
+      <label id="discoveryDateLabel"class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">ITIS tsn:
+      <label id="itisTSNLabel"class="infoData">___</label>
+    </label>
+    <label class="taxonInfoLabel">Children Shown:
+      <label id="childrenShownLabel"class="infoData">___</label>
+    </label>
   </div>
-  
 </div>
 
 <script type="text/javascript" src="/public/trees.js"></script>

@@ -2,6 +2,7 @@ var first = false;
 var root_node = null;
 var root_tsn = 0;
 var root_node_index;
+var currentNavTree
 
 $tsnSearchForm = $('#tsnSearchForm');
 $tsnSearchForm.submit(reroot);

@@ -91,11 +91,21 @@ input[type='range']::-webkit-slider-thumb {
   color: green;
 }
 
-.header_column {
-  float: left;
+#header_title_box {
   display: block;
-  padding: 0px;
-  margin: 0px;
+  float: left;
+}
+
+#header_date_controls {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header_search {
+  display: block;
+  float: right;
 }
 
 #searchForm {
@@ -103,8 +113,11 @@ input[type='range']::-webkit-slider-thumb {
 }
 
 #infoBox {
+  display: block;
+  position: relative;
+  top: 200px;
   margin-top: 0px;
-  marding-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 #speciesInfo {
@@ -123,11 +136,28 @@ input[type='range']::-webkit-slider-thumb {
   display: block;
   margin: 0px;
   padding: 0px;
-  color: blue;
+  color: black;
 }
+
+.infoData {
+  color: green;
+}
+
+.navNode{
+  
+}
+
+tspan.navText{
+  color: black;
+}
+
 
 #tsnField {
   border: solid;
+}
+
+#yearField {
+
 }
 
 

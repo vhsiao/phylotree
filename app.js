@@ -13,7 +13,7 @@ var config = require('./_config');
 
 var connstring = _str.sprintf('mysql://%s:%s@localhost/ITIS', config.mysql.user_name, config.mysql.password);
 var conn = anyDB.createConnection(connstring);
-console.log(connstring);
+//console.log(connstring);
 var port = config.web.port;
 
 app.engine('html', engines.hogan);
