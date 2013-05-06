@@ -83,6 +83,7 @@ function treeFromTSN(res, tsn) {
     var lft = row.lft;
     var rgt = row.rgt;
     root_txn = new taxon(row);
+    root_txn.children_shown = root_txn.direct_children;// assume all of node's children shown
     root_txn.moreBelow = false;
     var kingdom_id = root_txn.kingdom_id;
     descendents.push(root_txn);
