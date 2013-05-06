@@ -20,6 +20,7 @@ function snSearch(e) {
       console.log('content found');
       treeFromJson(tree);
     } else {
+      console.log(tree);
       console.log('No results found for sn');
     }
   });
@@ -35,8 +36,7 @@ function reroot(e) {
   var fd = new FormData(document.getElementById('tsnSearchForm'));
 
   // re-identify root node
-  root_tsn = document.getElementById('TSNField').value;
-  console.log("Heres the root "+ root_tsn);
+  //console.log("Heres the root "+ root_tsn);
   
   // clear the search fields
   //document.getElementById('scientificNameField').value = "";
@@ -46,6 +46,7 @@ function reroot(e) {
   sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
     var tree = JSON.parse(content);
     if(Object.keys(tree).length > 0) {
+      root_tsn = document.getElementById('TSNField').value;
       treeFromJson(tree);
     } else {
       console.log('No results found tsn');
