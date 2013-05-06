@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
 //  searchForm.addEventListener('submit', submitForm, false);
 
   var rerootButton = document.getElementById('rerootButton');
-  rerootButton.addEventListener('click',rerootAtCurrentNode, false);
+  rerootButton.addEventListener('click', rerootAtCurrentNode, false);
 
   var lateSlider = document.getElementById('lateTimeSlider');
   //lateSlider.addEventListener('mouseover', updateFromLateSlider, false);
@@ -80,23 +80,24 @@ function visualize() {
     
   var width = 1500;
   var height = 1500;
+  var rootHeight = height/2-100;
   //console.log(currentTree.nodes);
 
   //console.log(node.data(currentTree.nodes).exit())
   var color = d3.scale.category20();
 
   force = d3.layout.force()
-    .charge(-90) // ** Play with these; they control how nodes interact physically
+    .charge(-150) // ** Play with these; they control how nodes interact physically
     .linkDistance(70)
     .size([width, height]);
 
-
-  if(firstTime){
-    svg = d3.select("#chart").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-    firstTime = false;
-    }
+  svg = d3.select("#chart").append("svg")
+  //.attr("width", width)                    //if(firstTime){
+  .attr("height", height);                 //  svg = d3.select("#chart").append("svg")
+  //firstTime = false;                       //  .attr("width", width)
+  //  .attr("height", height);
+  //  firstTime = false;
+  //  }
 
   // Layout
   // ** Notice that the json file consists of a json object with two items: the first item is an array of nodes. The second item is an array of links between the nodes.
@@ -110,21 +111,21 @@ function visualize() {
   // ** This whole block is telling d3 how to render the links. These commands are chained together in typical d3 style. The order of the "chain" matters! See d3 tutorials for more information.
 
 
-  navNode = svg.selectAll(".navNode")
+navNode = svg.selectAll("g.navNode")
     .data(currentTree.navNodes)
     .enter().append("g")
     .attr("class", "navNode")
 
   var navCircles = navNode.append("circle") // ** add a circle corresponding to every node
     .attr("r", function(d){     
-      var r = 30-3*d.group;
+      var r = 30-2*d.group;
       return r;
     })
     .attr('cx', function(d){
-       return 300+(d.group)*150;
+       return 280+(d.group)*110;
     })
     .attr('cy', function(d){
-      return 150;
+      return 70;
     })
   // ** set the radius of each circle
     /*
@@ -140,13 +141,11 @@ function visualize() {
   navNode.append("text")
             .append("tspan")
             .text(function(d) {return d.name;})
-            .attr("dx", function(d){return 270+(d.group)*150;})
-            .attr("dy", function(d){return 200;})
+            .attr("dx", function(d){return 240+(d.group)*110;})
+            .attr("dy", function(d){return 130;})
             .attr("class", "navText")
             .attr("fill", '#181818');
-
         
-    
 
    link = svg.selectAll("line.link")
     .data(currentTree.links) // ** bind the data in the link json array to the graphic
@@ -163,7 +162,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 35-(Math.floor(Math.log(1+d.group)))*13;
+      var r = 30-(Math.floor(Math.log(1+d.group)))*10;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -171,7 +170,7 @@ function visualize() {
       return "rgb(0, 0, 100)"; // ** set the circle colors
     }
    else{
-     "rgb(, " + 80*d.group + ", 0)"; // ** set the circle colors
+     "rgb(40, " + 5*d.group + ", 40)"; // ** set the circle colors
     }
   })
   .style('opacity', function(d){
@@ -203,7 +202,7 @@ function visualize() {
       })
     .attr("y1", function(d) { 
       if(d.source.tsn==root_tsn){
-        return height/2;
+        return rootHeight; 
       }
       else{
         return d.source.y; 
@@ -219,7 +218,7 @@ function visualize() {
     })
     .attr("y2", function(d) { 
       if(d.target.tsn==root_tsn){
-        return height/2;
+        return rootHeight; 
       }
       else{
         return d.target.y; 
@@ -254,7 +253,7 @@ function visualize() {
     })
     .attr("cy", function(d) { 
       if(d.tsn ==root_tsn){
-        return height/2;
+        return rootHeight; 
       }
       else{
         return d.y;
@@ -277,7 +276,7 @@ function visualize() {
            return "#FFFF00";
       }
       if(d.tsn == root_tsn){
-        return "#FF00FF";
+        return "E01B1B";
       }
       if(endDate-d.year<10){
         return '#FF0000';
@@ -322,7 +321,8 @@ function visualize() {
     })
   });
   
-  navNode.on('click', function(d){
+  navNode.on("click", function(d){
+    console.log(d);
     currentTSN = d.tsn;
     currentName = d.name;
     currentDate = d.year; 
@@ -486,9 +486,11 @@ function updateNullYears(){
 
 
 function clearTree(){
-  node.remove();
-  link.remove();
-  navNode.remove();
+  //node.remove();
+  //link.remove();
+  //navNode.remove();
+  svg.remove();
+  svg = d3.select("#chart > svg");
 }
 
 window.addEventListener('load', function(){

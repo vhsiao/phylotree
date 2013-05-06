@@ -46,7 +46,7 @@ function reroot(e) {
   sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
     var tree = JSON.parse(content);
     if(Object.keys(tree).length > 0) {
-      root_tsn = document.getElementById('TSNField').value;
+    //  root_tsn = document.getElementById('TSNField').value;
       treeFromJson(tree);
     } else {
       console.log('No results found tsn');
@@ -59,10 +59,12 @@ function treeFromJson(tree){
       //var content = request.responseText;
       //console.log(jsonContent);
       //tree = JSON.parse(jsonContent);
+      root_tsn = tree.root_tsn;
       console.log(tree);
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
      if(first){
+      force.stop();
       clearTree();
       stopAnimation();
     }
