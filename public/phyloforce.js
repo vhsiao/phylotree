@@ -163,7 +163,7 @@ function visualize() {
     .attr("r", function(d){ 		
       //var r = ((2100-d.year)/320)*15;
       //var r = (1/(Math.floor(Math.log(2+d.group))))*20;
-      var r = 35-(Math.floor(Math.log(d.group)))*13;
+      var r = 35-(Math.floor(Math.log(1+d.group)))*13;
       return r;
     }) // ** set the radius of each circle
   .style("fill", function(d) {
@@ -479,9 +479,7 @@ function updateNullYears(){
             while(linksLen--){
                 if(currentTree.links.target == index){
                     var posYear = currentTree.nodes[currentTree.links.source].year;
-
                 }
-
             }
         }
      }

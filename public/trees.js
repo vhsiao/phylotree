@@ -7,17 +7,27 @@ var currentNavTree
 $tsnSearchForm = $('#tsnSearchForm');
 $tsnSearchForm.submit(reroot);
 
-$snSearchForm = $('#snField');
-$snSearchForm.submit(function(e) {
-})
+$snSearchForm = $('#snSearchForm');
+$snSearchForm.submit(snSearch);
 
-function snSearch() {
-  root_tsn = document.getElementById('tsnField').value;
+function snSearch(e) {
+  console.log('snSearch');
+  e.preventDefault();
+  var fd = new FormData(document.getElementById('snSearchForm'));
+  sendAjaxForm('/search/sn/tree.json', fd, function(content) {
+    var tree = JSON.parse(content);
+    if(Object.keys(tree).length > 0) {
+      console.log('content found');
+      treeFromJson(tree);
+    } else {
+      console.log('No results found for sn');
+    }
+  });
 }
 
 function reroot(e) {
   // prevent the page from redirecting
-  console.log('reroot.')
+  console.log('reroot.');
   e.preventDefault();
 
   console.log('attempted submit');
@@ -34,9 +44,20 @@ function reroot(e) {
 
   // send it to the server
   sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
+    var tree = JSON.parse(content);
+    if(Object.keys(tree).length > 0) {
+      treeFromJson(tree);
+    } else {
+      console.log('No results found tsn');
+    }
+  });
+}
+
+function treeFromJson(tree){
     //if (request.status == 200) { //ok
       //var content = request.responseText;
-      tree = JSON.parse(content);
+      //console.log(jsonContent);
+      //tree = JSON.parse(jsonContent);
       console.log(tree);
       currentTree = $.extend(true, {}, tree);
       //tree = $.extend(true, {}, currentTree);
@@ -50,7 +71,6 @@ function reroot(e) {
    // } else {
     //something went wrong
     //}
-  });
 }
 
 function sendAjaxForm(url,form, callback) {
