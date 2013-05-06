@@ -125,7 +125,7 @@ navNode = svg.selectAll("g.navNode")
        return 280+(d.group)*140;
     })
     .attr('cy', function(d){
-      return 70;
+      return 40;
     })
   // ** set the radius of each circle
     /*
@@ -142,7 +142,7 @@ navNode = svg.selectAll("g.navNode")
             .append("tspan")
             .text(function(d) {return d.name;})
             .attr("dx", function(d){return 240+(d.group)*140;})
-            .attr("dy", function(d){return 130;})
+            .attr("dy", function(d){return 100;})
             .attr("class", "navText")
             .attr("fill", '#181818');
         
