@@ -1,0 +1,20 @@
+Files:
+	phylotree/app.js : Node.js server file
+	phylotree/public/phyloforce.js, phylotree/public/trees.js : frontend logic, d3.js-powered rendering
+	phylotree/templates/ : HTML pages for phylotree
+
+	cs132_materials/phylotree.sql.gz : A compressed MYSQL dump of the database.
+	cs132_materials/hier-stripped.py : A python script which set up the hierarchy information table phylotree_hierarchy. Strategy here: http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
+
+
+You can also ssh into the remote server:
+	ssh -i cs132_materialscs132awslab.pem ubuntu@ec2-23-20-209-22.compute-1.amazonaws.com
+	
+	And peek at the database with the credentials in config.js
+
+Instructions for site usage can be seen by following the link "About This Viewer" on the main site. See the site up and running here:
+
+	http://ec2-23-20-209-22.compute-1.amazonaws.com/
+
+Github repo:
+	https://github.com/vhsiao/phylotree
