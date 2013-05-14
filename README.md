@@ -18,6 +18,9 @@ Instructions for site usage can be seen by following the link "About This Viewer
 
 # Setting up phylotree from scratch
 ## An outline.
+
+After cloning this repo:
+
 1. Install MySQL and start MySQL server.
 2. Edit config.js to match your MySQL credentials
 3. Install Python and pip. Run:
