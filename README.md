@@ -21,23 +21,23 @@ Instructions for site usage can be seen by following the link "About This Viewer
 1. Install MySQL and start MySQL server.
 2. Edit config.js to match your MySQL credentials
 3. Install Python and pip. Run:
-       pip install virtualenv
-       virtualenv python _ modules
-       source python _ modules/bin/activate
+         pip install virtualenv
+         virtualenv python _ modules
+         source python _ modules/bin/activate
 4. Obtain ITIS database tables as a .tar.gz:
-       curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
+         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
    And follow instructions within the newly obtained directory to incorporate this data into MySQL. Do not delete the dump files yet. 
 5. Open hier-stripped.py. Edit the line that begins:
-       engine = create _ engine...
+         engine = create _ engine...
    To match your MySQL credentials. 
 
 6. Run:
-        python hier-stripped.py taxonomic _ units strippedauthor
+         python hier-stripped.py taxonomic _ units strippedauthor
    Replace taxonomic _ units and strippedauthor with the path to the taxonomic _ units and strippedauthor database dump files from itis. This will add the table "phylotree _ hierarchy" to the itis database.
 
 7. You can now delete the itis dump files. To exit the python virtual environment, run:
-       deactivate
+         deactivate
 
 8. Start the server:
-        node app.js
+         node app.js
    And point your browser to the host (path empty). For example: http://phylotree.com
