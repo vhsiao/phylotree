@@ -3,11 +3,11 @@ phylotree/app.js : Node.js server file
 phylotree/public/phyloforce.js, phylotree/public/trees.js : frontend logic, d3.js-powered rendering
 phylotree/templates/ : HTML pages for phylotree
 
-> cs132_materials/phylotree.sql.gz : A compressed MYSQL dump of the database.
+* cs132_materials/phylotree.sql.gz : A compressed MYSQL dump of the database.
 
-> cs132_materials/hier-stripped.py : A python script which set up the hierarchy information table phylotree_hierarchy. Strategy here: http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
+* cs132_materials/hier-stripped.py : A python script which set up the hierarchy information table phylotree_hierarchy. Strategy here: http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
 
-> cs132_materialscs132awslab.pem : ssh key for ec2 server
+* cs132_materialscs132awslab.pem : ssh key for ec2 server
 
 And peek at the database with the credentials in config.js
 
