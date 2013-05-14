@@ -1,0 +1,14 @@
+h1 {
+  display: inline-block;
+  width: 100%;
+  padding: 0 1%;
+  background-color: #343434;
+  color: #44C736;
+}
+h2 {
+  padding: 0 2%;
+  color: #003500; /* Dark Green */
+}
+p {
+  padding: 0 1.5em;
+}
