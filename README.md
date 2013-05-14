@@ -1,7 +1,7 @@
 #Files:
-phylotree/app.js : Node.js server file
+* phylotree/app.js : Node.js server file
 phylotree/public/phyloforce.js, phylotree/public/trees.js : frontend logic, d3.js-powered rendering
-phylotree/templates/ : HTML pages for phylotree
+* phylotree/templates/ : HTML pages for phylotree
 
 * cs132_materials/phylotree.sql.gz : A compressed MYSQL dump of the database.
 
