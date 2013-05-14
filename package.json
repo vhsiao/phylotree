@@ -9,6 +9,7 @@
     "socket.io": "0.9.x",
     "mysql": "2.0.x",
     "underscore.string": "2.3.x",
-    "any-db": "0.4.x"
+    "any-db": "0.4.x",
+    "forever": "~0.10.8"
   }
 }

@@ -47,7 +47,11 @@ Instructions for site usage can be seen by following the link "About This Viewer
 
         deactivate
 
-8. Start the server:
+8. Install node dependencies:
+
+        npm install
+
+9. Start the server:
 
         node app.js
 
