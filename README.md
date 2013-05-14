@@ -53,6 +53,6 @@ Instructions for site usage can be seen by following the link "About This Viewer
 
 9. Start the server:
 
-        node app.js
+        /node_modules/forever/bin/forever start app.js
 
    And point your browser to the host (path empty). For example: http://phylotree.com
