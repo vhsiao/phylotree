@@ -26,7 +26,7 @@ Instructions for site usage can be seen by following the link "About This Viewer
         virtualenv python _ modules
 
         source python _ modules/bin/activate
-4. Obtain ITIS database tables as a .tar.gz:
+4. Obtain ITIS database tables and untar: 
 
         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
 
