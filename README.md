@@ -36,8 +36,11 @@ Instructions for site usage can be seen by following the link "About This Viewer
    Replace taxonomic _ units and strippedauthor with the path to the taxonomic _ units and strippedauthor database dump files from itis. This will add the table "phylotree _ hierarchy" to the itis database.
 
 7. You can now delete the itis dump files. To exit the python virtual environment, run:
+
              deactivate
 
 8. Start the server:
+
              node app.js
+
    And point your browser to the host (path empty). For example: http://phylotree.com
