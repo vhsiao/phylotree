@@ -9,17 +9,15 @@ var io = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var _str = require('underscore.string')
-var config = require('./_config');
+var config = require('./config');
 
 var connstring = _str.sprintf('mysql://%s:%s@localhost/ITIS', config.mysql.user_name, config.mysql.password);
 var conn = anyDB.createConnection(connstring);
-//console.log(connstring);
 var port = config.web.port;
 
 app.engine('html', engines.hogan);
 var taxon = require('./taxon.js');
 app.configure(function() {
-    //spawnPythonScripts();
     app.set('views', __dirname + '/templates');
     app.use(express.bodyParser());
     app.use ('/public', express.static(__dirname + '/public'));
@@ -45,7 +43,6 @@ app.post('/search', function(req, res) {
     var scientificName = req.body.scientificName;
     var tsn = req.body.TSN;
     console.log(commonName +", "+scientificName+", "+tsn);
-    
     res.send('ok');
 });
 app.post('/search/sn/tree.json', function(req, res) {
@@ -94,23 +91,17 @@ function treeFromTSN(res, tsn) {
         if (txn===root_txn) {
           return;
         }
-        //console.log(txn.depth);
         nodeLookup[txn.tsn] = position; 
         position +=1;
-        //console.log(txn.depth);
-        //console.log(descendents[nodeLookup[txn.parent_tsn]]);
         descendents.push(txn);
-        //descendents[nodeLookup[txn.parent_tsn]].moreBelow = false;
         descendents[nodeLookup[txn.parent_tsn]].children_shown += 1;
         if (txn.direct_children==0){
             txn.moreBelow = false;
           }
       })
       .on('end', function(err) {
-//                res.json({"nodes": nodes, "links":links});
         D3Array = adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, populateD3Array);
         addNavigation(tsn, D3Array, function() {
-          console.log(D3Array);
           res.json(D3Array);
         });
       })
@@ -123,11 +114,9 @@ function treeFromTSN(res, tsn) {
 }
 
 function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
-  //console.log(descendents);
   for (descendent in descendents) {
           var des = descendents[descendent];
           if (des===root_txn) {
-            console.log("skipping over root");
             continue;
           }
           desParent = descendents[nodeLookup[des.parent_tsn]];
@@ -141,7 +130,6 @@ function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
       for (descendent in descendents) {
         var des = descendents[descendent];
         if (des===root_txn) {
-            console.log("skipping over root");
             continue;
         }
           nodes.push(des.node());
@@ -158,7 +146,6 @@ function addNavigation(tsn, D3Array, callback){
     .on('row', function(row) {
       var txn = new taxon(row);
       navNodes.push(txn.node());
-      console.log(txn.node());
     })
     .on('end', function(e) {
       for (var i=0; i<navNodes.length-1;i++) {
@@ -166,12 +153,9 @@ function addNavigation(tsn, D3Array, callback){
       }
       D3Array.navNodes = navNodes;
       D3Array.navLinks = navLinks;
-  //console.log(D3Array);
   callback();
 
     });
-  console.log(navNodes);
-  console.log(navLinks);
  }
 // =================================================================================
 io.sockets.on('connection', function(socket){
@@ -193,7 +177,6 @@ io.sockets.on('connection', function(socket){
       var q2 = conn.query("SELECT taxonomic_units.rank_id, rank_name FROM taxonomic_units, taxon_unit_types WHERE taxonomic_units.rank_id = taxon_unit_types.rank_id AND taxonomic_units.tsn=? limit 1",tsn);
       q2.on('row',function(row){
         rank = row.rank_name;
-        //console.log(rank);
         socket.emit('update',king,rank,cName);
        });
       });

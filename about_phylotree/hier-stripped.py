@@ -7,9 +7,7 @@ from sqlalchemy import *
 Usage = """
 Usage:
 
-itis_sql_to_json.py taxonomic_units strippedauthor root
-
-Parses itis taxonomy into a tree encoded in json
+itis_sql_to_json.py taxonomic_units strippedauthor
 
 Each node has an associated date. For tips, it is the date on which the species was 
 described. For internal nodes, it is the date that the youngest descendent species was 
@@ -283,6 +281,9 @@ else:
     				taxon_pointer = None
     
     print ("***Finished constructing tree.")
+    ##############################################################
+    #EDIT THE LINE BELOW:
+    #'mysql+pymysql://<user>:<password>@<host>/itis'
     engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
     conn = engine.connect()
 

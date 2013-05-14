@@ -1,7 +1,41 @@
-We’re working on a web application to display the evolution of species. Our project is an interactive viewer for phylogenetic trees. In evolutionary biology, phylogeny is the study of how species are related to one another. A phylogenetic tree is a way to show these relationships,  like a family tree for groups of species. 
+#Files:
+	phylotree/app.js : Node.js server file
+	phylotree/public/phyloforce.js, phylotree/public/trees.js : frontend logic, d3.js-powered rendering
+	phylotree/templates/ : HTML pages for phylotree
 
-In our tree viewer, each species will be represented as an animated, interactive node, with connections based upon evolutionary relationships. Currently, there are very few good ways for people to easily explore evolutionary data for all species on Earth. Using PhyloTree, you can see the process of species discovery in action.
+	cs132_materials/phylotree.sql.gz : A compressed MYSQL dump of the database.
+	cs132_materials/hier-stripped.py : A python script which set up the hierarchy information table phylotree_hierarchy. Strategy here: http://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/
 
-As you move a slider to adjust the date range you want to see, nodes will collapse into the tree, and new nodes will appear. It will be simple to adjust the tree’s root, click through each node and query the enormous database of species information available from itiis.gov. We have plans to make our project easily extensible for other developers. 
+	cs132_materialscs132awslab.pem : ssh key for ec2 server
+	
+	And peek at the database with the credentials in config.js
 
-The D3.js library will help display data as interactive nodes that respond to one another and flow across the screen. In summary, we are making a tool that can be used by scientists, students and enthusiasts to better visualize and interact with the vast quantities of data about life on earth.
+Instructions for site usage can be seen by following the link "About This Viewer" on the main site.
+
+#Github repo:
+	https://github.com/vhsiao/phylotree
+
+# Setting up phylotree from scratch
+## An outline.
+    1. Install MySQL and start MySQL server.
+    2. Edit config.js to match your MySQL credentials
+    3. Install Python and pip. Run:
+            pip install virtualenv
+            virtualenv python_modules
+            source python_modules/bin/activate
+    4. Obtain ITIS database tables as a .tar.gz:
+
+        curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
+
+    And follow instructions within the newly obtained directory to incorporate this data into MySQL. Do not delete the dump files yet. 
+    5. Open hier-stripped.py. Edit the line that begins:
+        engine = create_engine...
+       To match your MySQL credentials. 
+    6. Run:
+            python hier-stripped.py taxonomic_units strippedauthor
+       Replace taxonomic_units and strippedauthor with the path to the taxonomic_units and strippedauthor database dump files from itis. This will add the table "phylotree_hierarchy" to the itis database.
+    7. You can now delete the itis dump files. To exit the python virtual environment, run:
+        deactivate
+    8. Start the server:
+        node app.js
+       And point your browser to the host (path empty). For example: http://phylotree.com
