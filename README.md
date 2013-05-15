@@ -22,8 +22,7 @@ Instructions for site usage can be seen by following the link "About This Viewer
 After cloning this repo:
 
 1. Install MySQL and start MySQL server.
-2. Edit config.js to match your MySQL credentials
-3. Install Python and pip. Run:
+2. Install Python and pip. Run:
 
         pip install sqlalchemy
         pip install pymysql
@@ -31,32 +30,32 @@ After cloning this repo:
         virtualenv python _ modules
 
         source python _ modules/bin/activate
-4. Obtain ITIS database tables and untar: 
+3. Obtain ITIS database tables and untar: 
 
         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
 
    And follow instructions within the newly obtained directory to incorporate this data into MySQL. Do not delete the dump files yet. 
-5. Open hier-stripped.py. Edit the line that begins:
+4. Open hier-stripped.py. Edit the line that begins:
 
         engine = create _ engine...
 
    To match your MySQL credentials. 
 
-6. Run:
+5. Run:
 
         python hier-stripped.py taxonomic _ units strippedauthor
 
    Replace taxonomic _ units and strippedauthor with the path to the taxonomic _ units and strippedauthor database dump files from itis. This will add the table "phylotree _ hierarchy" to the itis database.
 
-7. You can now delete the itis dump files. To exit the python virtual environment, run:
+6. You can now delete the itis dump files. To exit the python virtual environment, run:
 
         deactivate
 
-8. Install node dependencies:
+7. Install node dependencies:
 
         npm install
 
-9. Create a `config.js` file with the following contents:
+8. Create a `config.js` file with the following contents:
 
         var config = {}
         
@@ -74,8 +73,8 @@ After cloning this repo:
    Update the mysql credentials as needed.
 
 
-10. Start the server:
+9. Start the server:
 
-        /node_modules/forever/bin/forever start app.js
+        sudo /node_modules/forever/bin/forever start app.js
 
    And point your browser to the host (path empty). For example: http://phylotree.com
