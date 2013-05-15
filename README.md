@@ -73,8 +73,10 @@ After cloning this repo:
    Update the mysql credentials as needed.
 
 
-9. Start the server:
+9. Start the server, and screen off the process:
 
-        sudo /node_modules/forever/bin/forever start app.js
+        sudo screen node_modules/forever/bin/forever app.js
+        Ctrl+a
+        Ctrl+r
 
    And point your browser to the host (path empty). For example: http://phylotree.com
