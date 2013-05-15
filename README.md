@@ -25,6 +25,8 @@ After cloning this repo:
 2. Edit config.js to match your MySQL credentials
 3. Install Python and pip. Run:
 
+        pip install sqlalchemy
+        pip install pymysql
         pip install virtualenv
         virtualenv python _ modules
 
@@ -54,7 +56,25 @@ After cloning this repo:
 
         npm install
 
-9. Start the server:
+9. Create a `config.js` file with the following contents:
+
+        var config = {}
+        
+        config.mysql = {};
+        config.redis = {};
+        config.web = {};
+
+        config.mysql.user_name = ''
+        config.mysql.password = '';
+        config.web.host = 'localhost';
+        config.web.port = 80;
+
+        module.exports = config;
+
+   Update the mysql credentials as needed.
+
+
+10. Start the server:
 
         /node_modules/forever/bin/forever start app.js
 
