@@ -58,10 +58,10 @@ Clone this repo:
    	mysql -u root -p
 	Enter password: 
 	...
-	mysql> CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
+	mysql&lt; CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
 	Query OK, 0 rows affected (0.00 sec)
 	
-	mysql> GRANT ALL PRIVILEGES ON ITIS.* TO 'itisuser'@'localhost';
+	mysql&lt; GRANT ALL PRIVILEGES ON ITIS.* TO 'itisuser'@'localhost';
 	Query OK, 0 rows affected (0.00 sec)
 
 4. Navigate back into the phylotree directory. Open hier-stripped.py. Edit the line that begins:
@@ -106,7 +106,7 @@ Clone this repo:
    Update the mysql credentials as needed.
 
 
-9. To start the application:
+9. To start the application (stop other servers running on the same port first):
 	sudo node app.js
 
 I used Nginx and Upstart to deploy the server as a service, using <a href="http://mattpatenaude.com/hosting-chatroom/">this guide</a>.
