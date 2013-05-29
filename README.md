@@ -26,15 +26,22 @@ Clone this repo:
 
 1. <a href="http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html">Install MySQL and start MySQL server.</a>
    For example:
+
 	sudo apt-get update
 	sudo apt-get install mysql-client-5.5 mysql-server-5.5
+
    This command should lead to a walkthrough for setting up credentials for the root user. After this, MySQL server should already be running.
+
 	mysql
+
    should take you to the MySQL console.
 
 2. Install Python and pip.
+
 	sudo apt-get install python-pip
+
    Run:
+
 	sudo pip install virtualenv
         virtualenv python _ modules
         source python _ modules/bin/activate
