@@ -22,31 +22,31 @@ Instructions for site usage can be seen by following the link "About This Viewer
 How to set up and host Phylotree. In this outline I am setting up Phylotree on Ubuntu where Node.js server is already installed. You can install Node <a href="http://nodejs.org/">here</a>.
 
 Clone this repo:
-	  git clone https://github.com/vhsiao/phylotree.git
+	    git clone https://github.com/vhsiao/phylotree.git
 
 1. <a href="http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html">Install MySQL and start MySQL server.</a>
    For example:
 
-	  sudo apt-get update
-	  sudo apt-get install mysql-client-5.5 mysql-server-5.5
+	    sudo apt-get update
+	    sudo apt-get install mysql-client-5.5 mysql-server-5.5
 
-   This command should lead to a walkthrough for setting up credentials for the root user. After this, MySQL server should already be running.
+   This command should lead to a walkthrough for setting up credentials for the root user.    After this, MySQL server should already be running.
 
-      mysql
+        mysql
 
    should take you to the MySQL console.
 
 2. Install Python and pip.
 
-      sudo apt-get install python-pip
+        sudo apt-get install python-pip
 
   Run:
 
-      sudo pip install virtualenv
-      virtualenv python _ modules
-      source python _ modules/bin/activate
-      pip install sqlalchemy
-      pip install pymysql
+        sudo pip install virtualenv
+        virtualenv python _ modules
+        source python _ modules/bin/activate
+        pip install sqlalchemy
+        pip install pymysql
         
 3. Obtain ITIS database tables and untar: 
 
@@ -55,22 +55,22 @@ Clone this repo:
    And follow instructions (READMEitis.txt) within the newly obtained directory to incorporate this data into MySQL.
    
         cd itisMySQL043013/
-   	    mysql \-uroot \-p \-\-enable \-local \-infile &lt; dropcreateloaditis \. sql
-	    Enter password: 
+        mysql -uroot -p --enable -local -infile < dropcreateloaditis . sql
+Enter password: 
    
    This creates and populates the MySQL database ITIS. Do not delete the dump files yet. 
    	
    For security reasons, don't connect to MySQL as the root user with Phylotree. Before proceeding, <a href="http://dev.mysql.com/doc/refman/5.5/en/adding-users.html">create a new MySQL user with access only your new ITIS database</a>.
    Something like:
    
-        mysql \-u root \-p
+        mysql -u root -p
 	    Enter password: 
 	
-        mysql&gt; CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
-	    Query OK, 0 rows affected \(0.00 sec\)
+        mysql> CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
+	    Query OK, 0 rows affected (0.00 sec)
 	
-	    mysql&gt; GRANT ALL PRIVILEGES ON ITIS\.\* TO 'itisuser'@'localhost';
-	    Query OK, 0 rows affected \(0.00 sec\)
+	    mysql> GRANT ALL PRIVILEGES ON ITIS.* TO 'itisuser'@'localhost';
+	    Query OK, 0 rows affected (0.00 sec)
 
 4. Navigate back into the phylotree directory. Open hier-stripped.py. Edit the line that begins:
 
