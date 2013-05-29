@@ -47,22 +47,23 @@ Clone this repo:
 
    And follow instructions (READMEitis.txt) within the newly obtained directory to incorporate this data into MySQL.
    
-   	cd itisMySQL043013/
-   	mysql -uroot -p --enable-local-infile < dropcreateloaditis.sql
+        cd itisMySQL043013/
+   	mysql \-uroot \-p \-\-enable \-local \-infile &lt; dropcreateloaditis \. sql
 	Enter password: 
    
    This creates and populates the MySQL database ITIS. Do not delete the dump files yet. 
    	
    For security reasons, we don't want to connect to MySQL as the root user with Phylotree. Before proceeding, <a href="http://dev.mysql.com/doc/refman/5.5/en/adding-users.html">create a new MySQL user with access only your new ITIS database</a>.
    Something like:
+   
    	mysql \-u root \-p
 	Enter password: 
 	
 	mysql&gt; CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
-	Query OK, 0 rows affected (0.00 sec)
+	Query OK, 0 rows affected \(0.00 sec\)
 	
-	mysql&gt; GRANT ALL PRIVILEGES ON ITIS.* TO 'itisuser'@'localhost';
-	Query OK, 0 rows affected (0.00 sec)
+	mysql&gt; GRANT ALL PRIVILEGES ON ITIS\.\* TO 'itisuser'@'localhost';
+	Query OK, 0 rows affected \(0.00 sec\)
 
 4. Navigate back into the phylotree directory. Open hier-stripped.py. Edit the line that begins:
 
