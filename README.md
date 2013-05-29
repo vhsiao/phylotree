@@ -19,22 +19,32 @@ Instructions for site usage can be seen by following the link "About This Viewer
 # Setting up phylotree from scratch
 ## An outline.
 
-After cloning this repo:
+How to set up and host Phylotree. In this outline I am setting up Phylotree on Ubuntu where Node.js server is already installed. You can install Node <a href="http://nodejs.org/">here</a>.
 
-1. Install MySQL and start MySQL server.
+Clone this repo:
+	git clone https://github.com/vhsiao/phylotree.git
+
+1. <a href="http://dev.mysql.com/doc/refman/5.5/en/linux-installation-native.html">Install MySQL and start MySQL server.</a>
+   For example:
+	sudo apt-get update
+	sudo apt-get install mysql-client-5.5 mysql-server-5.5
+   This command should lead to a walkthrough for setting up credentials for the root user. After this, MySQL server should already be running.
+	> mysql
+   should take you to the MySQL console.
+
 2. Install Python and pip. Run:
-
+	pip install virtualenv
+        virtualenv python _ modules
+        source python _ modules/bin/activate
         pip install sqlalchemy
         pip install pymysql
-        pip install virtualenv
-        virtualenv python _ modules
-
-        source python _ modules/bin/activate
+        
 3. Obtain ITIS database tables and untar: 
 
         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
 
    And follow instructions within the newly obtained directory to incorporate this data into MySQL. Do not delete the dump files yet. 
+   For security reasons, we don't want to connect to MySQL as the root user with Phylotree. Before proceeding, <a href="http://dev.mysql.com/doc/refman/5.5/en/adding-users.html">create a new MySQL user with access only your new ITIS database</a>.
 4. Open hier-stripped.py. Edit the line that begins:
 
         engine = create _ engine...
