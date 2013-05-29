@@ -29,11 +29,13 @@ Clone this repo:
 	sudo apt-get update
 	sudo apt-get install mysql-client-5.5 mysql-server-5.5
    This command should lead to a walkthrough for setting up credentials for the root user. After this, MySQL server should already be running.
-	> mysql
+	mysql
    should take you to the MySQL console.
 
-2. Install Python and pip. Run:
-	pip install virtualenv
+2. Install Python and pip.
+	sudo apt-get install python-pip
+   Run:
+	sudo pip install virtualenv
         virtualenv python _ modules
         source python _ modules/bin/activate
         pip install sqlalchemy
@@ -43,11 +45,32 @@ Clone this repo:
 
         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
 
-   And follow instructions within the newly obtained directory to incorporate this data into MySQL. Do not delete the dump files yet. 
+   And follow instructions (READMEitis.txt) within the newly obtained directory to incorporate this data into MySQL.
+   
+   	cd itisMySQL043013/
+   	mysql -uroot -p --enable-local-infile < dropcreateloaditis.sql
+	Enter password: 
+   
+   This creates and populates the MySQL database ITIS. Do not delete the dump files yet. 
+   	
    For security reasons, we don't want to connect to MySQL as the root user with Phylotree. Before proceeding, <a href="http://dev.mysql.com/doc/refman/5.5/en/adding-users.html">create a new MySQL user with access only your new ITIS database</a>.
-4. Open hier-stripped.py. Edit the line that begins:
+   Something like:
+   	mysql -u root -p
+	Enter password: 
+	...
+	mysql> CREATE USER 'itisuser'@'localhost' IDENTIFIED BY 'some_password';
+	Query OK, 0 rows affected (0.00 sec)
+	
+	mysql> GRANT ALL PRIVILEGES ON ITIS.* TO 'itisuser'@'localhost';
+	Query OK, 0 rows affected (0.00 sec)
+
+4. Navigate back into the phylotree directory. Open hier-stripped.py. Edit the line that begins:
 
         engine = create _ engine...
+        
+   For example:
+        
+        engine = create_engine('mysql+pymysql://itisuser:some _ password@localhost/ITIS')
 
    To match your MySQL credentials. 
 
@@ -83,10 +106,7 @@ Clone this repo:
    Update the mysql credentials as needed.
 
 
-9. Start the server, and screen off the process:
+9. To start the application:
+	sudo node app.js
 
-        sudo screen node_modules/forever/bin/forever app.js
-        Ctrl+a
-        Ctrl+r
-
-   And point your browser to the host (path empty). For example: http://phylotree.com
+I used Nginx and Upstart to deploy the server as a service, using <a href="http://mattpatenaude.com/hosting-chatroom/">this guide</a>.
