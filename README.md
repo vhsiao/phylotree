@@ -24,12 +24,12 @@ After cloning this repo:
 1. Install MySQL and start MySQL server.
 2. Install Python and pip. Run:
 
-        pip install sqlalchemy
-        pip install pymysql
-        pip install virtualenv
-        virtualenv python _ modules
-
-        source python _ modules/bin/activate
+          pip install sqlalchemy
+          pip install pymysql
+          pip install virtualenv
+          virtualenv python _ modules
+          
+          source python _ modules/bin/activate
 3. Obtain ITIS database tables and untar: 
 
         curl http://www.itis.gov/downloads/itisMySQLTables.tar.gz | tar zx 
