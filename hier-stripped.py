@@ -284,12 +284,11 @@ else:
     ##############################################################
     #EDIT THE LINE BELOW:
     #'mysql+pymysql://<user>:<password>@<host>/itis'
-    engine = create_engine('mysql+pymysql://:@localhost/ITIS')
+    engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
     conn = engine.connect()
 
 
     phylotree_hierarchy = Table()
-
     try:
         trans = conn.begin()
         metadata = MetaData(engine)
@@ -318,6 +317,11 @@ else:
                 5 : ('Animalia', 202423),
                 6 : ('Chromista' ,  630578)
                 }
+            
+        rem_null = phylotree_hierarchy.delete().where(phylotree_hierarchy.c.year == None);
+        conn.execute(rem_null);
+
+
         for kingdom_id in kingdoms:
             prep_for_database(kingdoms[kingdom_id][1], 0, 0)
             print ("***Finished inserting kingdom", kingdoms[kingdom_id][0])
@@ -325,6 +329,10 @@ else:
         ins = phylotree_hierarchy.insert().values(values)
         conn.execute(ins)
         print ("Inserted {0} rows".format(len(values)))
+
+
+        rem_null = phylotree_hierarchy.delete().where(phylotree_hierarchy.c.year == None);
+        conn.execute(rem_null);
 
         trans.commit()
     except:
