@@ -26,7 +26,7 @@ var selectedColor ='#FFFF00'; //yellow
 var normalColor = '#1D9CCF';//'#0000FF'; //blue
 var moreBelowColor = normalColor;
 var normalOutlineColor = '#FFFFFF'; //white 
-var addRemoveColor: '#FF0000'; //red
+var addRemoveColor = '#FF0000'; //red
 
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
