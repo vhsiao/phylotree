@@ -279,12 +279,23 @@ else:
     			else:
     				# Parent doesn't exist, all done
     				taxon_pointer = None
-    
+    null_years = [];
+    #Remove null years.
+    for id in taxa.iterkeys():
+        if not taxa[ id ].year:
+            null_years.append(id)
+            #del taxa[id]
+    for id in null_years:
+        removed_taxon = taxa.pop(id, None) #delete the taxon with null year from tree
+        if removed_taxon.parent in taxa:
+            taxa[ removed_taxon.parent ].children.remove(id) #delete the taxon from the children list of its parent
+
+    print ("***Removed all nodes with null year data")
     print ("***Finished constructing tree.")
     ##############################################################
     #EDIT THE LINE BELOW:
     #'mysql+pymysql://<user>:<password>@<host>/itis'
-    engine = create_engine('mysql+pymysql://root:@localhost/ITIS')
+    engine = create_engine('mysql+pymysql://:@localhost/ITIS')
     conn = engine.connect()
 
 
@@ -318,10 +329,6 @@ else:
                 6 : ('Chromista' ,  630578)
                 }
             
-        rem_null = phylotree_hierarchy.delete().where(phylotree_hierarchy.c.year == None);
-        conn.execute(rem_null);
-
-
         for kingdom_id in kingdoms:
             prep_for_database(kingdoms[kingdom_id][1], 0, 0)
             print ("***Finished inserting kingdom", kingdoms[kingdom_id][0])
@@ -331,9 +338,7 @@ else:
         print ("Inserted {0} rows".format(len(values)))
 
 
-        rem_null = phylotree_hierarchy.delete().where(phylotree_hierarchy.c.year == None);
-        conn.execute(rem_null);
-
+        #rem_null = phylotree_hierarchy.delete().where(phylotree_hierarchy.c.year == None);
         trans.commit()
     except:
         trans.rollback()

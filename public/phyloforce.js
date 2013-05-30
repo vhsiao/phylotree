@@ -17,6 +17,13 @@ var link;
 var navNode
 var linkNode;
 
+// Colors
+var ancestorColor = '#F2680C'; //orange
+var selectedColor ='#FFFF00'; //yellow 
+var normalColor = '#1D9CCF';//'#0000FF'; //blue
+var moreBelowColor = normalColor;
+var normalOutlineColor = '#FFFFFF'; //color 
+
 window.addEventListener('load', function(){
     // handle incoming messages
     socket.on('update', function(king,rank, cName){
@@ -148,15 +155,15 @@ navNode = svg.selectAll("g.navNode")
       var r = 30-(Math.floor(Math.log(1+d.group)))*10;
       return r;
     }) // ** set the radius of each circle
-  .style("fill", function(d) {
+ /* .style("fill", function(d) {
     if (d.moreBelow == true) {
-      return "rgb(0, 0, 100)"; // set the circle colors
+      return '#FFFFFF'; // set the circle colors
     }
    else{
-     "rgb(40, " + 5*d.group + ", 40)"; 
+      return normalColor; 
     }
-  })
-  .style('opacity', function(d){
+  })*/
+   .style('opacity', function(d){
     if (d.year> endDate){
       return 0;
     }
@@ -231,28 +238,24 @@ navNode = svg.selectAll("g.navNode")
     })
     .style("fill", function(d) { 
       if (d.selected) {
-           return "#FFFF00"; //yellow
+           return selectedColor; 
       }
       if(d.tsn == root_tsn){
-        return "E01B1B"; //red
+        return ancestorColor; //red
       }
       if(endDate-d.year<10){
         return '#FF0000'; //recent nodes
       }
       else{
-        if(d.moreBelow) { //more nodes below
-          return '#00aedb'; //blue
-        }
-        else {
-          return "rgb(0, " + 30*d.group + ", 0)";
-        }
+        return normalColor;
       }
     })
     .style("stroke", function(d) {
-	if (d.tsn == root_tsn) {
-		return '#070014'; //black outline for root
-	}
-	else return "#FFFFFF";
+    	if (d.tsn == root_tsn) {
+	  	  return '#070014'; //black outline for root
+      } else {
+        return normalOutlineColor;
+      }
 	});
  
   navNode.attr('cx', function(d){
@@ -264,10 +267,10 @@ navNode = svg.selectAll("g.navNode")
     .attr('fill', function(d){
        // if(d.tsn == currentTSN){
       if(d.selected) {
-            return "#FFFF00";
+            return selectedColor; 
         }
     else{
-      return '#18e99f';
+      return ancestorColor; 
     }
 
     })
