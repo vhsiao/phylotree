@@ -16,12 +16,17 @@ var link;
 var navNode
 var linkNode;
 
-// Colors
+// Color Scheme
+// ancestorColor: the color of the common ancestors of all the species shown. Appear at the top of the display plus the root of the tree.
+// selectedColor: the color of the currently selected node
+// normalColor: Default color for nodes in the tree the node that are not in the categories above
+// addRemoveColor: Color of nodes recently (or in the process of being) added or removed
 var ancestorColor = '#F2680C'; //orange
 var selectedColor ='#FFFF00'; //yellow 
 var normalColor = '#1D9CCF';//'#0000FF'; //blue
 var moreBelowColor = normalColor;
-var normalOutlineColor = '#FFFFFF'; //color 
+var normalOutlineColor = '#FFFFFF'; //white 
+var addRemoveColor: '#FF0000'; //red
 
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
@@ -196,7 +201,7 @@ navNode = svg.selectAll("g.navNode")
         return ancestorColor; //red
       }
       if(endDate-d.year<10){
-        return '#FF0000'; //recent nodes
+        return addRemoveColor; //recent nodes
       }
       else{
         return normalColor;
