@@ -55,7 +55,7 @@ Clone this repo:
    And follow instructions (READMEitis.txt) within the newly obtained directory to incorporate this data into MySQL.
    
         cd itisMySQL043013/
-        mysql -uroot -p --enable-local-infile < dropcreateloaditis.sql
+        mysql -u root -p --enable-local-infile < dropcreateloaditis.sql
 Enter password: 
    
    This creates and populates the MySQL database ITIS. Do not delete the dump files yet. 
