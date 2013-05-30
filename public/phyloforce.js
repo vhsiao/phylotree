@@ -1,6 +1,5 @@
 // A phylogeny viewer built with d3js
-// Casey Dunn, Brown University
-// 
+// Casey Dunn, Vivian Hsiao, John Goddard, Tyler Del Sesto Brown University 
 // Based on http://mbostock.github.com/d3/ex/force.html
 
 var url_large = '/siphonophorae_static';
@@ -23,53 +22,6 @@ var selectedColor ='#FFFF00'; //yellow
 var normalColor = '#1D9CCF';//'#0000FF'; //blue
 var moreBelowColor = normalColor;
 var normalOutlineColor = '#FFFFFF'; //color 
-
-window.addEventListener('load', function(){
-    // handle incoming messages
-    socket.on('update', function(king,rank, cName){
-     if(cName==null){
-      cName='none';
-     }
-     $('#nameLabel').text(currentName); 
-     $('#kingdomLabel').text(king);
-     $('#discoveryDateLabel').text(currentDate);
-     $('#itisTSNLabel').text(currentTSN);
-     $('#rankLabel').text(rank);
-     $('#cNameLabel').text(cName);
-     $('#childrenShownLabel').text(currentChildrenShown + '/' + currentDirectChildren);
-    });
-    
-}, false);
-
-window.addEventListener('load', function() {
-  // Need to setup form submit
-  var searchForm = document.getElementById('searchForm');
-
-  var rerootButton = document.getElementById('rerootButton');
-  rerootButton.addEventListener('click', rerootAtCurrentNode, false);
-
-  var lateSlider = document.getElementById('lateTimeSlider');
-  lateSlider.addEventListener('mousemove',updateLabelFromEndSlider, false); 
-  lateSlider.addEventListener('mousedown', function(){
-     upInterval = setInterval(function(){force.start()},10);
-     clearInterval(playInterval);
-     playing = false;
-     document.getElementById('playButton').value = "Play";
-
-   });
-  lateTimeSlider.addEventListener('mouseup', function(){
-    clearInterval(upInterval);
-  });
-  var fbButton = document.getElementById("fromStartButton").addEventListener("click", fromBeginning);
-  var button = document.getElementById("playButton").addEventListener("click",playForward);
-  var stopButton = document.getElementById("stopButton").addEventListener("click", stopAnimation);
-
-}, false);
-
-function rerootAtCurrentNode(e) {
-	document.getElementById("TSNField").value = selected.tsn;
-	reroot(e);
-}
 
 // Initialize tree variable
 var tree;	// Phylogeny in d3 json format with nodes and links
@@ -269,7 +221,99 @@ navNode = svg.selectAll("g.navNode")
       if(d.selected) {
             return selectedColor; 
         }
-    else{
+    else{var first = false;
+var root_node = null;
+var root_tsn = 0;
+var root_node_index;
+var currentNavTree
+
+$tsnSearchForm = $('#tsnSearchForm');
+$tsnSearchForm.submit(reroot);
+
+$snSearchForm = $('#snSearchForm');
+$snSearchForm.submit(snSearch);
+
+function snSearch(e) {
+  console.log('snSearch');
+  e.preventDefault();
+  var fd = new FormData(document.getElementById('snSearchForm'));
+  sendAjaxForm('/search/sn/tree.json', fd, function(content) {
+    var tree = JSON.parse(content);
+    if(Object.keys(tree).length > 0) {
+      console.log('content found');
+      treeFromJson(tree);
+    } else {
+      console.log(tree);
+      console.log('No results found for sn');
+    }
+  });
+}
+
+function reroot(e) {
+  // prevent the page from redirecting
+  console.log('reroot.');
+  e.preventDefault();
+
+  console.log('attempted submit');
+  // create a FormData object from our form
+  var fd = new FormData(document.getElementById('tsnSearchForm'));
+
+  // re-identify root node
+  //console.log("Heres the root "+ root_tsn);
+  
+  // clear the search fields
+  //document.getElementById('scientificNameField').value = "";
+  document.getElementById('TSNField').value = "";
+
+  // send it to the server
+  sendAjaxForm('/search/tsn/tree.json', fd, function(content) {
+    var tree = JSON.parse(content);
+    if(Object.keys(tree).length > 0) {
+    //  root_tsn = document.getElementById('TSNField').value;
+      treeFromJson(tree);
+    } else {
+      console.log('No results found tsn');
+    }
+  });
+}
+
+function treeFromJson(tree){
+    //if (request.status == 200) { //ok
+      //var content = request.responseText;
+      //console.log(jsonContent);
+      //tree = JSON.parse(jsonContent);
+      root_tsn = tree.root_tsn;
+      console.log(tree);
+      currentTree = $.extend(true, {}, tree);
+      //tree = $.extend(true, {}, currentTree);
+     if(first){
+      force.stop();
+      clearTree();
+      stopAnimation();
+    }
+      first = true;
+      visualize();
+      //console.log(content);
+   // } else {
+    //something went wrong
+    //}
+}
+
+function sendAjaxForm(url,form, callback) {
+ var request = new XMLHttpRequest();
+  request.open('POST', url, true);
+  request.addEventListener('load', function(e) {
+    console.log('searching...');
+    if (request.status == 200) { //ok
+      var content = request.responseText;
+      //console.log(content);
+      callback(content);
+    } else {
+    //something went wrong
+    }
+  });
+  request.send(form);
+}
       return ancestorColor; 
     }
 
@@ -303,86 +347,6 @@ navNode = svg.selectAll("g.navNode")
     force.start();
    }
   });
-}
-
-$(document).ready(function(){
-  $("#upClick").click(updateEndYear);
-});
-
-function updateEndYear() {
-  var endYear = document.getElementById("yearField").value;
-  document.getElementById('lateTimeSlider').value = endYear;
-  endDate = endYear;
-}
-
-function playForward(){
-  if(playing==false){
-    playing = true;
-    nodeslen = currentTree.nodes.length;
-    document.getElementById('playButton').value = "Pause";
-
-        playInterval = setInterval(function(){
-        document.getElementById('lateTimeSlider').value = minYear;
-        updateLabelFromEndSlider();
-        minYear = minYear+1;
-        if(minYear==2014){
-          clearInterval(playInterval);
-          document.getElementById('playButton').value = "Play";
-          minYear = 2013;
-          playing = false;
-        }
-        force.start();
-    }, 50);
-  }
-  else{
-    clearInterval(playInterval);
-    document.getElementById('playButton').value = "Play";
-    playing = false;
-  }
-}
-
-function stopAnimation(){
-  if(playing ==true){
-    playing = false;
-    clearInterval(playInterval);
-    document.getElementById('playButton').value = "Play";
-  }
-  minYear = 2013;
-  document.getElementById('lateTimeSlider').value = minYear;
-  updateLabelFromEndSlider();
-
-}
-
-function fromBeginning(){
-  minYear=2013;
-  playing = true;
-  nodeslen = currentTree.nodes.length;
-  document.getElementById("playButton").value = "Pause";
-  if(minYear == 2013){
-  for(i=0; i<nodeslen; i++){
-        if(currentTree.nodes[i].year != null && currentTree.nodes[i].year<minYear){
-          minYear = currentTree.nodes[i].year;
-        }  
-    }
-  }
-
-     playInterval = setInterval(function(){
-        document.getElementById('lateTimeSlider').value = minYear;
-        updateLabelFromEndSlider();
-        minYear = minYear+1;
-        if(minYear==2014){
-          clearInterval(playInterval);
-          document.getElementById('playButton').value = "Play";
-          minYear = 2013;
-          playing = false;
-        }
-        force.start();
-    }, 50);
-}
-
-function updateLabelFromEndSlider(){
-  document.getElementById("yearField").value = document.getElementById('lateTimeSlider').value;
-  updateEndYear();
 }
 
 function clearTree(){
