@@ -1,6 +1,14 @@
 // Date Slider
 $(document).ready(function(){
   $("#upClick").click(updateEndYear);
+  
+  $("#yearField").keypress(function(e) {
+    if(e.which == 13) {
+        alert('You pressed enter!');
+    }
+});
+  
+  
 });
 
 function updateEndYear() {
