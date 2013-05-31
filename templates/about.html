@@ -12,34 +12,41 @@
     <style type="text/css"></style>
   </head>
   <body>
-    <div id="aboutPhylotree">
-      <h1>About Phylotree</h1>
-      <p>
-      Welcome to Phylotree, a simple way to visualize the evolution of species. Our project is an interactive viewer for hierarchical data about life on Earth. In evolutionary biology, phylogeny is the study of how species are related to one another. A phylogenetic tree is a way to show these relationships, like a family tree for groups of species.Phylogeny is a science- it's not easy to trace the path of evolution. Currently phylotree displays taxonomy: species classification which gives an idea of what the true phylogeny might be.
-      </p>
-      <h1>About the Viewer</h1>
-      <p>
-      In our tree viewer, each taxonomic class is represented as an animated, interactive node, with connections based upon subclassing.
-      </p>
-      <h2>Searching for Taxa</h2>
-      <p> To view the hierarchy of any taxon (classification group) in the ITIS database, enter the exact scientific name of the taxon (for example, "panthera leo") or the Taxonomic Serial Number (TSN) of the taxon (the Green Algae phylum has the TSN 9417).
-      </p>
-      <h2>Iteracting with the Tree</h2>
-      <p> Big, dark nodes are higher up in the hierarchy (more encompassing). Smaller, lighter green nodes are further down (more specific). Blue nodes indicate that there are more subtaxa of that node which are not shown for space reasons. To see the descendents of these blue nodes (or any node) select the node by clicking and press "Reroot" in the left panel. Selecting the node displays information about the selected taxon in that panel.
-      </p>
-      <p>
-        To navigate back up, follow the hierarchical trail- the teal nodes that appear at the top of the viewer.
-      </p>
-      <p>
-        Using PhyloTree, you can see the process of species discovery in action. Move the slider labeled Discovery Date to filter nodes based on the date the first species in that taxon was discovered. Nodes discovered within several years of the selected date will appear red. 
-      </p>
-      <a href="/">> Go to Phylotree Viewer</a>
-      <div id="Credits">
+    <a href="/">> Go to Phylotree Viewer</a>
+      <h1>About</h1>
+      <p>PhyloTree is an interactive viewer for the Tree of Life - the family tree that shows the evolutionary relationships between all living organisms. Figuring out the tree of life is an ongoing research project that that thousands of labs across the world are working on. We don't yet know how all species are related to each other, but we already have a pretty good idea about many relationships. </p>
+      
+      <p>Since there isn't a single integrated picture of Tree of Life yet, PhyloTree is based on a very rough approximation of the Tree of Life - the <a href="http://www.itis.gov">taxonomic categorization of species</a>. Using taxonomy as a stand-in for evolutionary relationships is quite limiting in many respects, but it does provide an opportunity to address some of the challenges that arise when visualizing hundreds of thousands of species. It also starts to give a sense of how we might interact with the visualizations of the Tree of Life as it comes into sharper focus.</p>
+
+<p> For this project, we decided to focus on exploring the history of the description of species. Species descriptions are scientific manuscripts that name species, describe their anatomy and other aspects of their biology, and clearly indicate how they differ from other known species. We can explore the history of scientific discovery by visualizing how newly discovered species were added to the Tree of Life since the first formal species descriptions by <a href="http://en.wikipedia.org/wiki/Carl_Linnaeus">Carl Lineus</a> in the 18th century. The broad diversity of some groups of species was already roughed in very early on (as for Mamallia), with a small number of species added here and there as the years went on. Other groups were discovered more recently and then descibed in explosive bursts, and others (like Cnidaria) fall somewhere in between. </p>
+      
+      <h1>Using PhyloTree</h1>
+      
+      There are three ways to interact with the Tree of Life through the PhyloTree viewer.
+      
+      <h2> The Tree </h2>
+      
+      <p>Each taxonomic unit, whether it is a species or a group of species, is represented as an animated, interactive node. Since the tree of life is far too large to fit into a single web browser window, only a subset of nodes for a particualr group are usually shown at a time. The degree of data reduction depends on the scale the tree is viewed at. </p>
+      
+      <p>The ancestors of all the nodes in the tree are shown in orange. These include the root (the most recent common ancestor), as well as the ancestors of the root, which are shown along the top of the viewer.</p>
+      
+      <p>When you click on a node, it is highlighted. It turns yellow, and information about the node is shown in the "Highlighted Node" section. Click "Reroot here" to change the root of the tree that is shown. If you reroot on one of the blue nodes in the tree, you are zooming in on the Tree of life. If you click on an orange node at the top of the page, you are zooming out.</p>
+      
+      <h2> The year of species description </h2>
+      
+      <p>Move the "Discovery Date" slider to see the history of species description. Only the species that were described prior to the date indicated by the slider are shown. Nodes become red as they are about to appear or disappear. </p> 
+      
+      <h2> Organism Name </h2>
+      
+<p> Use these text boxes to search for particular species or groups of species. Refer to <a href="http://www.itis.gov">ITIS</a> for more information on these names, or to look up taxonomic serial numbers if you prefer to browse that way. </p>
+
+      <h1>Implementation</h1>
+      
+      <p>The source code for PhyloTree is <a href="https://github.com/vhsiao/phylotree">available at github</a>. This code builds on <a href="https://bitbucket.org/caseywdunn/phylogeny-d3">phylogeny-d3</a>, an earlier project by <a href="http://dunnlab.org">Casey Dunn</a>. </p>
+      
         <p>PhyloTree was created by <a href="https://github.com/jrgoddar">John Goddard</a>, <a href="https://github.com/tdelsest">Tyler Del Sesto</a> and <a href="https://github.com/vhsiao">Vivian Hsiao</a> (names in alphabetical order) as the final project for CS132: Creating Modern Web Applications at Brown University.</p>
        <img class="author-photo" title="Tyler" src="/public/images/tyler.jpg"/>
        <img class="author-photo" title="Vivian" src="/public/images/vivian.jpg"/>
        <img class="author-photo" title="John" src="/public/images/john.jpg"/>
-      </div>
-    </div>
   </body>
 </html>
