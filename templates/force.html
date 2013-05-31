@@ -6,11 +6,11 @@
   
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.9.5"></script>
-  <script type="text/javascript" src="/public/phyloforce.js"></script>
+  <script type="text/javascript" src="/public/js/phyloforce.js"></script>
+  <link href="/public/css/force.css" rel="stylesheet" type="text/css" />
   
-  <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/>
-  <link href='/public/force.css' rel='stylesheet' type='text/css' />
-  <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <link href="http://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet" type="text/css">
   
   <style type="text/css"></style>
   
@@ -24,7 +24,7 @@
 
 <div id=d3_phyloviewer>
   <!-- THIS IS WHERE THE PHYLOTREE VIEWER IS. -->
-  <div class='gallery' id='chart'>
+  <div class="gallery" id="chart">
     
   </div>
 </div>
@@ -32,6 +32,7 @@
 <div id="header_controls">
   <div id="header_title_box">
     <h1 id="main_title">Phylotree</h1>
+    <a href="/about" id="aboutLink">About This Viewer</a>
   </div>
 
 
@@ -68,9 +69,8 @@
 </div>
 
 <div id="infoBox">
-  <a href="/about" id="aboutLink">About This Viewer</a>
   <div id="taxonInfo">
-    <h3 id="taxonInfoHeader">Taxon Information:</h3>
+    <h3 id="taxonInfoHeader">Highlighted Node:</h3>
     <label class="taxonInfoLabel">Taxon Name:
       <label id="nameLabel" class="infoData">___</label>
     </label>
@@ -96,8 +96,8 @@
   </div>
 </div>
 
-<script type="text/javascript" src="/public/trees.js"></script>
-<script type="text/javascript" src="/public/interaction.js"></script>
+<script type="text/javascript" src="/public/js/trees.js"></script>
+<script type="text/javascript" src="/public/js/interaction.js"></script>
 </body>
 
 </html>

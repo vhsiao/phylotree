@@ -46,6 +46,7 @@ app.post('/search', function(req, res) {
     res.send('ok');
 });
 app.post('/search/sn/tree.json', function(req, res) {
+  console.log('Received a post request to /search/sn/tree.json');
   var tsn;
   conn.query('SELECT tsn FROM phylotree_hierarchy WHERE name LIKE ? LIMIT 1', [req.body.sn])
   .on('row', function(row) {
@@ -114,6 +115,7 @@ function treeFromTSN(res, tsn) {
 }
 
 function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callback) {
+  console.log('in adjustMoreBelow');
   for (descendent in descendents) {
           var des = descendents[descendent];
           if (des===root_txn) {
@@ -127,6 +129,7 @@ function adjustMoreBelow(descendents, nodes, links, nodeLookup, root_txn, callba
   return callback(descendents, nodes, links, nodeLookup, root_txn);
 }
 function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
+      console.log('In populateD3Array');
       for (descendent in descendents) {
         var des = descendents[descendent];
         if (des===root_txn) {
@@ -139,6 +142,7 @@ function populateD3Array(descendents, nodes, links, nodeLookup, root_txn) {
 }
 
 function addNavigation(tsn, D3Array, callback){
+  console.log('in addNavigation');
   D3Array.root_tsn = tsn;
   var navNodes = [];
   var navLinks = [];
@@ -153,8 +157,9 @@ function addNavigation(tsn, D3Array, callback){
       }
       D3Array.navNodes = navNodes;
       D3Array.navLinks = navLinks;
-  callback();
-
+      console.log('D3Array:');
+      console.log(Object.keys(D3Array));
+      callback();
     });
  }
 // =================================================================================
