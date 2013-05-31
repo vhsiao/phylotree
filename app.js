@@ -73,7 +73,7 @@ function treeFromTSN(res, tsn) {
   var descendents = [];
   var position = 0;
   var root_txn;
-  var maxNodes = 500;
+  var maxNodes = 350;
   conn.query('SELECT * FROM phylotree_hierarchy WHERE tsn=?;', [tsn])
     .on('row', function(row) {
     var lft = row.lft;
