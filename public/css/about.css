@@ -1,0 +1,43 @@
+h1 {
+  display: inline-block;
+  width: 100%;
+  padding: 0 1%;
+  background-color: #343434;
+  color: #44C736;
+}
+h2 {
+  padding: 0 2%;
+  color: #003500; /* Dark Green */
+}
+p {
+  padding: 0 1.5em;
+}
+
+#credits {
+  background-color: #343434;
+  display: block;
+  height: 8em;
+  width: 100%;
+  margin-top: 1em;
+}
+#credits p {
+  font-size: 0.8em;
+  color: white;
+  display: block;
+  float: left;
+  width: 50%;
+  margin-top: 3em;
+}
+#credits a {
+  color: #44C736; 
+}
+#credits a: {
+  color: #44C736;
+}
+img.author-photo {
+  height: 5em;
+  width: 5em;
+  display: inline-block; 
+  margin: 2em;
+  float: right;
+} 
