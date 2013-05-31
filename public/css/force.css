@@ -20,13 +20,13 @@ body {
 }
 
 #d3_phyloviewer {
-  height: 85%;
+  height: 90%;
   width: 100%;
   padding: 2%;
   position: absolute;
   margin: 0 auto;
   display: block;
-  margin-top: 8%;
+  margin-top: 5%;
   background: white;
   overflow: scroll;
 }
@@ -71,7 +71,7 @@ input[type='range']::-webkit-slider-thumb {
   top: 0px;
   left: 0px;
   right: 0px;
-  height: 100px;
+  height: 10%;
   padding: 10px;
   margin: 0px;
   
@@ -91,6 +91,7 @@ input[type='range']::-webkit-slider-thumb {
 #main_title {
   color: #44C736; /* Light green */
   margin: 0px;
+  font-size: 1.5em;
 }
 
 #header_title_box {
