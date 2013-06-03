@@ -115,6 +115,7 @@ Enter password:
 
 
 9. To start the application (stop other servers running on the same port first):
+
 	sudo node app.js
 
-I used Nginx and Upstart to deploy the server as a service, using <a href="http://mattpatenaude.com/hosting-chatroom/">this guide</a>.
+I used Nginx and Upstart to deploy the server as a service, using <a href="http://mattpatenaude.com/hosting-chatroom/">this guide</a>. With Upstart configured, use `sudo start phylotree`, `sudo stop phylotree` and `sudo restart phylotree`
