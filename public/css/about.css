@@ -1,3 +1,8 @@
+body {
+		margin-right: 40px;
+		margin-left: 40px;
+	}
+
 h1 {
   display: inline-block;
   width: 100%;
@@ -34,6 +39,12 @@ p {
 #credits a: {
   color: #44C736;
 }
+
+#about-text {
+  height: 100%;
+  width: 80%;
+}
+
 img.author-photo {
   height: 5em;
   width: 5em;
