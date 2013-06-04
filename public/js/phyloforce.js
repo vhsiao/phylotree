@@ -55,10 +55,11 @@ window.addEventListener('load', function(e){
             cName='none';
         }
         $('#nameLabel').text(currentName); 
-        $('#kingdomLabel').text(king);
         $('#discoveryDateLabel').text(currentDate);
         $('#itisTSNLabel').text(currentTSN);
-        $('#rankLabel').text(rank);
+        
+        $("a:contains('#itisTSNLabel')").prop("href", "http://eol.org/api/search_by_provider/1.0/"+ currentTSN +"?hierarchy_id=903")
+        
         $('#cNameLabel').text(cName);
         $('#childrenShownLabel').text(currentChildrenShown + '/' + currentDirectChildren);
     });
