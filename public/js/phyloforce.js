@@ -165,7 +165,7 @@ function visualize() {
             return 1;
         }
     })
-    //.call(force.drag);
+    .call(force.drag);
  
 
     node.append('title') // add a 'title' attribute to every node.
