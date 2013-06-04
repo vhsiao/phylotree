@@ -22,35 +22,34 @@
 
 <body>
 
-<div id=d3_phyloviewer>
+<div id="d3-phyloviewer">
   <!-- THIS IS WHERE THE PHYLOTREE VIEWER IS. -->
   <div class="gallery" id="chart">
     
   </div>
 </div>
 
-<div id="header_controls">
-  <div id="header_title_box">
-    <h1 id="main_title">Phylotree</h1>
+<div id="header-controls">
+  <div id="header-title-box">
+    <h1 id="main-title">Phylotree</h1>
     <a href="/about" id="aboutLink">About This Viewer</a>
   </div>
 
 
-  <div id="header_date_controls">
+  <div id="header-date-controls">
     <h2>Discovery Date</h2>
     <h3>Show all species discovered before this date</h3>
     <input id="lateTimeSlider" type="range" min="1700" max="2013" name="lateTime" value="2013">
     <input type="number" id="yearField" name="fname" min="1700" max="2013" value="2013">
-    <input type="button" id="upClick" value="Update End Year">
+    <input type="button" id="update-year-field" value="Update End Year">
     
-    <div id=visual_controls>
+    <div id=visual-controls>
       <input type="button" value="Play From Beginning" id="fromStartButton"></label>
       <input type="button" value="Play" id="playButton"></label>
-      <input type="button" value="Reset" id="stopButton"></label>
     </div>
   </div>
   
-  <div id="header_search">
+  <div id="header-search">
     <h2> Organisms </h2>
     <h3> Search by species or group </h3>
     <form id="tsnSearchForm" method="POST" action="">
@@ -69,11 +68,11 @@
     </form>
   </div>
 
-</div>
+</div>-
 
 <div id="infoBox">
   <div id="taxonInfo">
-    <h3 id="taxonInfoHeader">Highlighted Node:</h3>
+    <h2 id="taxonInfoHeader">Highlighted Node:</h2>
     <label class="taxonInfoLabel">Taxon Name:
       <label id="nameLabel" class="infoData">___</label>
     </label>

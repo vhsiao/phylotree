@@ -29,17 +29,14 @@ function snSearch(e) {
 function reroot(e) {
     // prevent the page from redirecting
     console.log('reroot.');
-    e.preventDefault();
-
+    if (e) {
+        e.preventDefault();
+    }
     console.log('attempted submit');
     // create a FormData object from our form
     var fd = new FormData(document.getElementById('tsnSearchForm'));
 
-    // re-identify root node
-    //console.log("Heres the root "+ root_tsn);
-  
     // clear the search fields
-    //document.getElementById('scientificNameField').value = "";
     document.getElementById('TSNField').value = "";
 
     // send it to the server
@@ -54,8 +51,7 @@ function reroot(e) {
     });
 }
 
-function treeFromJson(tree){
-//if (request.status == 200) { //ok
+function treeFromJson(tree) {
     //var content = request.responseText;
     //console.log(jsonContent);
     //tree = JSON.parse(jsonContent);
@@ -68,11 +64,8 @@ function treeFromJson(tree){
     } else {
         firstTree = false;
     }
+    nodeslen = currentTree.nodes.length; // Update number of nodes for iteration
     visualize();
-    //console.log(content);
-    // } else {
-        //something went wrong
-        //}
 }
 
 function sendAjaxForm(url,form, callback) {
