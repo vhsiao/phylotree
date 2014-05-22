@@ -58,14 +58,26 @@ Relational database management systems such as MySQL model data in a flat tabula
 *AWS - * For hosting, we used [ec2], an easily scalable cloud computing service. EC2 is an affordable and flexible solution for web applications. The operating system and other configurations of the instance are easily configured. EC2 allows paying only for the computing capacity used. A "Small" EC2 was sufficient for all of our memory and CPU needs.
 
 #### Pre-processing
-- ITIS tables
-- Hierarchy table
-- node pre-ordering [inorder]
+*ITIS tables - * In the first version of Phylotree, we used data from the following tables from the ITIS database:
+_taxonomic\_units:_ This table contains information about names for each taxon, and hierarchical information. Of the various fields in this table, we use information from the following fields:
+- tsn, the unique Taxonomic Serial Number of the taxon in the databse.
+- unit\_name1, the unique scientific name for the taxon.
+- name\_usage, the optional common name for the taxon.
+- parent\_tsn, the tsn of the taxon hierarchically above this one.
+- taxon\_author\_id, the optional id identifying the author of the publication first documenting the taxon. This serves as the linked to the stripped_author table
+- kingdom\_id, the unique numeric id of the kingdom this taxon belongs to
 
+_strippedauthor:_ This table contains information about the name of the authors of publications describing taxa. It links to the _taxonomic\_units_ table through the taxon\_author\_id field. The shortauthor field optionally contains a date, which we extracted as the description date of species. The "description date" of higher taxa are the same as the discovery date of the earliest described species of that taxa.
 
+*node pre-ordering - * The hierarchical structure of the data is caputred through the atomic parent\_tsn field of the taxonomic\_units table. As such, to fetch an entire subtree containing _n_ nodes would involve _n_ SELECT requests to the database, which with large numbers of nodes is not ideal, and we wanted to minimize the number of dtabse queries. 
 
-- Performance
-- In-Memory
+Our solution was to use [preorder] and preprocess the nodes to store more helpful hierarchical information than merely the parent pointer. Essentially, we performed a preorder traversal of the tree and stored the tsn of the precursor and successor of each node in this traversal as left ('lft') and right ('rgt') for each node. As such, each node's 'lft' and 'rgt' fields are the tsn of either parent or sibling nodes in the tree. Indexing and sorting by 'lft' turns the retrieval of the hierarchy into a single range query, a constant time database operation.
+
+Phylotree as essentially a read-only app was well suited to this method, since updates to the data need not be in realtime, and the preprocessing can be done intermittently, and the 'lft' and 'rgt' pointers can be updated infrequently. This is fortunate, as the entire preprocessing operation can be time-consuming.
+
+*Hierarchy table - * The information about each taxon, as well as pre-processing information, was stored in an auxiliary MySQL table called phylotree_hierarchy. It is from this table that Phylotree retrieved data. 
+
+*Performance - * The preprocessing step essentially reduced all queries to a single range query to MySQL, which is sufficiently fast on a standard internet connection. 
 
 ### Frontend Implementation
 
@@ -82,3 +94,4 @@ Relational database management systems such as MySQL model data in a flat tabula
 [express]: http://expressjs.com/ "Express"
 [socketio]: http://socket.io/ "Socket.IO"
 [ec2]: https://aws.amazon.com/ec2/ "Amazon Elastic Compute Cloud (EC2)"
+[preorder]: http://www.sitepoint.com/hierarchical-data-database-2/ "Modified Preorder Tree Traversal"

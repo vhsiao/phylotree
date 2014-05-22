@@ -62,7 +62,6 @@ Create Table strippedauthor
    PRIMARY KEY (taxon_author_id))
    ENGINE=MyISAM CHARSET=latin1;
 
-
 """
 
 # The minimum year to assign a date. This is necessary to clean up data that would 
@@ -152,7 +151,6 @@ class Taxon():
 		"""Get the subtending branch in d3.json format"""
 		# {"source":1,"target":0,"value":1}
 		return {"source":self.parent,"target":self.id,"value":1}
-
 #                Column('tsn', Integer, primary_key=True, nullable=False),
 #                Column('kingdom_id', Integer), 
 #                Column('lft', Integer, nullable=False),
@@ -218,9 +216,6 @@ else:
     	authors[ author_id ] = ( author, year  ) # authors[25] = (A Binney, 1842)) 
     	
     	
-    	#print ( line )
-    	#print( id, author, year )
-    
     # Parse the taxonomy file into the taxa dictionary
     taxon_handle = open(taxon_file_name, "rU")
     
