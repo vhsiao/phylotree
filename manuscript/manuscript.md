@@ -35,18 +35,34 @@ Clicking on "Play from Beginning" shows each node entering the display in order,
 #### Organism Name and Taxonomic Serial Number
 These text boxes can be used to search for a particular species or group of species. Currently Phylotree supports searching by scientific nam or taxonomic serial numbers (TSN). Refer to ITIS for more information on these names, or to look up TSN.
 
+#### Data
+The taxonomic data used for Phylotree is from the Integrated Taxonomic Information System, or [itis]. ITIS is the result of a partnership of fedral agencies and other partners which provides a scientifically credible source of taxonomic information. ITIS includes the author and date, taxonomic rank, common names, a unique taxonomic serial number, data source information and data quality indicators for each scientific name in its databse. The entire database can be downloaded directly from the ITIS website as a bundle of MySQL dump files.
+
 ## Existing tools
 TODO
 
 ## Implementation of a new tool
+The following is a description of how we built the first version of Phylotree, which can be referenced for other groups building visualization tools or other applications with similar features.
 
-### Platforms
 ### Backend Implementation
-- RESTful API + sockets
-- node pre-ordering [inorder]
 
 #### Platforms
-#### Considerations
+*Database (MySQL) - * An important design decision was our choice of our database. [mysql] is an extremely popular open-source relational database management system (RDBMS). As such, it is extremely reliable and well-supported by online open-source communities. Perhaps the most important reason to choose MySQL was that ITIS stores and exports data in a MySQL format. MySQL is easy to use, and a myriad of interfaces have been implemented for connections to other platforms (we used [anydb] to connect it to our Node.js backend). However, future implementations might consider other open-source options.
+
+Relational database management systems such as MySQL model data in a flat tabular model, which is ideal for individual records but which is not as well suited to hierarchical or nested data as newer NoSQL databases, which have been widely adopted for web applications where hierarchical data is common (for example, nested comment threades). The tradeoff is the relatively experimental nature of existing NoSQL solutions, as well as weaker reliability guarantees since most NoSQL stores lack true [acid] transactions. 
+
+*Node.js, express - * [node] is a server-side platform initially released in 2009. Node.js applications are written in JavaScript and maximizes efficiency using non-blocking IO and asynchronous events. Using the [express] framework allowed us to quickly set up and start the application.
+
+*Socket.io - * [sockietio] allowed us to use WebSocket for sending data between browser and server. WebSocket is a protocol that allows the client and server to maintain a connection, passing messages back and forth, potentially in realtime. We used sockets to send new trees to the browser after searching or re-rooting operations. Sockets were also used to send and display information about individual nodes when they were clicked. Using sockets allowed a larger degree of interactivity between browser and server. The page did not have to be re-loaded after every update; rather, the necessary data was sent over the socket connection and the relevant part of the viewer (tree or displayed information) was updated.
+
+*AWS - * For hosting, we used [ec2], an easily scalable cloud computing service. EC2 is an affordable and flexible solution for web applications. The operating system and other configurations of the instance are easily configured. EC2 allows paying only for the computing capacity used. A "Small" EC2 was sufficient for all of our memory and CPU needs.
+
+#### Pre-processing
+- ITIS tables
+- Hierarchy table
+- node pre-ordering [inorder]
+
+
 
 - Performance
 - In-Memory
@@ -58,7 +74,11 @@ TODO
 
 ## References
 [inorder]: http://example.com "inorder"
-
-
-
-
+[itis]: http://example.com "ITIS"
+[mysql]: http://www.mysql.com/ "MySQL"
+[acid]: http://en.wikipedia.org/wiki/ACID "ACID"
+[anydb]: https://github.com/grncdr/node-any-db "Any-DB"
+[node]: http://nodejs.org/ "Node.js"
+[express]: http://expressjs.com/ "Express"
+[socketio]: http://socket.io/ "Socket.IO"
+[ec2]: https://aws.amazon.com/ec2/ "Amazon Elastic Compute Cloud (EC2)"
