@@ -39,7 +39,8 @@ These text boxes can be used to search for a particular species or group of spec
 The taxonomic data used for Phylotree is from the Integrated Taxonomic Information System, or [itis]. ITIS is the result of a partnership of fedral agencies and other partners which provides a scientifically credible source of taxonomic information. ITIS includes the author and date, taxonomic rank, common names, a unique taxonomic serial number, data source information and data quality indicators for each scientific name in its databse. The entire database can be downloaded directly from the ITIS website as a bundle of MySQL dump files.
 
 ## Existing tools
-TODO
+
+jsPhyloSVG [@Smits:2010jl].
 
 ## Implementation of a new tool
 The following is a description of how we built the first version of Phylotree, which can be referenced for other groups building visualization tools or other applications with similar features.
