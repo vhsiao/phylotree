@@ -275,7 +275,7 @@ function visualize() {
         if (selected != null) selected.selected = false;
         selected = d;
         d.selected = true;
-        force.start();
+        force.alpha(.01);
     });
 
     node.on('click', function(d){
@@ -289,7 +289,7 @@ function visualize() {
             if (selected != null) selected.selected = false;
             selected = d;
             d.selected = true;
-            force.start();
+            force.alpha(.01);
         }
     });
 }

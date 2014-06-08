@@ -83,7 +83,20 @@ Phylotree as essentially a read-only app was well suited to this method, since u
 ### Frontend Implementation
 
 #### Platforms
+*D3.js - * D3.js is a Javascript library that facilitates data-driven manipulation of Document Object Model (DOM) objects. We use D3 to create the visible representation of the the tree that the user sees and interacts with in the browser. 
+
+When a user views a tree, the nodes and links of that tree are passed into the frontend as a JSON array, and each node and link has particular attributes. We use D3 to bind a Scalable Vector Graphic (SVG) circle to each node in the array and an SVG line to each link in the array. These SVG circles and lines make up the “leaves” and “branches” of the tree that the user views, respectively. 
+
+Further, D3 allows us to manipulate these SVG elements based on the attributes of the nodes or links they are bound to. For example, when a user selects a new date range, we use D3.js to fade out leaves of the tree bound to nodes with discovery dates outside of the new range. 
+
+*D3 Force Layout - * Force is a D3 layout used to create an interactive force-directed graph. Force implements the force-directed graph as a physical simulation of charged particles. We use Force to structure and animate the tree the user is viewing. Each node of the tree is assigned a charge, which reduces node overlap when the tree stabilizes. Additionally, Force tracks and changes (based on the physical simulation) the position of each node and link of the tree. This functionality is responsible for the animations when a user drags a node or reroots the tree. 
+
+*jQuery, jQuery UI - * jQuery is javascript library that streamlines HTML scripting. We use it to update the attributes of HTML elements and for event handling. For example, we use it to update the informational labels when a user selects a node, and we also it when a user drags the end year slider. 
+
 #### Browser Restriction
+
+Animating a tree can put a strain on browser resources, especially when the tree gets larger. Phylotree is designed to be compatible with Chrome, Firefox and Safari, but we’ve noticed that performance is best in recent versions of Chrome. 
+
 
 ## References
 [inorder]: http://example.com "inorder"
@@ -96,3 +109,7 @@ Phylotree as essentially a read-only app was well suited to this method, since u
 [socketio]: http://socket.io/ "Socket.IO"
 [ec2]: https://aws.amazon.com/ec2/ "Amazon Elastic Compute Cloud (EC2)"
 [preorder]: http://www.sitepoint.com/hierarchical-data-database-2/ "Modified Preorder Tree Traversal"
+[D3.js]: http://d3js.org/ "D3 Data-Driven Documents"
+[force]: https://github.com/mbostock/d3/wiki/Force-Layout "Force Layout"
+[forcedirectedgraph]: http://en.wikipedia.org/wiki/Force-directed_graph_drawing "Force directed graph drawing"
+[jquery]: http://jquery.com/ "jQuery"
